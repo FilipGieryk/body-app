@@ -23,6 +23,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUsername, setEditedUsername] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
+  const [requestStatus, setRequestStatus] = useState(null);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -39,6 +40,13 @@ const Profile = () => {
         setLoading(false);
       }
     };
+    if (userInfo.friends?.includes(userId)) {
+      setRequestStatus("friends");
+    } else if (userInfo.pendingRequests?.some((req) => req.sender === userId)) {
+      setRequestStatus("pending");
+    } else {
+      setRequestStatus("none");
+    }
     fetchUser();
   }, [id]);
 
@@ -69,6 +77,67 @@ const Profile = () => {
       setIsEditing(false); // Exit edit mode after saving
     } catch (error) {
       console.error("Error updating user info", error);
+    }
+  };
+  const handleSendFriendRequest = async () => {
+    try {
+      await sendFriendRequest(); // Assuming sendFriendRequest is a prop function
+      setRequestStatus("pending");
+    } catch (error) {
+      console.error("Failed to send friend request", error);
+    }
+  };
+
+  const handleAcceptRequest = async () => {
+    try {
+      await acceptRequest(); // Assuming acceptRequest is a prop function
+      setRequestStatus("friends");
+    } catch (error) {
+      console.error("Failed to accept friend request", error);
+    }
+  };
+  const acceptRequest = async (friendId) => {
+    try {
+      await axios.post("/api/friendship/accept-request", { userId, friendId });
+      // Optionally, update the UI to reflect the change
+      alert("Friend request accepted!");
+    } catch (error) {
+      console.error("Error accepting friend request:", error);
+      alert("Failed to accept the friend request. Please try again.");
+    }
+  };
+
+  const handleDeclineRequest = async () => {
+    try {
+      await declineRequest(); // Assuming declineRequest is a prop function
+      setRequestStatus("none");
+    } catch (error) {
+      console.error("Failed to decline friend request", error);
+    }
+  };
+  const declineRequest = async (friendId) => {
+    try {
+      await axios.post("/api/friendship/decline-request", { userId, friendId });
+      // Optionally, update the UI to reflect the change
+      alert("Friend request declined.");
+    } catch (error) {
+      console.error("Error declining friend request:", error);
+      alert("Failed to decline the friend request. Please try again.");
+    }
+  };
+
+  const sendFriendRequest = async () => {
+    try {
+      const response = await axios.post("/api/friendships/send-request", {
+        userId, // Current user's ID
+        friendId: userInfo._id, // Profile owner's ID
+      });
+
+      // Optionally, handle the response (like updating state or showing a notification)
+      alert("Friend request sent!");
+    } catch (error) {
+      console.error("Error sending friend request:", error);
+      alert("Failed to send friend request. Please try again later.");
     }
   };
 
@@ -133,7 +202,26 @@ const Profile = () => {
                       onClick={editUserInfo}
                     ></button>
                   ) : (
-                    <button>add Friend</button>
+                    <>
+                      {requestStatus === "friends" ? (
+                        <p>Friends</p>
+                      ) : requestStatus === "pending" ? (
+                        <p>Request Sent</p>
+                      ) : userInfo.pendingRequests?.some(
+                          (req) => req.sender === userId
+                        ) ? (
+                        <>
+                          <button onClick={handleAcceptRequest}>Accept</button>
+                          <button onClick={handleDeclineRequest}>
+                            Decline
+                          </button>
+                        </>
+                      ) : (
+                        <button onClick={handleSendFriendRequest}>
+                          Add Friend
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
               )}
