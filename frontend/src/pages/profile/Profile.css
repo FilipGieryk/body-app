@@ -76,6 +76,7 @@
   position: relative;
 }
 .profile-pic {
+  margin-top: 5rem;
   width: 15rem;
   border-radius: 50%;
   transition: all 0.3s;

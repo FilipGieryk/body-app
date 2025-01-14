@@ -36,6 +36,12 @@ const userSchema = new mongoose.Schema({
       ref: "WorkoutSession",
     },
   ],
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   isAdmin: { type: Boolean, default: false },
   cretedAt: {
     type: Date,

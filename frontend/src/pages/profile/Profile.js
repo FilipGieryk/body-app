@@ -74,14 +74,6 @@ const Profile = () => {
 
   // const photos = document.getElementsByClassName("photo-container");
   // photos.ondrag(console.log("dsad"));
-  const profile = document.getElementsByClassName("profile-grid-layout");
-  const workoutActivity = document.getElementsByClassName(
-    "workout-activity-container"
-  );
-  const moveSections = (position) => {
-    profile[0].classList.add(position);
-    workoutActivity[0].classList.add(position);
-  };
 
   if (loading) {
     return <div>Loading...</div>; // Show loading indicator
@@ -103,6 +95,13 @@ const Profile = () => {
             <div className="profile-grid-item about">
               {isEditing ? (
                 <div className="profile-grid-inner display-column">
+                  <div className="profile-edit-container">
+                    <img
+                      src={userInfo.profilePhoto}
+                      className="profile-pic profile-edit-photo"
+                    ></img>
+                    <p className="profile-edit-photo-text">+</p>
+                  </div>
                   <input
                     className="profile-edit-text"
                     type="text"
@@ -114,13 +113,6 @@ const Profile = () => {
                       }))
                     }
                   />
-                  <div className="profile-edit-container">
-                    <img
-                      src={userInfo.profilePhoto}
-                      className="profile-pic profile-edit-photo"
-                    ></img>
-                    <p className="profile-edit-photo-text">+</p>
-                  </div>
                   <button
                     onClick={handleSaveChanges}
                     className="edit-user-button"
@@ -130,16 +122,18 @@ const Profile = () => {
                 </div>
               ) : (
                 <div className="profile-grid-inner display-column">
-                  <p>{userInfo.username}</p>
                   <img
                     src={userInfo.profilePhoto}
                     className="profile-pic"
                   ></img>
-                  {userId === userInfo._id && (
+                  <p>{userInfo.username}</p>
+                  {userId === userInfo._id ? (
                     <button
                       className="edit-user-button"
                       onClick={editUserInfo}
                     ></button>
+                  ) : (
+                    <button>add Friend</button>
                   )}
                 </div>
               )}

@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const workoutRoutes = require("./routes/workoutRoute");
 const ratingRoutes = require("./routes/ratingRoutes");
 const workoutSessionRoutes = require("./routes/workoutSessionRoutes");
+const friendshipRoutes = require("./routes/friendshipRoutes");
 const cors = require("cors");
 const path = require("path");
 // Define a basic route
@@ -23,6 +24,8 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/rating", ratingRoutes);
 app.use("/api/workout-sessions", workoutSessionRoutes);
+app.use("/api/friendships", friendshipRoutes);
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
