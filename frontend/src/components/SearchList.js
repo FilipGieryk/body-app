@@ -201,7 +201,9 @@ const SearchList = ({ data, contentType, workoutId, onAddExercise }) => {
                       .slice(0, hoveredIndex === index ? el.bodyPart.length : 2)
                       .map((bp) => (
                         <div
-                          className="bodypart-container"
+                          className={`bodypart-container ${
+                            el.bodyPart.length === 1 ? "single-bodypart" : ""
+                          }`}
                           style={{
                             backgroundColor: `rgb(${Math.min(
                               bp.scale * 2.55,

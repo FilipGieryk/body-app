@@ -41,9 +41,13 @@
   gap: 1rem;
   /* position: absolute; */
 }
+.single-bodypart {
+  grid-column: 2;
+}
 .bodypart-container {
   width: 7rem;
   height: 3rem;
+  display: inline-block;
   text-align: center;
   color: white;
   background-color: brown;
