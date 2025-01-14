@@ -1,0 +1,16 @@
+.checkbox-container {
+  width: 20rem;
+  /* height: 20rem; */
+  /* position: absolute; */
+  font-size: 2rem;
+  top: 6rem;
+  right: 20rem;
+}
+.checkbox-elements-list {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: var(--third);
+  width: 100%;
+  height: 100%;
+}

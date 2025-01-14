@@ -1,0 +1,52 @@
+.grid-layout-box {
+  width: 100%;
+  margin: auto;
+  margin-top: 30rem;
+  color: antiquewhite;
+}
+.simple-form {
+  display: grid;
+
+  grid-template-areas:
+    "grid-text grid-text grid-enum"
+    "grid-video . grid-photo"
+    "grid-button grid-button grid-button";
+  width: 100%;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 33% 33% 33%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+
+  margin: auto;
+}
+.grid-text {
+  grid-area: grid-text;
+}
+.grid-enum {
+  grid-area: grid-enum;
+}
+.grid-video {
+  grid-area: grid-video;
+}
+.grid-photo {
+  grid-area: grid-photo;
+}
+.grid-button {
+  grid-area: grid-button;
+}
+.bodyparts-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  /* position: absolute; */
+}
+.bodypart-container {
+  width: 7rem;
+  height: 3rem;
+  text-align: center;
+  color: white;
+  background-color: brown;
+  font-size: 2rem;
+  border-radius: 2rem;
+}

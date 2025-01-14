@@ -1,0 +1,14 @@
+.exercises-search-input,
+.exercises-search-input:focus-visible {
+  outline: none;
+  border: none;
+  padding: 1rem;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  font-size: 1.6rem;
+}
+.search-icon {
+  padding: 1rem;
+}
+/* was that  do search input*/

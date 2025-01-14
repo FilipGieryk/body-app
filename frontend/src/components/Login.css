@@ -1,0 +1,181 @@
+#login-container {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 5rem;
+  height: 5rem;
+  top: -7rem;
+  right: 7rem;
+
+  /* transform: translate(-50%, -50%); */
+  background-color: var(--secondary);
+  /* opacity: 80%; */
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  z-index: 5;
+}
+.label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  font-size: 2rem;
+  color: transparent;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.login-input:focus + span + .label,
+input:not(:placeholder-shown) + span + .label {
+  opacity: 1;
+  transition-duration: 200ms;
+  transform: scale(0.75) translateY(-30%);
+  color: white;
+}
+.login-header-container {
+  position: absolute;
+  top: 2rem;
+  font-size: 1rem;
+  width: 14rem;
+  /* background-color: green; */
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+}
+.login-header-element {
+  display: inline;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+.active {
+  background-color: var(--third);
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.login-header-element {
+  /* make third darker */
+  background-color: var(--third);
+}
+#login-container {
+  width: 20rem;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input {
+  margin: 1rem 0;
+}
+
+.input .login-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.input .underline {
+  display: block;
+  height: 2px;
+  background: #ddd;
+}
+
+.input .label {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+#login-form-submit,
+#register-form-submit {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: var(--third);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#login-form-submit:hover,
+#register-form-submit:hover {
+  /* make third darker */
+  background-color: var(--third);
+}
+
+.login {
+  animation: moveLogin 0.5s ease-in-out forwards;
+}
+.login-hide {
+  animation-direction: reverse;
+}
+.login-input {
+  background: rgba(141, 126, 126, 0.63);
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 2rem;
+  position: relative;
+  color: black;
+  margin-top: 1rem;
+}
+.login-input::placeholder {
+  color: black;
+}
+.login-input:focus::placeholder {
+  color: transparent;
+}
+.login-input:focus-visible {
+  outline: none;
+}
+.input {
+  position: relative;
+  overflow: hidden;
+  /* display: inline-block; */
+}
+.input > .login-input {
+  border: none;
+  outline: none;
+}
+
+.underline {
+  transition: all 0.5s;
+  display: inline-block;
+  bottom: 0;
+  left: -100%;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  /* add fourth mby */
+  background-color: var(--third);
+}
+.input > .login-input:focus + .underline {
+  left: 0;
+  color: blue;
+}
+@keyframes loginUnderline {
+  0% {
+    border: none;
+  }
+  100% {
+    border-bottom: solid 1px white;
+  }
+}
+
+@keyframes moveLogin {
+  0% {
+    top: 50rem;
+    right: 7rem;
+  }
+  100% {
+    top: 50%;
+    right: 50%;
+    width: 40rem;
+    height: 30rem;
+    transform: translate(50%, -50%);
+    z-index: 10;
+  }
+}

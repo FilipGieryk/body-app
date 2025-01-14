@@ -1,0 +1,26 @@
+.profile-workouts-container {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  height: 90%;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 1rem;
+}
+.profile-workouts-element {
+  background-color: var(--third);
+  min-width: 15rem;
+  max-width: 15rem;
+  height: 5rem;
+  border-radius: 4rem;
+  font-size: 1rem;
+}
+
+/* was that */
+.workout-activity-count {
+  background-color: aqua;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-items: center;
+}

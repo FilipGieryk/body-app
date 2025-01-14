@@ -1,0 +1,33 @@
+.workout-container {
+  display: grid;
+  justify-content: center;
+  /* background-color: aqua; */
+  align-items: center;
+  border-radius: 2rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+.workout-exercise-input {
+  background-color: var(--third);
+  width: 100%;
+  height: 100%;
+  border-radius: 2rem;
+}
+.workout-exercise-container {
+  text-align: center;
+  font-size: 2rem;
+  width: 100%;
+  height: 100%;
+  border-radius: 2rem;
+  background-color: var(--secondary);
+}
+.workout-exercise-list {
+  background-color: var(--third);
+  width: 97%;
+  border-radius: 2rem;
+  margin: auto;
+}
+.delete-exercise-button {
+  border: none;
+  background-color: transparent;
+}
