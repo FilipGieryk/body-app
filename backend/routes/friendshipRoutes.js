@@ -81,6 +81,17 @@ router.delete("/remove-friend", async (req, res) => {
       ],
     });
 
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { friends: friendId } },
+      { new: true } // Optionally return the updated document
+    );
+
+    await User.findByIdAndUpdate(
+      friendId,
+      { $pull: { friends: userId } },
+      { new: true } // Optionally return the updated document
+    );
     res.status(200).json({ message: "Friend removed" });
   } catch (error) {
     console.error("Error removing friend:", error);

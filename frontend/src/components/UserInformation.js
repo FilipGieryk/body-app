@@ -94,6 +94,24 @@ const UserInformation = ({ userInfo, setUserInfo, userId }) => {
       console.error("Failed to decline friend request", error);
     }
   };
+  const handleDeleteFriend = async () => {
+    try {
+      await axios.delete("/api/friendships/remove-friend", {
+        data: {
+          userId: userId,
+          friendId: userInfo._id,
+        },
+      });
+      setRequestStatus("none");
+      setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo,
+        friends: prevUserInfo.friends.filter((friend) => friend !== userId),
+      }));
+      console.log(userInfo);
+    } catch (error) {
+      console.error("failed to delete user", error);
+    }
+  };
 
   const handleSendFriendRequest = async () => {
     try {
@@ -146,7 +164,10 @@ const UserInformation = ({ userInfo, setUserInfo, userId }) => {
           ) : (
             <>
               {userInfo.friends.some((friend) => friend === userId) ? (
-                <p>Friends</p>
+                <>
+                  <p>Friends</p>
+                  <button onClick={handleDeleteFriend}>Delete friend</button>
+                </>
               ) : requestStatus === "received" ? (
                 <>
                   <p>Request Received</p>
