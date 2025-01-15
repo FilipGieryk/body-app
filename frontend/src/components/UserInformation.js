@@ -4,6 +4,7 @@ import axios from "axios";
 const UserInformation = ({ userInfo, setUserInfo, userId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [requestStatus, setRequestStatus] = useState(null);
+  const [pendingRequests, setPendingRequests] = useState([]);
 
   const handleSaveChanges = async () => {
     try {
@@ -27,22 +28,56 @@ const UserInformation = ({ userInfo, setUserInfo, userId }) => {
     }
   };
   useEffect(() => {
-    if (userInfo.friends?.includes(userId)) {
-      setRequestStatus("friends");
-    } else if (userInfo.pendingRequests?.some((req) => req.sender === userId)) {
-      setRequestStatus("pending");
-    } else {
-      setRequestStatus("none");
-    }
-  }, []);
+    const fetchPendingRequests = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Assuming token-based authentication
+        const response = await axios.get(
+          `/api/friendships/${userId}/pending-requests`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const requests = response.data;
+        setPendingRequests(requests); // Set pending requests in state
+        console.log(pendingRequests);
+
+        // Check if the logged-in user is friends with the user being viewed
+        if (userInfo.friends?.includes(userInfo._id)) {
+          setRequestStatus("friends");
+        } else if (
+          requests.some(
+            (req) => req.friend._id === userInfo._id && req.user._id === userId // Received request
+          )
+        ) {
+          setRequestStatus("sent"); // Indicates received request
+        } else if (
+          requests.some(
+            (req) => req.user._id === userInfo._id && req.friend._id === userId // Sent request
+          )
+        ) {
+          setRequestStatus("received"); // Indicates sent request
+        } else {
+          setRequestStatus("none");
+        }
+      } catch (err) {
+        console.error("Error fetching pending requests:", err);
+      }
+    };
+    fetchPendingRequests();
+  }, [userId, userInfo]);
 
   const handleAcceptRequest = async () => {
     try {
-      await axios.post("/api/friendship/accept-request", {
+      await axios.post("/api/friendships/accept-request", {
         userId,
         friendId: userInfo._id,
       });
       setRequestStatus("friends");
+      setUserInfo((prev) => ({
+        ...prev,
+        friends: [...prev.friends, userId], // Add the userId to the friends list
+      }));
     } catch (error) {
       console.error("Failed to accept friend request", error);
     }
@@ -50,9 +85,9 @@ const UserInformation = ({ userInfo, setUserInfo, userId }) => {
 
   const handleDeclineRequest = async () => {
     try {
-      await axios.post("/api/friendship/decline-request", {
-        userId,
-        friendId: userInfo._id,
+      await axios.post("/api/friendships/decline-request", {
+        userId: userInfo._id,
+        friendId: userId,
       });
       setRequestStatus("none");
     } catch (error) {
@@ -66,12 +101,12 @@ const UserInformation = ({ userInfo, setUserInfo, userId }) => {
         userId, // Current user's ID
         friendId: userInfo._id, // Profile owner's ID
       });
-      setRequestStatus("pending");
+
+      setRequestStatus("sent");
     } catch (error) {
       console.error("Failed to send friend request", error);
     }
   };
-  console.log(isEditing);
 
   return (
     <div className="profile-grid-item about">
@@ -110,17 +145,16 @@ const UserInformation = ({ userInfo, setUserInfo, userId }) => {
             ></button>
           ) : (
             <>
-              {requestStatus === "friends" ? (
+              {userInfo.friends.some((friend) => friend === userId) ? (
                 <p>Friends</p>
-              ) : requestStatus === "pending" ? (
-                <p>Request Sent</p>
-              ) : userInfo.pendingRequests?.some(
-                  (req) => req.sender === userId
-                ) ? (
+              ) : requestStatus === "received" ? (
                 <>
+                  <p>Request Received</p>
                   <button onClick={handleAcceptRequest}>Accept</button>
                   <button onClick={handleDeclineRequest}>Decline</button>
                 </>
+              ) : requestStatus === "sent" ? (
+                <p>Request Sent</p>
               ) : (
                 <button onClick={handleSendFriendRequest}>Add Friend</button>
               )}

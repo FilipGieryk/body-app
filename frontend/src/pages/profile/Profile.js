@@ -47,7 +47,7 @@ const Profile = () => {
   if (loading) {
     return <div>Loading...</div>; // Show loading indicator
   }
-
+  console.log(userInfo);
   return (
     <>
       <div className="profile-layout">

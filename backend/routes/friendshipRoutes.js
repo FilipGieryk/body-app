@@ -35,19 +35,28 @@ router.post("/accept-request", async (req, res) => {
       return res.status(404).json({ message: "Friend request not found" });
     }
 
+    await User.findByIdAndUpdate(friendId, {
+      $addToSet: { friends: userId }, // Add userId to friendId's friends array
+    });
+
+    await User.findByIdAndUpdate(userId, {
+      $addToSet: { friends: friendId }, // Add friendId to userId's friends array
+    });
+
     res.status(200).json({ message: "Friend request accepted" });
   } catch (error) {
     console.error("Error accepting friend request:", error);
     res.status(500).json({ message: "Error accepting friend request" });
   }
 });
-router.post("/reject-request", async (req, res) => {
+router.post("/decline-request", async (req, res) => {
   const { userId, friendId } = req.body;
-
+  console.log(userId);
+  console.log(friendId);
   try {
     const friendship = await Friendship.findOneAndDelete({
-      user: friendId,
-      friend: userId,
+      user: userId,
+      friend: friendId,
       status: "pending",
     });
 
@@ -98,9 +107,9 @@ router.get("/:userId/pending-requests", async (req, res) => {
 
   try {
     const pendingRequests = await Friendship.find({
-      friend: userId,
+      $or: [{ user: userId }, { friend: userId }],
       status: "pending",
-    }).populate("user");
+    }).populate("user friend");
 
     res.status(200).json(pendingRequests);
   } catch (error) {

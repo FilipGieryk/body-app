@@ -26,7 +26,6 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
         localStorage.setItem("isAdmin", response.data.isAdmin);
         onLoginSuccess();
       } else if (activeTab === "register") {
-        console.log(activeTab);
         const response = await axios.post("http://localhost:3000/api/users", {
           username,
           password,

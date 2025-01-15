@@ -31,11 +31,20 @@ const Header = () => {
 
       const decodedToken = JSON.parse(atob(token.split(".")[1]));
       setUserId(decodedToken.id);
+    } else {
+      setIsLoggedIn(false);
+      setUserId(null);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const toggleLogin = () => {
     setIsLoginVisible((prev) => !prev);
+  };
+
+  const handleLoginSuccess = (userId) => {
+    // Set isLoggedIn to true and userId when login is successful
+    setIsLoggedIn(true);
+    setIsLoginVisible(false);
   };
 
   const links = [
@@ -143,10 +152,7 @@ const Header = () => {
         <Login
           isVisible={true}
           loginStatus={visibleModal}
-          onLoginSuccess={() => {
-            setIsLoggedIn(true);
-            setIsLoginVisible(false);
-          }}
+          onLoginSuccess={handleLoginSuccess}
         />
       )}
     </header>
