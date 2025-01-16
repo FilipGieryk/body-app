@@ -9,9 +9,11 @@ const ratingRoutes = require("./routes/ratingRoutes");
 const workoutSessionRoutes = require("./routes/workoutSessionRoutes");
 const friendshipRoutes = require("./routes/friendshipRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 const cors = require("cors");
 const path = require("path");
 const { initWebSocket } = require("./websocket");
+const http = require("http");
 // Define a basic route
 connectDB();
 
@@ -28,6 +30,7 @@ app.use("/api/rating", ratingRoutes);
 app.use("/api/workout-sessions", workoutSessionRoutes);
 app.use("/api/friendships", friendshipRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 
 const server = http.createServer(app);
 
