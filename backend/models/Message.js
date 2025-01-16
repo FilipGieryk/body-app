@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const MessageSchema = new mongoose.Schema({
+  chatId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Chat",
+    required: true,
+  },
   senderId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", // Reference to the User model
@@ -8,18 +13,6 @@ const MessageSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true,
-  },
-  recipients: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Reference to the User model
-      required: true,
-    },
-  ],
-  chatType: {
-    type: String,
-    enum: ["private", "group"], // Define types of chats
     required: true,
   },
   timestamp: {
