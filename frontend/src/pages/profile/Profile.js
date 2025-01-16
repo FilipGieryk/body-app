@@ -6,6 +6,7 @@ import Photos from "../../components/photos/Photos";
 import WokroutsList from "../../components/worktouts/WorkoutsList";
 import WorkoutsActivity from "../../components/worktouts/WorkoutsActivity";
 import UserInformation from "../../components/UserInformation";
+import FriendsComponent from "../../components/friends/FriendsComponent";
 
 const Profile = () => {
   let { id } = useParams();
@@ -47,7 +48,6 @@ const Profile = () => {
   if (loading) {
     return <div>Loading...</div>; // Show loading indicator
   }
-  console.log(userInfo);
   return (
     <>
       <div className="profile-layout">
@@ -57,8 +57,10 @@ const Profile = () => {
               activeSection === "profile"
                 ? "default-position"
                 : activeSection === "workout"
-                ? "move-up"
-                : "move-down"
+                ? "move-up-one"
+                : activeSection === "friends"
+                ? "move-up-two"
+                : ""
             }`}
           >
             <UserInformation
@@ -75,11 +77,25 @@ const Profile = () => {
           </div>
           <WorkoutsActivity
             className={`${
-              activeSection === "workout"
-                ? "move-up"
-                : activeSection === "profile"
-                ? "move-down"
-                : "defautl-position"
+              activeSection === "profile"
+                ? "default-position"
+                : activeSection === "workout"
+                ? "move-up-one"
+                : activeSection === "friends"
+                ? "move-up-two"
+                : ""
+            }`}
+            userInfo={userInfo}
+          />
+          <FriendsComponent
+            className={`${
+              activeSection === "profile"
+                ? "default-position"
+                : activeSection === "workout"
+                ? "move-up-one"
+                : activeSection === "friends"
+                ? "move-up-two"
+                : ""
             }`}
             userInfo={userInfo}
           />
@@ -98,10 +114,10 @@ const Profile = () => {
             Workout
           </button>
           <button
-            onClick={() => handleNavigation("third")}
-            className={activeSection === "third" ? "active" : ""}
+            onClick={() => handleNavigation("friends")}
+            className={activeSection === "friends" ? "active" : ""}
           >
-            Third
+            Friends
           </button>
         </div>
       </div>

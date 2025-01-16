@@ -6,7 +6,7 @@
   border-radius: 2rem;
   background-color: var(--secondary);
   position: absolute;
-  top: 105%;
+  top: 100%;
   transition: all 0.3s;
 }
 .workout-activity-table-container {

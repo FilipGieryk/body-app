@@ -26,12 +26,12 @@
   margin-right: 2rem;
   gap: 1rem;
 }
-.move-up {
+.move-up-one {
   transform: translateY(-100%);
   z-index: 1;
 }
-.move-down {
-  transform: translateY(100%);
+.move-up-two {
+  transform: translateY(-200%);
   z-index: 1;
 }
 .default-position {
