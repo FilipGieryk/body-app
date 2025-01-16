@@ -8,8 +8,10 @@ const workoutRoutes = require("./routes/workoutRoute");
 const ratingRoutes = require("./routes/ratingRoutes");
 const workoutSessionRoutes = require("./routes/workoutSessionRoutes");
 const friendshipRoutes = require("./routes/friendshipRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 const cors = require("cors");
 const path = require("path");
+const { initWebSocket } = require("./websocket");
 // Define a basic route
 connectDB();
 
@@ -25,6 +27,11 @@ app.use("/api/workouts", workoutRoutes);
 app.use("/api/rating", ratingRoutes);
 app.use("/api/workout-sessions", workoutSessionRoutes);
 app.use("/api/friendships", friendshipRoutes);
+app.use("/api/chat", chatRoutes);
+
+const server = http.createServer(app);
+
+initWebSocket(server);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
