@@ -98,6 +98,7 @@ const Profile = () => {
                 : ""
             }`}
             userInfo={userInfo}
+            userId={userId}
           />
         </div>
         <div className="profile-sections">

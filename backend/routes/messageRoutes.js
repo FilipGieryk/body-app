@@ -9,45 +9,39 @@ router.get("/:chatId", async (req, res) => {
   const { chatId } = req.params;
 
   try {
-    const messages = await Message.find({ chatId }).sort({ timestamp: 1 });
+    const messages = await Message.find({ chatId });
     res.status(200).json(messages);
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error fetching messages", error: err.message });
+    console.error("Error fetching messages", err);
+    res.status(500).json({ message: "Error fetching messages" });
   }
 });
 
 // Add a new message to a chat
-router.post("/", async (req, res) => {
-  const { chatId, senderId, content } = req.body;
+router.post("/:chatId/send", async (req, res) => {
+  const { chatId } = req.params;
+  const { senderId, content } = req.body;
 
   try {
-    const newMessage = new Message({
+    // Create the message
+    const message = new Message({
+      chatId,
+      sender: senderId,
+      content,
+    });
+    await message.save();
+
+    // Notify WebSocket clients (optional)
+    broadcast({
       chatId,
       senderId,
       content,
     });
 
-    const savedMessage = await newMessage.save();
-
-    // Update the chat's lastMessage and timestamp
-    await Chat.findByIdAndUpdate(chatId, {
-      lastMessage: content,
-      updatedAt: Date.now(),
-    });
-
-    broadcast({
-      type: "new_message",
-      chatId,
-      message: savedMessage,
-    });
-
-    res.status(201).json({ message: "Message sent", data: savedMessage });
+    res.status(201).json({ message: "Message sent", message });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error sending message", error: err.message });
+    console.error("Error sending message", err);
+    res.status(500).json({ message: "Error sending message" });
   }
 });
 

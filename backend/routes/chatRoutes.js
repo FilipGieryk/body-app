@@ -3,50 +3,46 @@ const router = express.Router();
 const Message = require("../models/Message");
 const Chat = require("../models/Chat");
 
-router.post("/", async (req, res) => {
-  const { members, isGroup, groupName } = req.body;
+router.post("/create-or-get", async (req, res) => {
+  const { senderId, recipientId, isGroup = false } = req.body;
 
   try {
-    const newChat = new Chat({
-      members,
-      isGroup,
-      groupName: isGroup ? groupName : null,
+    // Check if the chat already exists
+    let chat = await Chat.findOne({
+      participants: { $all: [senderId, recipientId] },
+      isGroup: !!isGroup,
     });
 
-    const savedChat = await newChat.save();
-    res.status(201).json(savedChat);
+    // If no chat exists, create a new one
+    if (!chat) {
+      chat = new Chat({
+        participants: isGroup
+          ? [senderId, ...recipientId]
+          : [senderId, recipientId],
+        isGroup: !!isGroup,
+      });
+      await chat.save();
+    }
+
+    // Return the chat information
+    res.status(200).json({ chatId: chat._id });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error creating chat", error: err.message });
+    console.error("Error creating or getting chat", err);
+    res.status(500).json({ message: "Error creating or getting chat" });
   }
 });
 
 router.get("/:userId", async (req, res) => {
   const { userId } = req.params;
-
+  console.log("test");
   try {
-    const chats = await Chat.find({ members: userId }).sort({ updatedAt: -1 });
+    const chats = await Chat.find({
+      participants: userId,
+    });
     res.status(200).json(chats);
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error fetching chats", error: err.message });
-  }
-});
-
-router.get("/details/:chatId", async (req, res) => {
-  const { chatId } = req.params;
-
-  try {
-    const chat = await Chat.findById(chatId);
-    if (!chat) return res.status(404).json({ message: "Chat not found" });
-
-    res.status(200).json(chat);
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error fetching chat", error: err.message });
+    console.error("Error fetching chats", err);
+    res.status(500).json({ message: "Error fetching chats" });
   }
 });
 
