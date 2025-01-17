@@ -53,20 +53,3 @@
 .friend-last-message {
   margin: 0;
 }
-.chat-history {
-  width: 100%;
-  height: 90%;
-}
-.chat-message {
-  background-color: antiquewhite;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.chat-message-input {
-  width: 80%;
-  height: 40%;
-  border-radius: 2rem;
-}

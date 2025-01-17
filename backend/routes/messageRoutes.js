@@ -26,7 +26,7 @@ router.post("/:chatId/send", async (req, res) => {
     // Create the message
     const message = new Message({
       chatId,
-      sender: senderId,
+      senderId,
       content,
     });
     await message.save();

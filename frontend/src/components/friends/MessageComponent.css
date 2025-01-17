@@ -1,0 +1,32 @@
+.chat-history {
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+.chat-messages {
+  font-size: 2rem;
+  background-color: antiquewhite;
+  width: max-content;
+  padding: 0.5rem 2rem;
+  border-radius: 2rem;
+}
+.sent {
+  align-self: flex-end;
+}
+.received {
+  align-self: flex-start;
+}
+.chat-message {
+  background-color: antiquewhite;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.chat-message-input {
+  width: 80%;
+  height: 40%;
+  border-radius: 2rem;
+}

@@ -31,7 +31,7 @@ router.post("/create-or-get", async (req, res) => {
     res.status(500).json({ message: "Error creating or getting chat" });
   }
 });
-
+// get chat for certain user
 router.get("/:userId", async (req, res) => {
   const { userId } = req.params;
   console.log("test");
