@@ -121,3 +121,13 @@
   flex-direction: column;
   overflow: hidden;
 }
+.notification-dot {
+  width: 1.2rem;
+  height: 1.2rem;
+  background-color: red;
+  position: absolute;
+  border-radius: 99rem;
+  top: 0.5rem;
+  right: -0.7rem;
+  transform: translateY(-100%);
+}

@@ -117,8 +117,10 @@ const Profile = () => {
           <button
             onClick={() => handleNavigation("friends")}
             className={activeSection === "friends" ? "active" : ""}
+            style={{ position: "relative" }}
           >
             Friends
+            <div className="notification-dot"></div>
           </button>
         </div>
       </div>
