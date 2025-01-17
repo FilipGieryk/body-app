@@ -1,7 +1,8 @@
 import "./MessageComponent.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const MessageComponent = ({ messages, onSendMessage, userId }) => {
+  const chatHistoryRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
 
   const handleKeyDown = (e) => {
@@ -10,11 +11,18 @@ const MessageComponent = ({ messages, onSendMessage, userId }) => {
       setInputValue("");
     }
   };
+
+  useEffect(() => {
+    if (chatHistoryRef.current) {
+      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
+    }
+  }, [messages]);
   return (
     <div className="chat-container">
-      <div className="chat-history">
-        {messages.map((message) => (
+      <div className="chat-history" ref={chatHistoryRef}>
+        {messages.map((message, index) => (
           <div
+            key={index}
             className={`chat-messages ${
               message.senderId === userId ? "sent" : "received"
             }`}

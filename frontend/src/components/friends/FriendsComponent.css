@@ -14,11 +14,7 @@
 .friend-list-container {
   background-color: var(--secondary);
 }
-.chat-container {
-  display: grid;
-  grid-template-rows: 90% 10%;
-  background-color: var(--third);
-}
+
 .friend-list-header {
   background-color: var(--primary);
   height: 10%;

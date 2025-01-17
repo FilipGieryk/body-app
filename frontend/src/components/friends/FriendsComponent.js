@@ -8,19 +8,28 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
   const [chats, setChats] = useState([]);
   const [messages, setMessages] = useState([]);
   const [chatId, setChatId] = useState(null);
+  const [socket, setSocket] = useState(null);
 
-  const fetchChatMessages = async (chatId) => {
-    try {
-      const response = await axios.get(`/api/message/${chatId}`);
-      const messages = response.data;
-      if (messages.length === 0) {
-        setMessages(["noMessages be the first one to type"]);
-      } else {
-        setMessages(response.data);
-      }
-    } catch (error) {}
+  const initWebSocket = () => {
+    const webSocket = new WebSocket("ws://localhost:3000");
+    webSocket.onopen = () => {
+      console.log("Connected to WebSocket server");
+    };
+
+    webSocket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      setMessages((prevMessages) => [...prevMessages, message]); // Append new message
+    };
+
+    webSocket.onclose = () => {
+      console.log("Disconnected from WebSocket server");
+    };
+
+    setSocket(webSocket);
   };
+
   useEffect(() => {
+    initWebSocket();
     const fetchChats = async () => {
       try {
         const response = await axios.get(`/api/chat/${userId}`);
@@ -28,24 +37,45 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
       } catch (error) {}
     };
     fetchChats();
+
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
   }, []);
+
+  const handleSendMessage = async (message) => {
+    if (!chatId) {
+      console.warn("No chat selected to send message.");
+      return;
+    }
+    const newMessage = { senderId: userId, content: message };
+
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify(newMessage));
+      await sendMessageToServer(chatId, message);
+    } else {
+      console.error("WebSocket is not open. Cannot send message.");
+    }
+  };
 
   const handleFetchChat = (chatId) => {
     setChatId(chatId);
     fetchChatMessages(chatId);
   };
 
-  const handleSendMessage = async (message) => {
-    if (!chatId) {
-      console.warn("No chat selected to send message.");
-    }
-
-    setMessages((prev) => [...prev, message]);
-
+  const fetchChatMessages = async (chatId) => {
     try {
-      await sendMessageToServer(chatId, message);
+      const response = await axios.get(`/api/message/${chatId}`);
+      const messages = response.data;
+      if (messages.length === 0) {
+        setMessages([{ content: "noMessages be the first one to type" }]);
+      } else {
+        setMessages(messages);
+      }
     } catch (error) {
-      console.error("Error occurred:", error);
+      console.error("error fetching messages:", error);
     }
   };
 
