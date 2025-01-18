@@ -1,62 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const Message = require("../models/Message");
-const Chat = require("../models/Chat");
-const { broadcast } = require("../websocket");
+const messageController = require("../controllers/messageController");
+const { authenticateToken } = require("../middlewares/authMiddleware");
 
 // Get all messages for a specific chat
-router.get("/:chatId", async (req, res) => {
-  const { chatId } = req.params;
-
-  try {
-    const messages = await Message.find({ chatId });
-    res.status(200).json(messages);
-  } catch (err) {
-    console.error("Error fetching messages", err);
-    res.status(500).json({ message: "Error fetching messages" });
-  }
-});
+router.get("/:chatId", messageController.getMessages);
 
 // Add a new message to a chat
-router.post("/:chatId/send", async (req, res) => {
-  const { chatId } = req.params;
-  const { senderId, content } = req.body;
-
-  try {
-    // Create the message
-    const message = new Message({
-      chatId,
-      senderId,
-      content,
-    });
-    await message.save();
-
-    // Notify WebSocket clients (optional)
-    broadcast({
-      chatId,
-      senderId,
-      content,
-    });
-
-    res.status(201).json({ message: "Message sent", message });
-  } catch (err) {
-    console.error("Error sending message", err);
-    res.status(500).json({ message: "Error sending message" });
-  }
-});
+router.post("/:chatId/send", messageController.sendMessage);
 
 // Delete a specific message
-router.delete("/:messageId", async (req, res) => {
-  const { messageId } = req.params;
+router.delete("/:messageId", messageController.deleteMessage);
 
-  try {
-    await Message.findByIdAndDelete(messageId);
-    res.status(200).json({ message: "Message deleted successfully" });
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error deleting message", error: err.message });
-  }
-});
+// Get unread messages for a user
+router.get("/unread", authenticateToken, messageController.getUnreadMessages);
+
+// Mark messages as read
+router.post(
+  "/unread/mark",
+  authenticateToken,
+  messageController.markMessagesAsRead
+);
 
 module.exports = router;

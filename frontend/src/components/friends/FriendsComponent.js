@@ -32,7 +32,12 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
     initWebSocket();
     const fetchChats = async () => {
       try {
-        const response = await axios.get(`/api/chat/${userId}`);
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`/api/chat`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        });
         setChats(response.data);
       } catch (error) {}
     };
@@ -51,7 +56,6 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
       return;
     }
     const newMessage = { senderId: userId, content: message };
-
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(newMessage));
       await sendMessageToServer(chatId, message);
@@ -60,9 +64,32 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
     }
   };
 
-  const handleFetchChat = (chatId) => {
+  const handleFetchChat = async (chatId) => {
     setChatId(chatId);
-    fetchChatMessages(chatId);
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.chatId === chatId ? { ...chat, hasUnread: false } : chat
+      )
+    );
+    await fetchChatMessages(chatId);
+    await markMessagesAsRead(chatId);
+  };
+  const markMessagesAsRead = async (chatId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `/api/chat/mark-read`,
+        { chatId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the authorization token if needed
+          },
+        }
+      );
+      console.log("Messages marked as read");
+    } catch (error) {
+      console.error("Error marking messages as read:", error);
+    }
   };
 
   const fetchChatMessages = async (chatId) => {
@@ -102,7 +129,7 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
         <div className="friend-list-friends">
           {chats.map((chat) => (
             <div
-              onClick={() => handleFetchChat(chat._id)}
+              onClick={() => handleFetchChat(chat.chatId)}
               className="friend-container"
             >
               <img
@@ -111,9 +138,10 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
                 alt="friend-profile-picture"
               ></img>
               <div className="friend-chat-info">
-                <h2>{chat.username}</h2>
+                <h2>{chat.chatName}</h2>
                 <p className="friend-last-message">last message</p>
               </div>
+              {chat.hasUnread && <div className="notification-dot"></div>}
             </div>
           ))}
         </div>

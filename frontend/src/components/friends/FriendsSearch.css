@@ -1,5 +1,25 @@
+.friend-search-container {
+  position: relative;
+  width: 100%;
+}
+
 .friends-search-input {
 }
+
+.friend-list {
+  height: max-content;
+  width: 100%;
+  height: max-content;
+  position: absolute;
+  background-color: rgba(250, 235, 215, 0.904);
+  z-index: 10;
+  padding: 0;
+}
 .friend-item {
-  height: 7rem;
+  height: 9rem;
+  padding: 1rem;
+  font-size: 2rem;
+  align-items: center;
+  display: flex;
+  gap: 2rem;
 }

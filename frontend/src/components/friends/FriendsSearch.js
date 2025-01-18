@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./FriendsSearch.css";
 import axios from "axios";
 const FriendsSearch = ({ friends, userId }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState([]);
+  const componentRef = useRef(null);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -24,7 +25,6 @@ const FriendsSearch = ({ friends, userId }) => {
   };
   const createOrGetMessage = async (friend) => {
     try {
-      console.log(friend);
       const response = await axios.post("/api/chat/create-or-get", {
         senderId: userId,
         recipientId: friend._id,
@@ -36,11 +36,24 @@ const FriendsSearch = ({ friends, userId }) => {
 
   const handleFriendClick = (friend) => {
     createOrGetMessage(friend);
-    console.log("Clicked friend:", friend); // Replace with your logic, e.g., navigate to chat
+    setFilteredFriends([]);
   };
 
+  const handleClickOutside = (event) => {
+    if (componentRef.current && !componentRef.current.contains(event.target)) {
+      setFilteredFriends([]);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div>
+    <div className="friend-search-container" ref={componentRef}>
       <input
         type="text"
         value={searchTerm}
