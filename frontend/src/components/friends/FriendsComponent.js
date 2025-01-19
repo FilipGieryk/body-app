@@ -2,13 +2,15 @@ import "./FriendsComponent.css";
 import axios from "axios";
 import FriendsSearch from "./FriendsSearch";
 import MessageComponent from "./MessageComponent";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const FriendsComponent = ({ className, userInfo, userId }) => {
   const [chats, setChats] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [messagesByChat, setMessagesByChat] = useState({});
   const [chatId, setChatId] = useState(null);
+  const chatIdRef = useRef(null);
   const [socket, setSocket] = useState(null);
+  console.log(chats);
 
   const initWebSocket = () => {
     const webSocket = new WebSocket("ws://localhost:3000");
@@ -18,9 +20,24 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
 
     webSocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, message]); // Append new message
-    };
+      const { chatId: incomingChatId, content, senderId } = message;
+      // console.log(incomingChatId);
 
+      // Update messages for the specific chat
+      setMessagesByChat((prevMessages) => ({
+        ...prevMessages,
+        [incomingChatId]: [...(prevMessages[incomingChatId] || []), message],
+      }));
+      if (incomingChatId !== chatIdRef.current) {
+        console.log(incomingChatId);
+        console.log(chatId);
+        setChats((prevChats) =>
+          prevChats.map((chat) =>
+            chat.chatId === incomingChatId ? { ...chat, hasUnread: true } : chat
+          )
+        );
+      }
+    };
     webSocket.onclose = () => {
       console.log("Disconnected from WebSocket server");
     };
@@ -66,12 +83,15 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
 
   const handleFetchChat = async (chatId) => {
     setChatId(chatId);
+    chatIdRef.current = chatId;
     setChats((prevChats) =>
       prevChats.map((chat) =>
         chat.chatId === chatId ? { ...chat, hasUnread: false } : chat
       )
     );
+    // if (!messagesByChat[chatId] || messagesByChat[chatId].length === 0) {
     await fetchChatMessages(chatId);
+    // }
     await markMessagesAsRead(chatId);
   };
   const markMessagesAsRead = async (chatId) => {
@@ -96,13 +116,15 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
     try {
       const response = await axios.get(`/api/message/${chatId}`);
       const messages = response.data;
-      if (messages.length === 0) {
-        setMessages([{ content: "noMessages be the first one to type" }]);
-      } else {
-        setMessages(messages);
-      }
+      setMessagesByChat((prevMessages) => ({
+        ...prevMessages,
+        [chatId]:
+          messages.length > 0
+            ? messages
+            : [{ content: "Be the first to message!" }],
+      }));
     } catch (error) {
-      console.error("error fetching messages:", error);
+      console.error("Error fetching messages:", error);
     }
   };
 
@@ -148,7 +170,7 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
       </div>
       <MessageComponent
         userId={userId}
-        messages={messages}
+        messages={messagesByChat[chatId] || []}
         onSendMessage={handleSendMessage}
       />
     </div>

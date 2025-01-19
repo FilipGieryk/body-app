@@ -130,7 +130,6 @@ const getChatsWithUnreadStatus = async (req, res) => {
 const markMessagesAsRead = async (req, res) => {
   const userId = req.user._id;
   const { chatId } = req.body;
-  console.log(userId);
   try {
     await MessageService.markMessagesAsRead(userId, chatId);
     res.status(200).json({ message: "Messages marked as read" });
