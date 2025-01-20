@@ -138,6 +138,24 @@ const FriendsComponent = ({
       console.error("Error fetching messages:", error);
     }
   };
+  const createOrGetMessage = async (friend) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "/api/chat/create-or-get",
+        {
+          recipientId: friend._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(response.data);
+      await handleFetchChat(response.data._id);
+    } catch (error) {
+      console.error("error creating chat", error);
+    }
+  };
 
   const sendMessageToServer = async (chatId, message) => {
     try {
@@ -151,7 +169,7 @@ const FriendsComponent = ({
       throw error;
     }
   };
-
+  console.log(friendRequests);
   return (
     <div className={`friends-container ${className}`}>
       <div className="friend-list-container">
@@ -160,13 +178,17 @@ const FriendsComponent = ({
             <h1 onClick={() => setShowedInfo("chats")}>Chats</h1>
             {/* if pending requests show if not dont show */}
 
-            {friendRequests?.length > 0 && (
+            {friendRequests?.some((el) => el.friend._id === userId) && (
               <h1 onClick={() => setShowedInfo("friendRequest")}>
                 Friend Requests
               </h1>
             )}
           </div>
-          <FriendsSearch friends={userInfo.friends} userId={userId} />
+          <FriendsSearch
+            friends={userInfo.friends}
+            userId={userId}
+            createOrGetMessage={createOrGetMessage}
+          />
         </div>
         <div className="friend-list-friends">
           {showedInfo === "chats" ? (

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./FriendsSearch.css";
 import axios from "axios";
-const FriendsSearch = ({ friends, userId }) => {
+const FriendsSearch = ({ friends, createOrGetMessage }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState([]);
   const componentRef = useRef(null);
@@ -22,22 +22,6 @@ const FriendsSearch = ({ friends, userId }) => {
 
   const handleInputClick = () => {
     setFilteredFriends(friends);
-  };
-  const createOrGetMessage = async (friend) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "/api/chat/create-or-get",
-        {
-          recipientId: friend._id,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-    } catch (error) {
-      console.error("error creating chat", error);
-    }
   };
 
   const handleFriendClick = (friend) => {
