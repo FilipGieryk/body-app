@@ -1,8 +1,13 @@
 .chat-container {
   display: grid;
-  grid-template-rows: 1fr 0.2fr;
+  grid-template-rows: 0.1fr 1fr 0.2fr;
   height: 100vh;
   background-color: var(--third);
+}
+.chat-information {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 .chat-history {
   width: 100%;

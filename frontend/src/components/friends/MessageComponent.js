@@ -1,7 +1,7 @@
 import "./MessageComponent.css";
 import { useState, useEffect, useRef } from "react";
 
-const MessageComponent = ({ messages, onSendMessage, userId }) => {
+const MessageComponent = ({ messages, onSendMessage, userId, chatInfo }) => {
   const chatHistoryRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
 
@@ -17,8 +17,13 @@ const MessageComponent = ({ messages, onSendMessage, userId }) => {
       chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
     }
   }, [messages]);
+  console.log(messages);
   return (
     <div className="chat-container">
+      <div className="chat-information">
+        <img src={chatInfo.profilePhoto} className="friend-photo"></img>
+        <h1>{chatInfo.username}</h1>
+      </div>
       <div className="chat-history" ref={chatHistoryRef}>
         {messages.map((message, index) => (
           <div

@@ -15,6 +15,7 @@ const FriendsComponent = ({
 }) => {
   const [chats, setChats] = useState([]);
   const [messagesByChat, setMessagesByChat] = useState({});
+  const [chatInfo, setChatInfo] = useState("null");
   const [chatId, setChatId] = useState(null);
   const chatIdRef = useRef(null);
   const [socket, setSocket] = useState(null);
@@ -38,8 +39,6 @@ const FriendsComponent = ({
         [incomingChatId]: [...(prevMessages[incomingChatId] || []), message],
       }));
       if (incomingChatId !== chatIdRef.current) {
-        console.log(incomingChatId);
-        console.log(chatId);
         setChats((prevChats) =>
           prevChats.map((chat) =>
             chat.chatId === incomingChatId ? { ...chat, hasUnread: true } : chat
@@ -92,9 +91,10 @@ const FriendsComponent = ({
     }
   };
 
-  const handleFetchChat = async (chatId) => {
-    setChatId(chatId);
-    chatIdRef.current = chatId;
+  const handleFetchChat = async (chat) => {
+    setChatId(chat.chatId);
+    setChatInfo({ username: chat.chatName, profilePhoto: chat.profilePhoto });
+    chatIdRef.current = chat.chatId;
     setChats((prevChats) =>
       prevChats.map((chat) =>
         chat.chatId === chatId ? { ...chat, hasUnread: false } : chat
@@ -150,7 +150,6 @@ const FriendsComponent = ({
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(response.data);
       await handleFetchChat(response.data._id);
     } catch (error) {
       console.error("error creating chat", error);
@@ -169,7 +168,7 @@ const FriendsComponent = ({
       throw error;
     }
   };
-  console.log(friendRequests);
+
   return (
     <div className={`friends-container ${className}`}>
       <div className="friend-list-container">
@@ -195,7 +194,7 @@ const FriendsComponent = ({
             <>
               {chats.map((chat) => (
                 <div
-                  onClick={() => handleFetchChat(chat.chatId)}
+                  onClick={() => handleFetchChat(chat)}
                   className="friend-container"
                 >
                   <img
@@ -235,6 +234,7 @@ const FriendsComponent = ({
         </div>
       </div>
       <MessageComponent
+        chatInfo={chatInfo}
         userId={userId}
         messages={messagesByChat[chatId] || []}
         onSendMessage={handleSendMessage}
