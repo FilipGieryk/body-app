@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const UserInformation = ({ userInfo, setUserInfo, userId }) => {
+const UserInformation = ({
+  userInfo,
+  setUserInfo,
+  userId,
+  requestStatus,
+  setRequestStatus,
+  handleAcceptRequest,
+  handleDeclineRequest,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [requestStatus, setRequestStatus] = useState(null);
-  const [pendingRequests, setPendingRequests] = useState([]);
 
   const handleSaveChanges = async () => {
     try {
@@ -27,73 +33,7 @@ const UserInformation = ({ userInfo, setUserInfo, userId }) => {
       console.error("Error updating user info", error);
     }
   };
-  useEffect(() => {
-    const fetchPendingRequests = async () => {
-      try {
-        const token = localStorage.getItem("token"); // Assuming token-based authentication
-        const response = await axios.get(
-          `/api/friendships/${userId}/pending-requests`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
 
-        const requests = response.data;
-        setPendingRequests(requests); // Set pending requests in state
-        console.log(pendingRequests);
-
-        // Check if the logged-in user is friends with the user being viewed
-        if (userInfo.friends?.includes(userInfo._id)) {
-          setRequestStatus("friends");
-        } else if (
-          requests.some(
-            (req) => req.friend._id === userInfo._id && req.user._id === userId // Received request
-          )
-        ) {
-          setRequestStatus("sent"); // Indicates received request
-        } else if (
-          requests.some(
-            (req) => req.user._id === userInfo._id && req.friend._id === userId // Sent request
-          )
-        ) {
-          setRequestStatus("received"); // Indicates sent request
-        } else {
-          setRequestStatus("none");
-        }
-      } catch (err) {
-        console.error("Error fetching pending requests:", err);
-      }
-    };
-    fetchPendingRequests();
-  }, [userId, userInfo]);
-
-  const handleAcceptRequest = async () => {
-    try {
-      await axios.post("/api/friendships/accept-request", {
-        userId,
-        friendId: userInfo._id,
-      });
-      setRequestStatus("friends");
-      setUserInfo((prev) => ({
-        ...prev,
-        friends: [...prev.friends, userId], // Add the userId to the friends list
-      }));
-    } catch (error) {
-      console.error("Failed to accept friend request", error);
-    }
-  };
-
-  const handleDeclineRequest = async () => {
-    try {
-      await axios.post("/api/friendships/decline-request", {
-        userId: userInfo._id,
-        friendId: userId,
-      });
-      setRequestStatus("none");
-    } catch (error) {
-      console.error("Failed to decline friend request", error);
-    }
-  };
   const handleDeleteFriend = async () => {
     try {
       await axios.delete("/api/friendships/remove-friend", {

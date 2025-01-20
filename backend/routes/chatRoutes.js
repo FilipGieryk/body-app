@@ -4,7 +4,11 @@ const chatController = require("../controllers/chatController");
 const { authenticateToken } = require("../middlewares/authMiddleware");
 
 // Create a new chat
-router.post("/", authenticateToken, chatController.createChat);
+router.post(
+  "/create-or-get",
+  authenticateToken,
+  chatController.createOrGetChat
+);
 
 // Get all chats for the user
 router.get("/", authenticateToken, chatController.getChats);

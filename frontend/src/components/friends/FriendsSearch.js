@@ -25,10 +25,16 @@ const FriendsSearch = ({ friends, userId }) => {
   };
   const createOrGetMessage = async (friend) => {
     try {
-      const response = await axios.post("/api/chat/create-or-get", {
-        senderId: userId,
-        recipientId: friend._id,
-      });
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "/api/chat/create-or-get",
+        {
+          recipientId: friend._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
     } catch (error) {
       console.error("error creating chat", error);
     }

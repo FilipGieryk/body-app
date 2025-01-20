@@ -14,16 +14,22 @@
 .friend-list-container {
   background-color: var(--secondary);
 }
-
-.friend-list-header {
+.friend-list-navigation {
   background-color: var(--primary);
   height: 10%;
+}
+.friend-list-header {
+  display: flex;
+  font-size: 1rem;
+  background-color: var(--primary);
+  height: 80%;
+  padding: 0;
 }
 .friend-list-header > h1 {
   margin: 0;
   text-align: center;
-  padding: 2rem;
-  font-size: 2rem;
+  padding: 0.5rem;
+  font-size: 1.4rem;
 }
 .friend-list-friends {
   position: relative;

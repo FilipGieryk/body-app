@@ -2,10 +2,17 @@ const chatService = require("../services/chatService");
 const UnreadMessage = require("../models/UnreadMessage");
 const MessageService = require("../services/messageService");
 const User = require("../models/User");
-const createChat = async (req, res) => {
-  const { participants, isGroup, groupName } = req.body;
-
+const createOrGetChat = async (req, res) => {
+  const { recipientId, isGroup, groupName } = req.body;
+  const userId = req.user._id;
+  const participants = [recipientId, userId];
   try {
+    if (!isGroup) {
+      const existingChat = await chatService.findPrivateChat(participants);
+      if (existingChat) {
+        return res.status(200).json(existingChat);
+      }
+    }
     const chat = await chatService.createChat(participants, isGroup, groupName);
     res.status(201).json(chat);
   } catch (err) {
@@ -140,7 +147,7 @@ const markMessagesAsRead = async (req, res) => {
 };
 
 module.exports = {
-  createChat,
+  createOrGetChat,
   getChats,
   getChat,
   updateLastMessage,

@@ -3,6 +3,7 @@ const router = express.Router();
 const Friendship = require("../models/Friendship");
 const User = require("../models/User");
 const { check, validationResult } = require("express-validator");
+const { authenticateToken } = require("../middlewares/authMiddleware");
 
 // Send Friend Request
 router.post("/send-request", async (req, res) => {
@@ -21,8 +22,9 @@ router.post("/send-request", async (req, res) => {
     res.status(500).json({ message: "Error sending friend request" });
   }
 });
-router.post("/accept-request", async (req, res) => {
-  const { userId, friendId } = req.body;
+router.post("/accept-request", authenticateToken, async (req, res) => {
+  const { friendId } = req.body;
+  const userId = req.user._id;
 
   try {
     const friendship = await Friendship.findOneAndUpdate(
@@ -49,14 +51,14 @@ router.post("/accept-request", async (req, res) => {
     res.status(500).json({ message: "Error accepting friend request" });
   }
 });
-router.post("/decline-request", async (req, res) => {
-  const { userId, friendId } = req.body;
-  console.log(userId);
-  console.log(friendId);
+router.post("/decline-request", authenticateToken, async (req, res) => {
+  const { friendId } = req.body;
+  const userId = req.user._id;
+
   try {
     const friendship = await Friendship.findOneAndDelete({
-      user: userId,
-      friend: friendId,
+      user: friendId,
+      friend: userId,
       status: "pending",
     });
 
@@ -113,8 +115,8 @@ router.get("/:userId/friends", async (req, res) => {
     res.status(500).json({ message: "Error retrieving friends" });
   }
 });
-router.get("/:userId/pending-requests", async (req, res) => {
-  const { userId } = req.params;
+router.get("/pending-requests", authenticateToken, async (req, res) => {
+  const userId = req.user._id;
 
   try {
     const pendingRequests = await Friendship.find({

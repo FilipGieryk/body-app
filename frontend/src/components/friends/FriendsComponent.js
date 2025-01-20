@@ -4,12 +4,21 @@ import FriendsSearch from "./FriendsSearch";
 import MessageComponent from "./MessageComponent";
 import { useEffect, useState, useRef } from "react";
 
-const FriendsComponent = ({ className, userInfo, userId }) => {
+const FriendsComponent = ({
+  className,
+  userInfo,
+  userId,
+  friendRequests,
+  setFriendRequests,
+  handleDeclineRequest,
+  handleAcceptRequest,
+}) => {
   const [chats, setChats] = useState([]);
   const [messagesByChat, setMessagesByChat] = useState({});
   const [chatId, setChatId] = useState(null);
   const chatIdRef = useRef(null);
   const [socket, setSocket] = useState(null);
+  const [showedInfo, setShowedInfo] = useState("chats");
   console.log(chats);
 
   const initWebSocket = () => {
@@ -56,7 +65,9 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
           },
         });
         setChats(response.data);
-      } catch (error) {}
+      } catch (error) {
+        console.error("crap");
+      }
     };
     fetchChats();
 
@@ -144,28 +155,61 @@ const FriendsComponent = ({ className, userInfo, userId }) => {
   return (
     <div className={`friends-container ${className}`}>
       <div className="friend-list-container">
-        <div className="friend-list-header">
-          <h1>Chats</h1>
+        <div className="friend-list-navigation">
+          <div className="friend-list-header">
+            <h1 onClick={() => setShowedInfo("chats")}>Chats</h1>
+            {/* if pending requests show if not dont show */}
+
+            {friendRequests?.length > 0 && (
+              <h1 onClick={() => setShowedInfo("friendRequest")}>
+                Friend Requests
+              </h1>
+            )}
+          </div>
           <FriendsSearch friends={userInfo.friends} userId={userId} />
         </div>
         <div className="friend-list-friends">
-          {chats.map((chat) => (
-            <div
-              onClick={() => handleFetchChat(chat.chatId)}
-              className="friend-container"
-            >
-              <img
-                className="friend-photo"
-                src={chat.profilePhoto}
-                alt="friend-profile-picture"
-              ></img>
-              <div className="friend-chat-info">
-                <h2>{chat.chatName}</h2>
-                <p className="friend-last-message">last message</p>
-              </div>
-              {chat.hasUnread && <div className="notification-dot"></div>}
-            </div>
-          ))}
+          {showedInfo === "chats" ? (
+            <>
+              {chats.map((chat) => (
+                <div
+                  onClick={() => handleFetchChat(chat.chatId)}
+                  className="friend-container"
+                >
+                  <img
+                    className="friend-photo"
+                    src={chat.profilePhoto}
+                    alt="friend-profile-picture"
+                  ></img>
+                  <div className="friend-chat-info">
+                    <h2>{chat.chatName}</h2>
+                    <p className="friend-last-message">last message</p>
+                  </div>
+                  {chat.hasUnread && <div className="notification-dot"></div>}
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              {friendRequests.map((req) => (
+                <div className="friend-container">
+                  <img
+                    className="friend-photo"
+                    src={req.user.profilePhoto}
+                  ></img>
+                  <div className="friend-chat-info">
+                    <h2>{req.user.username}</h2>
+                  </div>
+                  <button onClick={() => handleAcceptRequest(req.user._id)}>
+                    +
+                  </button>
+                  <button onClick={() => handleDeclineRequest(req.user._id)}>
+                    -
+                  </button>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
       <MessageComponent
