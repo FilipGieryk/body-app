@@ -46,7 +46,7 @@ const Workouts = () => {
         exercise: "",
         name: "",
         sets: 0,
-        erpetitions: 0,
+        repetitions: 0,
         weight: 0,
       });
     }

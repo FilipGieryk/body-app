@@ -6,6 +6,7 @@ const AdminDashboard = () => {
   const [formData, setFormData] = useState({
     name: "",
     bodyPart: [],
+    videoLink: "",
   });
   const [mediaFile, setMediaFile] = useState(null);
   const [message, setMessage] = useState("");
@@ -20,12 +21,14 @@ const AdminDashboard = () => {
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("bodyPart", JSON.stringify(formData.bodyPart));
+    formDataToSend.append("videoLink", formData.videoLink);
     if (mediaFile) formDataToSend.append("media", mediaFile);
 
     console.log("Form Data to Send:", {
       name: formData.name,
       bodyPart: formData.bodyPart,
       media: mediaFile ? mediaFile.name : "No file selected",
+      videoLink: formData.videoLink,
     });
     try {
       const token = localStorage.getItem("token");
@@ -64,6 +67,7 @@ const AdminDashboard = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleFileChange = (e) => {
     setMediaFile(e.target.files[0]);
   };
@@ -136,6 +140,7 @@ const AdminDashboard = () => {
                       onChange={(e) => handleScaleChange(e, index)}
                       className="scale-input"
                     />
+                    <span className="scale-value">{bp.scale || 0}</span>
                   </div>
                 )}
               </div>
@@ -143,18 +148,17 @@ const AdminDashboard = () => {
           </div>
         </div>
         <input
-          className="grid-video"
+          className="grid-photo"
           type="file"
           name="media"
           onChange={handleFileChange}
           accept="image/*,video/*"
         />
         <input
-          className="grid-photo"
-          type="file"
-          name="media"
-          onChange={handleFileChange}
-          accept="image/*,video/*"
+          className="grid-video"
+          type="text"
+          name="videoLink"
+          onChange={handleChange}
         />
         <button className="grid-button" type="submit">
           Create Exercise

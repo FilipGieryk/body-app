@@ -15,10 +15,37 @@ const ExerciseDetail = () => {
     };
     fetchExercise();
   }, []);
+
+  function getYouTubeVideoId(url) {
+    const urlObj = new URL(url);
+    if (urlObj.hostname === "youtu.be") {
+      return urlObj.pathname.slice(1); // Extract ID from short URLs
+    }
+    if (urlObj.hostname.includes("youtube.com")) {
+      return urlObj.searchParams.get("v"); // Extract ID from query string
+    }
+    return null; // Not a valid YouTube URL
+  }
   return (
     <div className="outer-box">
       <div>{exercise.name}</div>
-      {/* <div>{exercise.bodyPart}</div> */}
+      {exercise?.videoLink?.includes("youtube.com") ||
+      exercise?.videoLink?.includes("youtu.be") ? (
+        <iframe
+          width="350"
+          height="200"
+          src={`https://www.youtube.com/embed/${getYouTubeVideoId(
+            exercise.videoLink
+          )}`}
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      ) : (
+        <video controls width={600}>
+          <source src={exercise.videoLink} type="video/mp4"></source>
+        </video>
+      )}
       <div>{exercise.media}</div>
     </div>
   );

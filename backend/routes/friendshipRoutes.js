@@ -105,7 +105,7 @@ router.get("/:userId/friends", async (req, res) => {
     const friends = await Friendship.find({
       user: userId,
       status: "accepted",
-    }).populate("friend");
+    }).populate("friend", "username profilePhoto");
 
     res.status(200).json(friends);
   } catch (error) {

@@ -40,22 +40,6 @@ router.post("/:userId/create", async (req, res) => {
   }
 });
 
-// router.get("/:userId", async (req, res) => {
-//   try {
-//     const { userId } = req.params;
-
-//     if (!mongoose.Types.ObjectId.isValid(userId)) {
-//       return res.status(400).json({ error: "Invalid User ID format" });
-//     }
-
-//     const user = await User.findById(userId).populate("workouts");
-//     if (!user) return res.status(404).json({ message: "user not found" });
-//     res.json(user.workouts);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
-
 router.get("/:workoutId", async (req, res) => {
   try {
     const { workoutId } = req.params;

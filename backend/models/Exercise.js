@@ -13,11 +13,15 @@ const exerciseSchema = new mongoose.Schema({
         scale: { type: Number, min: 0, max: 100, required: true },
       },
     ],
-    validate: {
-      validator: function (v) {
-        const totalScale = v.reduce((sum, item) => sum + item.scale, 0);
-        return totalScale <= 100;
-      },
+    set: function (parts) {
+      const totalScale = parts.reduce((sum, item) => sum + item.scale, 0);
+      if (totalScale > 100) {
+        return parts.map((item) => ({
+          ...item,
+          scale: (item.scale / totalScale) * 100,
+        }));
+      }
+      return parts;
     },
     required: true,
   },
@@ -28,6 +32,10 @@ const exerciseSchema = new mongoose.Schema({
   media: {
     type: String,
     default: "uploads/exercise.png",
+  },
+  videoLink: {
+    type: String,
+    required: false,
   },
   averageRating: { type: Number, default: 0 },
   ratingCount: { type: Number, default: 0 },

@@ -6,11 +6,12 @@ const upload = require("../middlewares/multer");
 router.post("/", upload.single("media"), async (req, res) => {
   try {
     const parsedBodyPart = JSON.parse(req.body.bodyPart);
-    const { name, bodyPart } = req.body;
+    const { name, bodyPart, videoLink } = req.body;
     const exercise = new Exercise({
       name,
       bodyPart: parsedBodyPart,
       media: req.file?.path,
+      videoLink,
     });
     const savedExercise = await exercise.save();
     res.status(201).json(savedExercise);
