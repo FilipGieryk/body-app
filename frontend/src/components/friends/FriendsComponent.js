@@ -163,6 +163,11 @@ const FriendsComponent = ({
             <>
               {chats
                 .filter((el) => el.lastMessage !== undefined)
+                .sort(
+                  (a, b) =>
+                    new Date(b.lastMessage.timestamp) -
+                    new Date(a.lastMessage.timestamp)
+                )
                 .map((chat) => (
                   <div
                     onClick={() => handleFetchChat(chat)}

@@ -54,6 +54,7 @@ const Profile = () => {
                   lastMessage: {
                     ...chat.lastMessage,
                     content: message.content,
+                    timestamp: message.timestamp || new Date().toISOString(),
                   },
                 }
               : chat
