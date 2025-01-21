@@ -74,7 +74,6 @@ const Profile = () => {
       webSocket.close();
     };
   }, []);
-  console.log(friendRequests);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -150,10 +149,12 @@ const Profile = () => {
         }
       );
       setRequestStatus("friends");
-      setUserInfo((prev) => ({
-        ...prev,
-        friends: [...prev.friends, userId], // Add the userId to the friends list
+      setFriendRequests((prev) => ({
+        ...prev.filter((req) => req._id !== friendInfo),
       }));
+      setFriendRequests((prev) =>
+        prev.filter((req) => req.user._id !== friendInfo)
+      );
     } catch (error) {
       console.error("Failed to accept friend request", error);
     }
@@ -170,6 +171,9 @@ const Profile = () => {
         {
           headers: { Authorization: `Bearer ${token}` },
         }
+      );
+      setFriendRequests((prev) =>
+        prev.filter((req) => req.user._id !== friendInfo)
       );
       setRequestStatus("none");
     } catch (error) {
