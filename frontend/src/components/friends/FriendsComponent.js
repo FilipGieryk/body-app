@@ -70,9 +70,9 @@ const FriendsComponent = ({
       )
     );
     // if (!messagesByChat[chatId] || messagesByChat[chatId].length === 0) {
-    await fetchChatMessages(chatId);
+    await fetchChatMessages(chatIdRef.current);
     // }
-    await markMessagesAsRead(chatId);
+    await markMessagesAsRead(chatIdRef.current);
   };
   const markMessagesAsRead = async (chatId) => {
     try {
@@ -94,6 +94,7 @@ const FriendsComponent = ({
 
   const fetchChatMessages = async (chatId) => {
     try {
+      console.log(chatId);
       const response = await axios.get(`/api/message/${chatId}`);
       const messages = response.data;
       setMessagesByChat((prevMessages) => ({
