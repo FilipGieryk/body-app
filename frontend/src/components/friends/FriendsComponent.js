@@ -160,23 +160,27 @@ const FriendsComponent = ({
         <div className="friend-list-friends">
           {showedInfo === "chats" ? (
             <>
-              {chats.map((chat) => (
-                <div
-                  onClick={() => handleFetchChat(chat)}
-                  className="friend-container"
-                >
-                  <img
-                    className="friend-photo"
-                    src={chat.profilePhoto}
-                    alt="friend-profile-picture"
-                  ></img>
-                  <div className="friend-chat-info">
-                    <h2>{chat.chatName}</h2>
-                    <p className="friend-last-message">last message</p>
+              {chats
+                .filter((el) => el.lastMessage !== undefined)
+                .map((chat) => (
+                  <div
+                    onClick={() => handleFetchChat(chat)}
+                    className="friend-container"
+                  >
+                    <img
+                      className="friend-photo"
+                      src={chat.profilePhoto}
+                      alt="friend-profile-picture"
+                    ></img>
+                    <div className="friend-chat-info">
+                      <h2>{chat.chatName}</h2>
+                      <p className="friend-last-message">
+                        {chat.lastMessage?.content}
+                      </p>
+                    </div>
+                    {chat.hasUnread && <div className="notification-dot"></div>}
                   </div>
-                  {chat.hasUnread && <div className="notification-dot"></div>}
-                </div>
-              ))}
+                ))}
             </>
           ) : (
             <>

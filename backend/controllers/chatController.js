@@ -2,6 +2,8 @@ const chatService = require("../services/chatService");
 const UnreadMessage = require("../models/UnreadMessage");
 const MessageService = require("../services/messageService");
 const User = require("../models/User");
+const Chat = require("../models/Chat");
+const mongoose = require("mongoose");
 const createOrGetChat = async (req, res) => {
   const { recipientId, isGroup, groupName } = req.body;
   const userId = req.user._id;
@@ -22,41 +24,70 @@ const createOrGetChat = async (req, res) => {
 };
 
 const getChats = async (req, res) => {
-  const userId = req.user._id; // Assuming user is attached to the request after authentication
+  const userId = req.user._id;
   try {
-    const chats = await chatService.getChatsForUser(userId);
+    const chats = await Chat.aggregate([
+      { $match: { participants: new mongoose.Types.ObjectId(userId) } },
+
+      {
+        $lookup: {
+          from: "messages",
+          let: { chatId: "$_id" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$chatId", "$$chatId"] } } },
+            { $sort: { createdAt: -1 } },
+            { $limit: 1 },
+          ],
+          as: "lastMessage",
+        },
+      },
+
+      { $unwind: { path: "$lastMessage", preserveNullAndEmptyArrays: true } },
+
+      {
+        $project: {
+          chatId: "$_id",
+          isGroup: 1,
+          groupName: 1,
+          groupProfilePhoto: 1,
+          participants: 1,
+          lastMessage: 1,
+        },
+      },
+    ]);
     const unreadMessages = await UnreadMessage.find({ userId });
     const unreadChatIds = new Set(
       unreadMessages.map((um) => um.chatId.toString())
     );
 
-    const chatsWithUnreadStatus = await Promise.all(
+    const chatsWithDetails = await Promise.all(
       chats.map(async (chat) => {
         let chatName;
         let profilePhoto;
 
         if (chat.isGroup) {
           chatName = chat.groupName;
-          profilePhoto = chat.groupProfilePhoto; // Assuming groupProfilePhoto is a field in the Chat model
+          profilePhoto = chat.groupProfilePhoto;
         } else {
           const otherParticipantId = chat.participants.find(
             (participantId) => participantId.toString() !== userId.toString()
           );
 
-          const otherUser = await User.findById(otherParticipantId); // Fetch other participant's details
-          chatName = otherUser.username; // Get the username of the other participant
-          profilePhoto = otherUser.profilePhoto; // Get the profile photo of the other participant
+          const otherUser = await User.findById(otherParticipantId);
+          chatName = otherUser.username;
+          profilePhoto = otherUser.profilePhoto;
         }
 
         return {
-          chatId: chat._id,
+          chatId: chat.chatId,
           chatName,
           profilePhoto,
-          hasUnread: unreadChatIds.has(chat._id.toString()),
+          hasUnread: unreadChatIds.has(chat.chatId.toString()),
+          lastMessage: chat.lastMessage, // Include the last message
         };
       })
     );
-    res.status(200).json(chatsWithUnreadStatus);
+    res.status(200).json(chatsWithDetails);
   } catch (err) {
     console.error("Error fetching chats", err);
     res.status(500).json({ message: "Error fetching chats" });
