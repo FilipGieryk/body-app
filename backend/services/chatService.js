@@ -1,5 +1,7 @@
 const Chat = require("../models/Chat");
 const UnreadMessage = require("../models/UnreadMessage");
+const Message = require("../models/Message");
+const User = require("../models/User");
 
 const createChat = async (participants, isGroup, groupName) => {
   const chat = new Chat({
@@ -8,6 +10,40 @@ const createChat = async (participants, isGroup, groupName) => {
     groupName,
   });
   return await chat.save();
+};
+
+const getChatDetails = async (chat, userId) => {
+  const lastMessage = await Message.findOne({ chatId: chat._id })
+    .sort({ timestamp: -1 })
+    .lean();
+
+  const unreadMessages = await UnreadMessage.find({ userId });
+  const unreadChatIds = new Set(
+    unreadMessages.map((um) => um.chatId.toString())
+  );
+
+  let chatName;
+  let profilePhoto;
+
+  if (chat.isGroup) {
+    chatName = chat.groupName;
+    profilePhoto = chat.groupProfilePhoto;
+  } else {
+    const otherParticipantId = chat.participants.find(
+      (participantId) => participantId.toString() !== userId.toString()
+    );
+    const otherUser = await User.findById(otherParticipantId).lean();
+    chatName = otherUser.username;
+    profilePhoto = otherUser.profilePhoto;
+  }
+
+  return {
+    chatId: chat._id,
+    chatName,
+    profilePhoto,
+    hasUnread: unreadChatIds.has(chat._id.toString()),
+    lastMessage: lastMessage || null, // Include lastMessage or null if no messages
+  };
 };
 
 const findPrivateChat = async (participants) => {
@@ -44,6 +80,7 @@ const deleteChat = async (chatId) => {
 
 module.exports = {
   createChat,
+  getChatDetails,
   getChatsForUser,
   getChatById,
   updateLastMessage,

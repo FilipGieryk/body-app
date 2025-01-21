@@ -120,7 +120,8 @@ const FriendsComponent = ({
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      await handleFetchChat(response.data._id);
+      console.log(response.data);
+      await handleFetchChat(response.data);
     } catch (error) {
       console.error("error creating chat", error);
     }
@@ -162,7 +163,7 @@ const FriendsComponent = ({
           {showedInfo === "chats" ? (
             <>
               {chats
-                .filter((el) => el.lastMessage !== undefined)
+                .filter((el) => el?.lastMessage)
                 .sort(
                   (a, b) =>
                     new Date(b.lastMessage.timestamp) -

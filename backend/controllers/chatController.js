@@ -4,19 +4,23 @@ const MessageService = require("../services/messageService");
 const User = require("../models/User");
 const Chat = require("../models/Chat");
 const mongoose = require("mongoose");
+
 const createOrGetChat = async (req, res) => {
   const { recipientId, isGroup, groupName } = req.body;
   const userId = req.user._id;
   const participants = [recipientId, userId];
   try {
+    let chat;
     if (!isGroup) {
-      const existingChat = await chatService.findPrivateChat(participants);
-      if (existingChat) {
-        return res.status(200).json(existingChat);
+      chat = await chatService.findPrivateChat(participants);
+      if (chat) {
+        return res
+          .status(200)
+          .json(await chatService.getChatDetails(chat, userId));
       }
     }
-    const chat = await chatService.createChat(participants, isGroup, groupName);
-    res.status(201).json(chat);
+    chat = await chatService.createChat(participants, isGroup, groupName);
+    return res.status(201).json(await chatService.getChatDetails(chat, userId));
   } catch (err) {
     console.error("Error creating chat", err);
     res.status(500).json({ message: "Error creating chat" });
@@ -55,38 +59,11 @@ const getChats = async (req, res) => {
         },
       },
     ]);
-    const unreadMessages = await UnreadMessage.find({ userId });
-    const unreadChatIds = new Set(
-      unreadMessages.map((um) => um.chatId.toString())
-    );
 
     const chatsWithDetails = await Promise.all(
-      chats.map(async (chat) => {
-        let chatName;
-        let profilePhoto;
-
-        if (chat.isGroup) {
-          chatName = chat.groupName;
-          profilePhoto = chat.groupProfilePhoto;
-        } else {
-          const otherParticipantId = chat.participants.find(
-            (participantId) => participantId.toString() !== userId.toString()
-          );
-
-          const otherUser = await User.findById(otherParticipantId);
-          chatName = otherUser.username;
-          profilePhoto = otherUser.profilePhoto;
-        }
-
-        return {
-          chatId: chat.chatId,
-          chatName,
-          profilePhoto,
-          hasUnread: unreadChatIds.has(chat.chatId.toString()),
-          lastMessage: chat.lastMessage, // Include the last message
-        };
-      })
+      chats.map(async (chat) => chatService.getChatDetails(chat, userId))
     );
+
     res.status(200).json(chatsWithDetails);
   } catch (err) {
     console.error("Error fetching chats", err);
