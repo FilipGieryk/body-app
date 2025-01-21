@@ -268,7 +268,10 @@ const Profile = () => {
             style={{ position: "relative" }}
           >
             Friends
-            <div className="notification-dot"></div>
+            {(chats.some((el) => el.hasUnread) ||
+              friendRequests?.some((el) => el.friend._id === userId)) && (
+              <div className="notification-dot"></div>
+            )}
           </button>
         </div>
       </div>
