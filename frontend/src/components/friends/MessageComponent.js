@@ -17,7 +17,6 @@ const MessageComponent = ({ messages, onSendMessage, userId, chatInfo }) => {
       chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
     }
   }, [messages]);
-  console.log(messages);
   return (
     <div className="chat-container">
       <div className="chat-information">

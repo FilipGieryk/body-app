@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./Profile.css";
 import axios from "axios";
 import { useParams } from "react-router";
@@ -7,10 +7,13 @@ import WokroutsList from "../../components/worktouts/WorkoutsList";
 import WorkoutsActivity from "../../components/worktouts/WorkoutsActivity";
 import UserInformation from "../../components/UserInformation";
 import FriendsComponent from "../../components/friends/FriendsComponent";
-
 const Profile = () => {
   let { id } = useParams();
   const [userId, setUserId] = useState();
+  const [socket, setSocket] = useState(null);
+  const [messagesByChat, setMessagesByChat] = useState({});
+  const [chats, setChats] = useState([]);
+  const chatIdRef = useRef(null);
   const [activeSection, setActiveSection] = useState("profile");
   const [userInfo, setUserInfo] = useState({
     username: "",
@@ -21,6 +24,51 @@ const Profile = () => {
   const [friendRequests, setFriendRequests] = useState(null);
   const [requestStatus, setRequestStatus] = useState(null);
   const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const webSocket = new WebSocket("ws://localhost:3000");
+
+    webSocket.onopen = () => {
+      console.log("Connected to WebSocket server");
+    };
+
+    webSocket.onmessage = async (event) => {
+      const message = JSON.parse(event.data);
+      if (message.type === "friend-request") {
+        await fetchPendingRequests();
+      }
+      if (message.type === "chat-message") {
+        console.log("dsds");
+        const { chatId: incomingChatId, content, senderId } = message;
+
+        setMessagesByChat((prevMessages) => ({
+          ...prevMessages,
+          [incomingChatId]: [...(prevMessages[incomingChatId] || []), message],
+        }));
+        if (incomingChatId !== chatIdRef.current) {
+          setChats((prevChats) =>
+            prevChats.map((chat) =>
+              chat.chatId === incomingChatId
+                ? { ...chat, hasUnread: true }
+                : chat
+            )
+          );
+        }
+      }
+    };
+
+    webSocket.onclose = () => {
+      console.log("Disconnected from WebSocket server");
+    };
+
+    setSocket(webSocket);
+
+    // Cleanup WebSocket on unmount
+    return () => {
+      webSocket.close();
+    };
+  }, []);
+  console.log(friendRequests);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -40,42 +88,42 @@ const Profile = () => {
     fetchUser();
   }, [id]);
 
-  useEffect(() => {
-    const fetchPendingRequests = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          // change id to authentication in backend
-          `/api/friendships/pending-requests`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        const requests = response.data;
-        setFriendRequests(requests);
-
-        if (userInfo.friends?.includes(userInfo._id)) {
-          setRequestStatus("friends");
-        } else if (
-          requests.some(
-            (req) => req.friend._id === userInfo._id && req.user._id === userId
-          )
-        ) {
-          setRequestStatus("sent");
-        } else if (
-          requests.some(
-            (req) => req.user._id === userInfo._id && req.friend._id === userId
-          )
-        ) {
-          setRequestStatus("received");
-        } else {
-          setRequestStatus("none");
+  const fetchPendingRequests = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        // change id to authentication in backend
+        `/api/friendships/pending-requests`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-      } catch (err) {
-        console.error("Error fetching pending requests:", err);
+      );
+
+      const requests = response.data;
+      setFriendRequests(requests);
+
+      if (userInfo.friends?.includes(userInfo._id)) {
+        setRequestStatus("friends");
+      } else if (
+        requests.some(
+          (req) => req.friend._id === userInfo._id && req.user._id === userId
+        )
+      ) {
+        setRequestStatus("sent");
+      } else if (
+        requests.some(
+          (req) => req.user._id === userInfo._id && req.friend._id === userId
+        )
+      ) {
+        setRequestStatus("received");
+      } else {
+        setRequestStatus("none");
       }
-    };
+    } catch (err) {
+      console.error("Error fetching pending requests:", err);
+    }
+  };
+  useEffect(() => {
     fetchPendingRequests();
   }, [userId, userInfo]);
 
@@ -148,6 +196,9 @@ const Profile = () => {
               setRequestStatus={setRequestStatus}
               handleAcceptRequest={handleAcceptRequest}
               handleDeclineRequest={handleDeclineRequest}
+              socket={socket}
+              setFriendRequests={setFriendRequests}
+              friendRequests={friendRequests}
             />
             <div className="profile-grid-item photos">
               {userInfo && <Photos userInfo={userInfo} userId={id} />}
@@ -183,6 +234,12 @@ const Profile = () => {
             friendRequests={friendRequests}
             handleAcceptRequest={handleAcceptRequest}
             handleDeclineRequest={handleDeclineRequest}
+            socket={socket}
+            messagesByChat={messagesByChat}
+            setMessagesByChat={setMessagesByChat}
+            setChats={setChats}
+            chats={chats}
+            chatIdRef={chatIdRef}
           />
         </div>
         <div className="profile-sections">

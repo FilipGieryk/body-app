@@ -12,49 +12,18 @@ const FriendsComponent = ({
   setFriendRequests,
   handleDeclineRequest,
   handleAcceptRequest,
+  socket,
+  setMessagesByChat,
+  messagesByChat,
+  chats,
+  setChats,
+  chatIdRef,
 }) => {
-  const [chats, setChats] = useState([]);
-  const [messagesByChat, setMessagesByChat] = useState({});
   const [chatInfo, setChatInfo] = useState("null");
   const [chatId, setChatId] = useState(null);
-  const chatIdRef = useRef(null);
-  const [socket, setSocket] = useState(null);
   const [showedInfo, setShowedInfo] = useState("chats");
-  console.log(chats);
-
-  const initWebSocket = () => {
-    const webSocket = new WebSocket("ws://localhost:3000");
-    webSocket.onopen = () => {
-      console.log("Connected to WebSocket server");
-    };
-
-    webSocket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      const { chatId: incomingChatId, content, senderId } = message;
-      // console.log(incomingChatId);
-
-      // Update messages for the specific chat
-      setMessagesByChat((prevMessages) => ({
-        ...prevMessages,
-        [incomingChatId]: [...(prevMessages[incomingChatId] || []), message],
-      }));
-      if (incomingChatId !== chatIdRef.current) {
-        setChats((prevChats) =>
-          prevChats.map((chat) =>
-            chat.chatId === incomingChatId ? { ...chat, hasUnread: true } : chat
-          )
-        );
-      }
-    };
-    webSocket.onclose = () => {
-      console.log("Disconnected from WebSocket server");
-    };
-
-    setSocket(webSocket);
-  };
 
   useEffect(() => {
-    initWebSocket();
     const fetchChats = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -168,7 +137,6 @@ const FriendsComponent = ({
       throw error;
     }
   };
-
   return (
     <div className={`friends-container ${className}`}>
       <div className="friend-list-container">

@@ -1,7 +1,6 @@
 const WebSocket = require("ws");
 
 let wss;
-console.log("yo");
 
 const initWebSocket = (server) => {
   wss = new WebSocket.Server({ server });

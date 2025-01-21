@@ -9,6 +9,9 @@ const UserInformation = ({
   setRequestStatus,
   handleAcceptRequest,
   handleDeclineRequest,
+  socket,
+  setFriendRequests,
+  friendRequests,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -59,6 +62,9 @@ const UserInformation = ({
         userId, // Current user's ID
         friendId: userInfo._id, // Profile owner's ID
       });
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(response.data));
+      }
 
       setRequestStatus("sent");
     } catch (error) {

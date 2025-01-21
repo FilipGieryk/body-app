@@ -27,6 +27,7 @@ const sendMessage = async (req, res) => {
 
     // Optionally notify WebSocket clients
     broadcast({
+      type: "chat-message",
       chatId,
       senderId,
       content,
