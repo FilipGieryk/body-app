@@ -44,15 +44,21 @@ const Profile = () => {
           ...prevMessages,
           [incomingChatId]: [...(prevMessages[incomingChatId] || []), message],
         }));
-        if (incomingChatId !== chatIdRef.current) {
-          setChats((prevChats) =>
-            prevChats.map((chat) =>
-              chat.chatId === incomingChatId
-                ? { ...chat, hasUnread: true }
-                : chat
-            )
-          );
-        }
+
+        setChats((prevChats) =>
+          prevChats.map((chat) =>
+            chat.chatId === incomingChatId
+              ? {
+                  ...chat,
+                  hasUnread: true,
+                  lastMessage: {
+                    ...chat.lastMessage,
+                    content: message.content,
+                  },
+                }
+              : chat
+          )
+        );
       }
     };
 

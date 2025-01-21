@@ -35,7 +35,7 @@ const getChats = async (req, res) => {
           let: { chatId: "$_id" },
           pipeline: [
             { $match: { $expr: { $eq: ["$chatId", "$$chatId"] } } },
-            { $sort: { createdAt: -1 } },
+            { $sort: { timestamp: -1 } },
             { $limit: 1 },
           ],
           as: "lastMessage",
