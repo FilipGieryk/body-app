@@ -149,9 +149,6 @@ const Profile = () => {
         }
       );
       setRequestStatus("friends");
-      setFriendRequests((prev) => ({
-        ...prev.filter((req) => req._id !== friendInfo),
-      }));
       setFriendRequests((prev) =>
         prev.filter((req) => req.user._id !== friendInfo)
       );

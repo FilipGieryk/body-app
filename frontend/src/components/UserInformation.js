@@ -50,7 +50,6 @@ const UserInformation = ({
         ...prevUserInfo,
         friends: prevUserInfo.friends.filter((friend) => friend !== userId),
       }));
-      console.log(userInfo);
     } catch (error) {
       console.error("failed to delete user", error);
     }
