@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./css/FriendsSearch.css";
+import "./FriendsSearch.css";
 import axios from "axios";
 
 const FriendsSearch = ({ friends, createOrGetMessage }) => {

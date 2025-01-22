@@ -47,7 +47,7 @@
 .navigation-button:last-child {
   margin-bottom: 3rem;
 }
-.navigation-button:nth-last-child(2) {
+.navigation-button:nth-last-child(3) {
   margin-top: auto;
 }
 .navigation-button:hover {

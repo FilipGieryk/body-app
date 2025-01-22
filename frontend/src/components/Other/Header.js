@@ -8,6 +8,7 @@ import {
   faSignInAlt,
   faUserPlus,
   faDumbbell,
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -77,6 +78,13 @@ const Header = () => {
             id: "profile",
             path: `/profile/${userId}`,
             action: () => navigate(`/profile/${userId}`),
+          },
+          {
+            icon: faComment,
+            test: "Chat",
+            id: "chat",
+            path: `/chat`,
+            action: () => navigate(`/chat`),
           },
           {
             icon: faSignOutAlt,

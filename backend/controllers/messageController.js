@@ -16,7 +16,8 @@ class MessageController {
 
   async sendMessage(req, res) {
     const { chatId } = req.params;
-    const { senderId, content } = req.body;
+    const { content } = req.body;
+    const senderId = req.user._id;
 
     try {
       const message = await MessageService.createMessage(

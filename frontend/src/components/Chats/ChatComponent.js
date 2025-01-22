@@ -1,10 +1,10 @@
-import "./css/FriendsComponent.css";
+import "./ChatComponent.css";
 import axios from "axios";
 import FriendsSearch from "./FriendsSearch";
-import MessageComponent from "./MessageComponent";
 import { useEffect, useState, useRef } from "react";
-
-const FriendsComponent = ({
+import { useWebSocket } from "../../hooks/webSocketContext";
+import { Link } from "react-router-dom";
+const ChatComponent = ({
   className,
   userInfo,
   userId,
@@ -12,17 +12,34 @@ const FriendsComponent = ({
   setFriendRequests,
   handleDeclineRequest,
   handleAcceptRequest,
-  socket,
-  setMessagesByChat,
-  messagesByChat,
-  chats,
-  setChats,
-  chatIdRef,
 }) => {
   const [chatInfo, setChatInfo] = useState("null");
   const [chatId, setChatId] = useState(null);
   const [showedInfo, setShowedInfo] = useState("chats");
+  const [chats, setChats] = useState([]);
+  const [messagesByChat, setMessagesByChat] = useState([]);
+  const chatIdRef = useRef();
+  const socket = useWebSocket();
 
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleWebSocketMessage = (event) => {
+      const message = JSON.parse(event.data);
+
+      if (message.type === "friend-request") {
+        // Handle friend request
+      } else if (message.type === "chat-message") {
+        console.log("sdsd");
+        // Handle chat message
+      }
+    };
+    socket.addEventListener("message", handleWebSocketMessage);
+
+    return () => {
+      socket.removeEventListener("message", handleWebSocketMessage);
+    };
+  }, [socket]);
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -45,20 +62,6 @@ const FriendsComponent = ({
       }
     };
   }, []);
-
-  const handleSendMessage = async (message) => {
-    if (!chatId) {
-      console.warn("No chat selected to send message.");
-      return;
-    }
-    const newMessage = { senderId: userId, content: message };
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify(newMessage));
-      await sendMessageToServer(chatId, message);
-    } else {
-      console.error("WebSocket is not open. Cannot send message.");
-    }
-  };
 
   const handleFetchChat = async (chat) => {
     setChatId(chat.chatId);
@@ -127,49 +130,37 @@ const FriendsComponent = ({
     }
   };
 
-  const sendMessageToServer = async (chatId, message) => {
-    try {
-      const response = await axios.post(`/api/message/${chatId}/send`, {
-        senderId: userId,
-        content: message,
-      });
-      return response.data;
-    } catch (error) {
-      console.error("failed to send message:", error);
-      throw error;
-    }
-  };
   return (
-    <div className={`friends-container ${className}`}>
-      <div className="friend-list-container">
-        <div className="friend-list-navigation">
-          <div className="friend-list-header">
-            <h1 onClick={() => setShowedInfo("chats")}>Chats</h1>
-            {/* if pending requests show if not dont show */}
+    <div className="friend-list-container">
+      <div className="friend-list-navigation">
+        <div className="friend-list-header">
+          <h1 onClick={() => setShowedInfo("chats")}>Chats</h1>
+          {/* if pending requests show if not dont show */}
 
-            {friendRequests?.some((el) => el.friend._id === userId) && (
-              <h1 onClick={() => setShowedInfo("friendRequest")}>
-                Friend Requests
-              </h1>
-            )}
-          </div>
-          <FriendsSearch
-            friends={userInfo.friends}
-            userId={userId}
-            createOrGetMessage={createOrGetMessage}
-          />
+          {friendRequests?.some((el) => el.friend._id === userId) && (
+            <h1 onClick={() => setShowedInfo("friendRequest")}>
+              Friend Requests
+            </h1>
+          )}
         </div>
-        <div className="friend-list-friends">
-          {showedInfo === "chats" ? (
-            <>
-              {chats
-                .filter((el) => el?.lastMessage)
-                .sort(
-                  (a, b) =>
-                    new Date(b.lastMessage.timestamp) -
-                    new Date(a.lastMessage.timestamp)
-                )
-                .map((chat) => (
+        <FriendsSearch
+          // friends={.friends}
+          userId={userId}
+          createOrGetMessage={createOrGetMessage}
+        />
+      </div>
+      <div className="friend-list-friends">
+        {showedInfo === "chats" ? (
+          <>
+            {chats
+              .filter((el) => el?.lastMessage)
+              .sort(
+                (a, b) =>
+                  new Date(b.lastMessage.timestamp) -
+                  new Date(a.lastMessage.timestamp)
+              )
+              .map((chat) => (
+                <Link to={`/chat/${chat.chatId}`}>
                   <div
                     onClick={() => handleFetchChat(chat)}
                     className="friend-container"
@@ -187,38 +178,29 @@ const FriendsComponent = ({
                     </div>
                     {chat.hasUnread && <div className="notification-dot"></div>}
                   </div>
-                ))}
-            </>
-          ) : (
-            <>
-              {friendRequests.map((req) => (
-                <div className="friend-container">
-                  <img
-                    className="friend-photo"
-                    src={req.user.profilePhoto}
-                  ></img>
-                  <div className="friend-chat-info">
-                    <h2>{req.user.username}</h2>
-                  </div>
-                  <button onClick={() => handleAcceptRequest(req.user._id)}>
-                    +
-                  </button>
-                  <button onClick={() => handleDeclineRequest(req.user._id)}>
-                    -
-                  </button>
-                </div>
+                </Link>
               ))}
-            </>
-          )}
-        </div>
+          </>
+        ) : (
+          <>
+            {friendRequests.map((req) => (
+              <div className="friend-container">
+                <img className="friend-photo" src={req.user.profilePhoto}></img>
+                <div className="friend-chat-info">
+                  <h2>{req.user.username}</h2>
+                </div>
+                <button onClick={() => handleAcceptRequest(req.user._id)}>
+                  +
+                </button>
+                <button onClick={() => handleDeclineRequest(req.user._id)}>
+                  -
+                </button>
+              </div>
+            ))}
+          </>
+        )}
       </div>
-      <MessageComponent
-        chatInfo={chatInfo}
-        userId={userId}
-        messages={messagesByChat[chatId] || []}
-        onSendMessage={handleSendMessage}
-      />
     </div>
   );
 };
-export default FriendsComponent;
+export default ChatComponent;

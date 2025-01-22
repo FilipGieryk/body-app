@@ -7,7 +7,6 @@
   grid-template-columns: 0.3fr 1fr;
   background-color: var(--secondary);
   position: absolute;
-  top: 200%;
   transition: all 0.3s;
   overflow: hidden;
 }

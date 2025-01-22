@@ -74,19 +74,48 @@ class ChatController {
 
   async getChat(req, res) {
     const { chatId } = req.params;
+    const userId = req.user._id;
 
     try {
-      const chat = await chatService.getChatById(chatId);
-      if (!chat) {
+      const chat = await Chat.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(chatId) } },
+        {
+          $lookup: {
+            from: "messages",
+            let: { chatId: "$_id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$chatId", "$$chatId"] } } },
+              { $sort: { timestamp: -1 } },
+              { $limit: 1 },
+            ],
+            as: "lastMessage",
+          },
+        },
+        { $unwind: { path: "$lastMessage", preserveNullAndEmptyArrays: true } },
+        {
+          $project: {
+            chatId: "$_id",
+            isGroup: 1,
+            groupName: 1,
+            groupProfilePhoto: 1,
+            participants: 1,
+            lastMessage: 1,
+          },
+        },
+      ]);
+
+      if (!chat || chat.length === 0) {
         return res.status(404).json({ message: "Chat not found" });
       }
-      res.status(200).json(chat);
+
+      const chatWithDetails = await chatService.getChatDetails(chat[0], userId);
+
+      res.status(200).json(chatWithDetails);
     } catch (err) {
       console.error("Error fetching chat", err);
       res.status(500).json({ message: "Error fetching chat" });
     }
   }
-
   async updateLastMessage(req, res) {
     const { chatId } = req.params;
     const { lastMessage } = req.body;

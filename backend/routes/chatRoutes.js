@@ -9,7 +9,7 @@ router.post(
   chatController.createOrGetChat
 );
 router.get("/", authenticateToken, chatController.getChats);
-router.get("/:chatId", chatController.getChat);
+router.get("/:chatId", authenticateToken, chatController.getChat);
 router.patch("/:chatId/last-message", chatController.updateLastMessage);
 router.delete("/:chatId", chatController.deleteChat);
 router.get("/unread", chatController.getChatsWithUnreadStatus);

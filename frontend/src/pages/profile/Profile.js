@@ -2,11 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import "./Profile.css";
 import axios from "axios";
 import { useParams } from "react-router";
-import Photos from "../../components/Profile/Main/Photos/UserPhotos";
-import WokroutsList from "../../components/Profile/Main/Workouts/WorkoutsList";
-import WorkoutsActivity from "../../components/Profile/Activity/WorkoutsActivity";
-import UserInformation from "../../components/Profile/Main/Information/UserInformation";
-import FriendsComponent from "../../components/Profile/Chats/FriendsComponent";
+import Photos from "../../components/Main/Photos/UserPhotos";
+import WokroutsList from "../../components/Main/Workouts/WorkoutsList";
+import WorkoutsActivity from "../../components/Activity/WorkoutsActivity";
+import UserInformation from "../../components/Main/Information/UserInformation";
+import FriendsComponent from "../../components/Chats/ChatComponent";
 import useFriendRequests from "../../hooks/useFriendRequests";
 const Profile = () => {
   let { id } = useParams();
@@ -152,54 +152,16 @@ const Profile = () => {
             }`}
             userInfo={userInfo}
           />
-          <FriendsComponent
-            className={`${
-              activeSection === "profile"
-                ? "default-position"
-                : activeSection === "workout"
-                ? "move-up-one"
-                : activeSection === "friends"
-                ? "move-up-two"
-                : ""
-            }`}
-            userInfo={userInfo}
-            userId={userId}
-            friendRequests={friendRequests}
-            handleAcceptRequest={handleAcceptRequest}
-            handleDeclineRequest={handleDeclineRequest}
-            socket={socket}
-            messagesByChat={messagesByChat}
-            setMessagesByChat={setMessagesByChat}
-            setChats={setChats}
-            chats={chats}
-            chatIdRef={chatIdRef}
-          />
         </div>
-        <div className="profile-sections">
-          <button
-            onClick={() => handleNavigation("profile")}
-            className={activeSection === "profile" ? "active" : ""}
-          >
-            Profile
-          </button>
-          <button
-            onClick={() => handleNavigation("workout")}
-            className={activeSection === "workout" ? "active" : ""}
-          >
-            Workout
-          </button>
-          <button
-            onClick={() => handleNavigation("friends")}
-            className={activeSection === "friends" ? "active" : ""}
-            style={{ position: "relative" }}
-          >
+        {/* <div className="profile-sections">
+ 
             Friends
             {(chats.some((el) => el.hasUnread) ||
               friendRequests?.some((el) => el.friend._id === userId)) && (
               <div className="notification-dot"></div>
             )}
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );
