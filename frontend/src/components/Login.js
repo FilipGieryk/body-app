@@ -22,15 +22,19 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
           }
         );
         setMessage(response.data.message);
+        console.log(response.data);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("isAdmin", response.data.isAdmin);
         onLoginSuccess();
       } else if (activeTab === "register") {
-        const response = await axios.post("http://localhost:3000/api/users", {
-          username,
-          password,
-          email,
-        });
+        const response = await axios.post(
+          "http://localhost:3000/api/auth/register",
+          {
+            username,
+            password,
+            email,
+          }
+        );
         setMessage(response.data.message);
         localStorage.setItem("token", response.data.token); // Store the token
         onLoginSuccess();

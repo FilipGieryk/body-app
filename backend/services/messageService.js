@@ -2,56 +2,51 @@ const Message = require("../models/Message");
 const UnreadMessage = require("../models/UnreadMessage");
 const Chat = require("../models/Chat");
 
-const getMessagesByChatId = async (chatId) => {
-  return await Message.find({ chatId }).sort({ timestamp: 1 });
-};
-
-const createMessage = async (chatId, senderId, content) => {
-  const message = new Message({
-    chatId,
-    senderId,
-    content,
-  });
-  await message.save();
-
-  const chat = await Chat.findById(chatId);
-  if (!chat) {
-    throw new Error("Chat not found");
+class MessageService {
+  async getMessagesByChatId(chatId) {
+    return await Message.find({ chatId }).sort({ timestamp: 1 });
   }
 
-  const recipients = chat.participants.filter(
-    (userId) => !userId.equals(senderId)
-  );
+  async createMessage(chatId, senderId, content) {
+    const message = new Message({
+      chatId,
+      senderId,
+      content,
+    });
+    await message.save();
 
-  const unreadMessages = recipients.map((userId) => ({
-    messageId: message._id,
-    chatId,
-    userId,
-  }));
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+      throw new Error("Chat not found");
+    }
 
-  await UnreadMessage.insertMany(unreadMessages);
+    const recipients = chat.participants.filter(
+      (userId) => !userId.equals(senderId)
+    );
 
-  await Chat.findByIdAndUpdate(chatId, { latestMessage: message._id });
+    const unreadMessages = recipients.map((userId) => ({
+      messageId: message._id,
+      chatId,
+      userId,
+    }));
 
-  return message;
-};
+    await UnreadMessage.insertMany(unreadMessages);
+    await Chat.findByIdAndUpdate(chatId, { latestMessage: message._id });
 
-const deleteMessageById = async (messageId) => {
-  await Message.findByIdAndDelete(messageId);
-};
+    return message;
+  }
 
-const getUnreadMessagesForUser = async (userId) => {
-  return await UnreadMessage.find({ userId }).populate("messageId");
-};
+  async deleteMessageById(messageId) {
+    await Message.findByIdAndDelete(messageId);
+  }
 
-const markMessagesAsRead = async (userId, chatId) => {
-  await UnreadMessage.deleteMany({ userId, chatId });
-};
+  async getUnreadMessagesForUser(userId) {
+    return await UnreadMessage.find({ userId }).populate("messageId");
+  }
 
-module.exports = {
-  getMessagesByChatId,
-  createMessage,
-  deleteMessageById,
-  getUnreadMessagesForUser,
-  markMessagesAsRead,
-};
+  async markMessagesAsRead(userId, chatId) {
+    await UnreadMessage.deleteMany({ userId, chatId });
+  }
+}
+
+module.exports = new MessageService();

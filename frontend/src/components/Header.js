@@ -28,7 +28,7 @@ const Header = () => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
-
+      console.log(token);
       const decodedToken = JSON.parse(atob(token.split(".")[1]));
       setUserId(decodedToken.id);
     } else {

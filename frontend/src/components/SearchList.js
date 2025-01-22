@@ -55,18 +55,17 @@ const SearchList = ({ data, contentType, workoutId, onAddExercise }) => {
   };
 
   const filteredContent = data.filter((item) => {
-    const isWorkout = item.exercises && Array.isArray(item.exercises); // Check if exercises is an array
+    const isWorkout = item.exercises && Array.isArray(item.exercises);
     const matchesSearchQuery = item.name.toLowerCase().includes(searchQuery);
 
     let matchesBodyPart = false;
 
     if (selectedBodyParts.length === 0) {
-      matchesBodyPart = true; // If no body parts selected, include all
+      matchesBodyPart = true;
     } else {
       if (isWorkout) {
-        // Check the body parts of each exercise in the workout
         matchesBodyPart = item.exercises.some((exercise) => {
-          const nestedExercise = exercise.exercise; // Get the nested exercise object
+          const nestedExercise = exercise.exercise;
           return (
             nestedExercise &&
             nestedExercise.bodyPart &&
@@ -98,22 +97,12 @@ const SearchList = ({ data, contentType, workoutId, onAddExercise }) => {
     }
   });
 
-  const handleMouseEnter = (workout) => {
-    setHoveredWorkout(workout);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredWorkout(null);
-  };
-  console.log(sortedExercises);
   const handleAddElement = (addEl) => {
     workoutId === undefined
       ? console.log("makenewworkut")
       : onAddExercise(addEl);
-    // if content type exercise make new workout with this exercise
-    // if content type workout dont even show button
   };
-  console.log(sortedExercises);
+
   return (
     <div className="search-list-container">
       <SearchInput
@@ -174,28 +163,6 @@ const SearchList = ({ data, contentType, workoutId, onAddExercise }) => {
                     averageRating={el.averageRating}
                   ></Rating>
                   <div key={index} className="bodyparts-list">
-                    {/* <div
-                      className="bodypart-container"
-                      style={{
-                        backgroundColor: `rgb(${Math.min(
-                          el.bodyPart[0]?.scale * 2.55,
-                          255
-                        )}, 0, 0)`,
-                      }}
-                    >
-                      {el.bodyPart[0]?.part}
-                    </div>
-                    <div
-                      className="bodypart-container"
-                      style={{
-                        backgroundColor: `rgb(${Math.min(
-                          el.bodyPart[1]?.scale * 2.55,
-                          255
-                        )}, 0, 0)`,
-                      }}
-                    >
-                      {el.bodyPart[1]?.part}
-                    </div> */}
                     {el.bodyPart
                       .sort((a, b) => b.scale - a.scale)
                       .slice(0, hoveredIndex === index ? el.bodyPart.length : 2)

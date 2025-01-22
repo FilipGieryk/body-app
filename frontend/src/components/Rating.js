@@ -23,7 +23,8 @@ const Rating = ({ contentId, userId, averageRating, contentType }) => {
     }
   };
 
-  const handleRateClick = (selectedRating) => {
+  const handleRateClick = (e, selectedRating) => {
+    e.preventDefault();
     setRating(selectedRating);
     rateWorkout(selectedRating);
   };
@@ -34,7 +35,7 @@ const Rating = ({ contentId, userId, averageRating, contentType }) => {
         [1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}
-            onClick={() => handleRateClick(star)}
+            onClick={(e) => handleRateClick(e, star)}
             style={{
               cursor: "pointer",
               fontSize: "20px",
