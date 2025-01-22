@@ -1,8 +1,8 @@
 import React, { use, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { ObjectLoader } from "../libs/ObjectLoader.js"; // Ensure the correct path
-import { Utils } from "../libs/Utils.js"; // Ensure the correct path
-import { MouseControls } from "../libs/MouseControls.js"; // Ensure the correct path
+import { ObjectLoader } from "../../libs/ObjectLoader.js"; // Ensure the correct path
+import { Utils } from "../../libs/Utils.js"; // Ensure the correct path
+import { MouseControls } from "../../libs/MouseControls.js"; // Ensure the correct path
 
 // const ObjectInfo = ({ object }) => {
 //   if (!object) return null;

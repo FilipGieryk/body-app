@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./FriendsSearch.css";
+import "./css/FriendsSearch.css";
 import axios from "axios";
+
 const FriendsSearch = ({ friends, createOrGetMessage }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState([]);

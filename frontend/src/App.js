@@ -1,18 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
-import GLTFViewer from "./components/GLTFViewer.js";
+import Header from "./components/Other/Header";
+import GLTFViewer from "./components/Other/GLTFViewer.js";
 import Profile from "./pages/profile/Profile.js";
 import "./styles/style.css";
-import Exercises from "./pages/exercise/Exercises.js";
-import Workouts from "./pages/workout/Workouts.js";
-import Register from "./components/Register.js";
-import { oneMinus } from "three/src/nodes/TSL.js";
-import AdminDashboard from "./components/AdminDashboard/AdminDashboard.js";
-import ProtectedRoute from "./components/ProtectedRoute.js";
-import WorkoutDetail from "./pages/workout/WorkoutDetail.js";
+import ExercisesList from "./pages/exercise/ExercisesList.js";
 import WorkoutsList from "./pages/workout/WorkoutsList.js";
-import ExerciseDetail from "./pages/exercise/ExerciseDetail.js";
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard.js";
+import WorkoutDetail from "./components/Details/WorkoutDetail.js";
+import ExerciseDetail from "./components/Details/ExerciseDetail.js";
+import ProtectedRoute from "./components/Other/ProtectedRoute.js";
+import Workouts from "./components/Create/Workouts.js";
 
 const user = { isAdmin: true };
 function App() {
@@ -31,7 +29,7 @@ function App() {
           />
           <Route path="/" exact Component={GLTFViewer} />
           <Route path="/profile/:id" exact Component={Profile} />
-          <Route path="/exercises" exact Component={Exercises} />
+          <Route path="/exercises" exact Component={ExercisesList} />
           <Route path="/workout/create" exact Component={Workouts} />
           <Route path="/workouts" exact Component={WorkoutsList} />
           <Route path="/workouts/:workoutId" exact Component={WorkoutDetail} />

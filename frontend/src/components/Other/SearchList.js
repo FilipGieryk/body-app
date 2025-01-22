@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Rating from "../components/Rating";
+import Rating from "./Rating";
 import SearchInput from "./SearchInput";
 import "./SearchList.css";
 const backendURL = "http://localhost:3000";

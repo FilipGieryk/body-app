@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./WorkoutDetail.css";
 import { Link } from "react-router-dom";
-import Exercises from "../exercise/Exercises";
+import ExercisesList from "../../pages/exercise/ExercisesList";
 
 const WorkoutDetail = () => {
   const { workoutId } = useParams();
@@ -155,7 +155,10 @@ const WorkoutDetail = () => {
       {isEdit ? (
         <>
           <button onClick={handleSaveChanges}>finish workout</button>
-          <Exercises workoutId={workoutId} onAddExercise={handleAddExercise} />
+          <ExercisesList
+            workoutId={workoutId}
+            onAddExercise={handleAddExercise}
+          />
         </>
       ) : (
         <button onClick={() => setIsEdit(!isEdit)}>start workout</button>

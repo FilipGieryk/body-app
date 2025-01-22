@@ -1,4 +1,4 @@
-import "./MessageComponent.css";
+import "./css/MessageComponent.css";
 import { useState, useEffect, useRef } from "react";
 
 const MessageComponent = ({ messages, onSendMessage, userId, chatInfo }) => {

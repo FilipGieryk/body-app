@@ -1,4 +1,4 @@
-import "./FriendsComponent.css";
+import "./css/FriendsComponent.css";
 import axios from "axios";
 import FriendsSearch from "./FriendsSearch";
 import MessageComponent from "./MessageComponent";

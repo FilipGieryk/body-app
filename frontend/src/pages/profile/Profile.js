@@ -2,11 +2,12 @@ import { useEffect, useState, useRef } from "react";
 import "./Profile.css";
 import axios from "axios";
 import { useParams } from "react-router";
-import Photos from "../../components/photos/Photos";
-import WokroutsList from "../../components/worktouts/WorkoutsList";
-import WorkoutsActivity from "../../components/worktouts/WorkoutsActivity";
-import UserInformation from "../../components/UserInformation";
-import FriendsComponent from "../../components/friends/FriendsComponent";
+import Photos from "../../components/Profile/Main/Photos/UserPhotos";
+import WokroutsList from "../../components/Profile/Main/Workouts/WorkoutsList";
+import WorkoutsActivity from "../../components/Profile/Activity/WorkoutsActivity";
+import UserInformation from "../../components/Profile/Main/Information/UserInformation";
+import FriendsComponent from "../../components/Profile/Chats/FriendsComponent";
+import useFriendRequests from "../../hooks/useFriendRequests";
 const Profile = () => {
   let { id } = useParams();
   const [userId, setUserId] = useState();
@@ -21,9 +22,15 @@ const Profile = () => {
     photos: [],
     workouts: [],
   });
-  const [friendRequests, setFriendRequests] = useState(null);
-  const [requestStatus, setRequestStatus] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const {
+    friendRequests,
+    requestStatus,
+    handleAcceptRequest,
+    handleDeclineRequest,
+  } = useFriendRequests(userId, userInfo);
+
   useEffect(() => {
     const webSocket = new WebSocket("ws://localhost:3000");
 
@@ -34,10 +41,9 @@ const Profile = () => {
     webSocket.onmessage = async (event) => {
       const message = JSON.parse(event.data);
       if (message.type === "friend-request") {
-        await fetchPendingRequests();
+        await friendRequests();
       }
       if (message.type === "chat-message") {
-        console.log("dsds");
         const { chatId: incomingChatId, content, senderId } = message;
 
         setMessagesByChat((prevMessages) => ({
@@ -94,93 +100,14 @@ const Profile = () => {
     fetchUser();
   }, [id]);
 
-  const fetchPendingRequests = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        // change id to authentication in backend
-        `/api/friendships/pending-requests`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      const requests = response.data;
-      setFriendRequests(requests);
-
-      if (userInfo.friends?.includes(userInfo._id)) {
-        setRequestStatus("friends");
-      } else if (
-        requests.some(
-          (req) => req.friend._id === userInfo._id && req.user._id === userId
-        )
-      ) {
-        setRequestStatus("sent");
-      } else if (
-        requests.some(
-          (req) => req.user._id === userInfo._id && req.friend._id === userId
-        )
-      ) {
-        setRequestStatus("received");
-      } else {
-        setRequestStatus("none");
-      }
-    } catch (err) {
-      console.error("Error fetching pending requests:", err);
-    }
-  };
-  useEffect(() => {
-    fetchPendingRequests();
-  }, [userId, userInfo]);
-
   const handleNavigation = (targetSection) => {
     setActiveSection(targetSection);
-  };
-  const handleAcceptRequest = async (friendInfo) => {
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        "/api/friendships/accept-request",
-        {
-          friendId: friendInfo,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setRequestStatus("friends");
-      setFriendRequests((prev) =>
-        prev.filter((req) => req.user._id !== friendInfo)
-      );
-    } catch (error) {
-      console.error("Failed to accept friend request", error);
-    }
-  };
-
-  const handleDeclineRequest = async (friendInfo) => {
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        "/api/friendships/decline-request",
-        {
-          friendId: friendInfo,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setFriendRequests((prev) =>
-        prev.filter((req) => req.user._id !== friendInfo)
-      );
-      setRequestStatus("none");
-    } catch (error) {
-      console.error("Failed to decline friend request", error);
-    }
   };
 
   if (loading) {
     return <div>Loading...</div>;
   }
+
   return (
     <>
       <div className="profile-layout">
@@ -201,11 +128,9 @@ const Profile = () => {
               setUserInfo={setUserInfo}
               userId={userId}
               requestStatus={requestStatus}
-              setRequestStatus={setRequestStatus}
               handleAcceptRequest={handleAcceptRequest}
               handleDeclineRequest={handleDeclineRequest}
               socket={socket}
-              setFriendRequests={setFriendRequests}
               friendRequests={friendRequests}
             />
             <div className="profile-grid-item photos">
