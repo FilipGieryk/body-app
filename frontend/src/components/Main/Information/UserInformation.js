@@ -12,8 +12,9 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
   } = useUser();
 
   useEffect(() => {
-    console.log(friendRequests);
-    if (loggedUserInfo?.friends?.includes(userInfo._id)) {
+    console.log(requestStatus);
+
+    if (loggedUserInfo?.friends?.some((el) => el._id === userInfo._id)) {
       setRequestStatus("friends");
     } else if (
       friendRequests.some(
@@ -58,7 +59,7 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
     try {
       await axios.delete("/api/friendships/remove-friend", {
         data: {
-          userId: userId,
+          userId: loggedUserInfo._id,
           friendId: userInfo._id,
         },
       });
@@ -125,7 +126,7 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
             ></button>
           ) : (
             <>
-              {userInfo.friends.some((friend) => friend === userId) ? (
+              {requestStatus === "friends" ? (
                 <>
                   <p>Friends</p>
                   <button onClick={handleDeleteFriend}>Delete friend</button>

@@ -87,6 +87,10 @@ export const UserProvider = ({ children }) => {
       setFriendRequests((prev) =>
         prev.filter((req) => req.user._id !== friendId)
       );
+      setLoggedUserInfo((prev) => ({
+        ...prev,
+        friends: [...prev.friends, friendId],
+      }));
     } catch (error) {
       console.error("Error accepting friend request:", error);
     }

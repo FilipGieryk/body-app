@@ -24,7 +24,12 @@ const Header = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { setFriendRequests, refreshUserInfo, setLoggedUserInfo } = useUser();
+  const {
+    setFriendRequests,
+    refreshUserInfo,
+    setLoggedUserInfo,
+    loggedUserInfo,
+  } = useUser();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -50,6 +55,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+    setIsLoggedIn(false);
     localStorage.removeItem("token");
     setLoggedUserInfo(null); // Clear user info on logout
     setFriendRequests([]);
@@ -84,8 +90,8 @@ const Header = () => {
             icon: faHome,
             text: "Profile",
             id: "profile",
-            path: `/profile/${userId}`,
-            action: () => navigate(`/profile/${userId}`),
+            path: `/profile/${loggedUserInfo?._id}`,
+            action: () => navigate(`/profile/${loggedUserInfo._id}`),
           },
           {
             icon: faComment,
