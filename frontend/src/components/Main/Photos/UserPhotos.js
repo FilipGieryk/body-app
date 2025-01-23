@@ -37,7 +37,6 @@ const Photos = ({ userInfo, userId }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       setUserPhotos((prevUserPhotos) => ({
         ...prevUserPhotos,
         photos: [...prevUserPhotos.photos, response.data.photoPath],

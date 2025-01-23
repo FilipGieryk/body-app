@@ -1,20 +1,37 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-const UserInformation = ({
-  userInfo,
-  setUserInfo,
-  userId,
-  requestStatus,
-  setRequestStatus,
-  handleAcceptRequest,
-  handleDeclineRequest,
-  socket,
-  setFriendRequests,
-  friendRequests,
-}) => {
+import { useUser } from "../../../hooks/UserContext";
+const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [requestStatus, setRequestStatus] = useState("");
+  const {
+    loggedUserInfo,
+    handleAcceptRequest,
+    handleDeclineRequest,
+    friendRequests,
+  } = useUser();
 
+  useEffect(() => {
+    console.log(friendRequests);
+    if (loggedUserInfo?.friends?.includes(userInfo._id)) {
+      setRequestStatus("friends");
+    } else if (
+      friendRequests.some(
+        (req) =>
+          req.friend._id === userInfo._id && req.user._id === loggedUserInfo._id
+      )
+    ) {
+      setRequestStatus("sent");
+    } else if (
+      friendRequests.some(
+        (req) => req.user._id === userInfo._id && req.friend._id === userId
+      )
+    ) {
+      setRequestStatus("received");
+    } else {
+      setRequestStatus("none");
+    }
+  }, [friendRequests]);
   const handleSaveChanges = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -58,8 +75,8 @@ const UserInformation = ({
   const handleSendFriendRequest = async () => {
     try {
       const response = await axios.post("/api/friendships/send-request", {
-        userId, // Current user's ID
-        friendId: userInfo._id, // Profile owner's ID
+        userId: loggedUserInfo._id,
+        friendId: userInfo._id,
       });
       if (socket && socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify(response.data));
@@ -100,8 +117,8 @@ const UserInformation = ({
       ) : (
         <div className="profile-grid-inner display-column">
           <img src={userInfo.profilePhoto} className="profile-pic"></img>
-          <p>{userInfo.username}</p>
-          {userId === userInfo._id ? (
+          <p>{userInfo?.username}</p>
+          {loggedUserInfo?._id === userInfo?._id ? (
             <button
               className="edit-user-button"
               onClick={() => setIsEditing(true)}

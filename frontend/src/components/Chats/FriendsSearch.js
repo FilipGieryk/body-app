@@ -1,20 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./FriendsSearch.css";
-import axios from "axios";
+import { useUser } from "../../hooks/UserContext";
 
-const FriendsSearch = ({ friends, createOrGetMessage }) => {
+const FriendsSearch = ({ createOrGetMessage }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState([]);
   const componentRef = useRef(null);
+  const { loggedUserInfo } = useUser();
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
 
     if (value.trim() === "") {
-      setFilteredFriends(friends);
+      setFilteredFriends(loggedUserInfo.friends);
     } else {
-      const filtered = friends.filter((friend) =>
+      const filtered = loggedUserInfo.friends.filter((friend) =>
         friend.username.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredFriends(filtered);
@@ -22,7 +23,7 @@ const FriendsSearch = ({ friends, createOrGetMessage }) => {
   };
 
   const handleInputClick = () => {
-    setFilteredFriends(friends);
+    setFilteredFriends(loggedUserInfo.friends);
   };
 
   const handleFriendClick = (friend) => {

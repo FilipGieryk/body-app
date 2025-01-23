@@ -2,41 +2,20 @@ import "./MessageComponent.css";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Header from "../Other/Header";
 import { useWebSocket } from "../../hooks/webSocketContext";
-import jwtDecode from "jwt-decode";
+import { useUser } from "../../hooks/UserContext";
 
 const MessageComponent = ({ onSendMessage }) => {
   const chatHistoryRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
-  const [chatInfo, setChatInfo] = useState([]);
   const { chatId } = useParams("id");
   const socket = useWebSocket();
-
   const token = localStorage.getItem("token");
-  let userId = null;
+  const { loggedUserInfo, chats } = useUser();
 
-  if (token) {
-    try {
-      const decodedToken = JSON.parse(atob(token.split(".")[1]));
-      userId = decodedToken?.id;
-    } catch (error) {
-      console.error("Failed to decode token:", error);
-    }
-  }
-
+  const currentChat = chats.find((chat) => chat?.chatId === chatId);
   useEffect(() => {
-    const fetchChatById = async () => {
-      try {
-        const response = await axios.get(`/api/chat/${chatId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setChatInfo(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     const fetchChatMessages = async () => {
       try {
         const response = await axios.get(`/api/message/${chatId}`, {
@@ -47,8 +26,26 @@ const MessageComponent = ({ onSendMessage }) => {
         console.error(error);
       }
     };
-    fetchChatById();
+
+    // const markMessagesAsRead = async (chatId) => {
+    //   try {
+    //     const token = localStorage.getItem("token");
+    //     await axios.post(
+    //       `/api/chat/mark-read`,
+    //       { chatId },
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`, // Include the authorization token if needed
+    //         },
+    //       }
+    //     );
+    //     console.log("Messages marked as read");
+    //   } catch (error) {
+    //     console.error("Error marking messages as read:", error);
+    //   }
+    // };
     fetchChatMessages();
+    // markMessagesAsRead();
   }, [chatId]);
 
   useEffect(() => {
@@ -92,54 +89,24 @@ const MessageComponent = ({ onSendMessage }) => {
     }
   };
 
-  // const fetchChatMessages = async (chatId) => {
-  //   try {
-  //     console.log(chatId);
-  //     const response = await axios.get(`/api/message/${chatId}`);
-  //     const messages = response.data;
-  //     setMessagesByChat((prevMessages) => ({
-  //       ...prevMessages,
-  //       [chatId]:
-  //         messages.length > 0
-  //           ? messages
-  //           : [{ content: "Be the first to message!" }],
-  //     }));
-  //   } catch (error) {
-  //     console.error("Error fetching messages:", error);
-  //   }
-  // };
-
-  // const handleSendMessage = async (message) => {
-  //   if (!chatId) {
-  //     console.warn("No chat selected to send message.");
-  //     return;
-  //   }
-  //   const newMessage = { senderId: userId, content: message };
-  //   if (socket && socket.readyState === WebSocket.OPEN) {
-  //     socket.send(JSON.stringify(newMessage));
-  //     await sendMessageToServer(chatId, message);
-  //   } else {
-  //     console.error("WebSocket is not open. Cannot send message.");
-  //   }
-  // };
-
   useEffect(() => {
     if (chatHistoryRef.current) {
       chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
     }
   }, [messages]);
+
   return (
     <div className="chat-container">
       <div className="chat-information">
-        <img src={chatInfo.profilePhoto} className="friend-photo"></img>
-        <h1>{chatInfo.chatName}</h1>
+        <img src={currentChat?.profilePhoto} className="friend-photo"></img>
+        <h1>{currentChat?.chatName}</h1>
       </div>
       <div className="chat-history" ref={chatHistoryRef}>
         {messages.map((message, index) => (
           <div
             key={index}
             className={`chat-messages ${
-              message.senderId === userId ? "sent" : "received"
+              message.senderId === loggedUserInfo._id ? "sent" : "received"
             }`}
           >
             {message.content}

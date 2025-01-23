@@ -11,44 +11,46 @@ import WorkoutDetail from "./components/Details/WorkoutDetail.js";
 import ExerciseDetail from "./components/Details/ExerciseDetail.js";
 import ProtectedRoute from "./components/Other/ProtectedRoute.js";
 import Workouts from "./components/Create/Workouts.js";
-import FriendsComponent from "./components/Chats/ChatComponent.js";
 import ChatPage from "./pages/chat/ChatPage.js";
 import { WebSocketProvider } from "./hooks/webSocketContext.js";
+import { UserProvider } from "./hooks/UserContext.js";
 
 const user = { isAdmin: true };
 function App() {
   return (
     <Router>
       <WebSocketProvider>
-        <Header />
-        <div className="content-box" id="container">
-          <Routes>
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute isAdmin={user.isAdmin}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/" exact Component={GLTFViewer} />
-            <Route path="/profile/:id" exact Component={Profile} />
-            <Route path="/exercises" exact Component={ExercisesList} />
-            <Route path="/workout/create" exact Component={Workouts} />
-            <Route path="/workouts" exact Component={WorkoutsList} />
-            <Route
-              path="/workouts/:workoutId"
-              exact
-              Component={WorkoutDetail}
-            />
-            <Route path="/chat/*" exact Component={ChatPage} />
-            <Route
-              path="/exercises/:exerciseId"
-              exact
-              Component={ExerciseDetail}
-            />
-          </Routes>
-        </div>
+        <UserProvider>
+          <Header />
+          <div className="content-box" id="container">
+            <Routes>
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute isAdmin={user.isAdmin}>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/" exact Component={GLTFViewer} />
+              <Route path="/profile/:id" exact Component={Profile} />
+              <Route path="/exercises" exact Component={ExercisesList} />
+              <Route path="/workout/create" exact Component={Workouts} />
+              <Route path="/workouts" exact Component={WorkoutsList} />
+              <Route
+                path="/workouts/:workoutId"
+                exact
+                Component={WorkoutDetail}
+              />
+              <Route path="/chat/*" exact Component={ChatPage} />
+              <Route
+                path="/exercises/:exerciseId"
+                exact
+                Component={ExerciseDetail}
+              />
+            </Routes>
+          </div>
+        </UserProvider>
       </WebSocketProvider>
     </Router>
   );

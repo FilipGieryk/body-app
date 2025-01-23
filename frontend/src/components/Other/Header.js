@@ -12,24 +12,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useUser } from "../../hooks/UserContext";
 
 const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [isNavHovered, setIsNavHovered] = useState(false);
   const [visibleModal, setVisibleModal] = useState(null);
-  const [isHovered, setIsHovered] = useState(null);
   const [hoveredLink, setHoveredLink] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState();
-  // const [activeTab, setActiveTab] = useState("login");
+
   const navigate = useNavigate();
   const location = useLocation();
+  const { setFriendRequests, refreshUserInfo, setLoggedUserInfo } = useUser();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
+      refreshUserInfo();
       setIsLoggedIn(true);
-      console.log(token);
       const decodedToken = JSON.parse(atob(token.split(".")[1]));
       setUserId(decodedToken.id);
     } else {
@@ -46,6 +47,13 @@ const Header = () => {
     // Set isLoggedIn to true and userId when login is successful
     setIsLoggedIn(true);
     setIsLoginVisible(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setLoggedUserInfo(null); // Clear user info on logout
+    setFriendRequests([]);
+    navigate("/");
   };
 
   const links = [
@@ -90,11 +98,7 @@ const Header = () => {
             icon: faSignOutAlt,
             text: "Logout",
             id: "logout",
-            action: () => {
-              localStorage.removeItem("token");
-              setIsLoggedIn(false);
-              navigate("/");
-            },
+            action: handleLogout,
           },
         ]
       : [
