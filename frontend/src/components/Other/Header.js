@@ -32,6 +32,7 @@ const Header = () => {
     setLoggedUserInfo,
     loggedUserInfo,
     setChats,
+    fetchPendingRequests,
   } = useUser();
 
   const socket = useWebSocket();
@@ -76,7 +77,14 @@ const Header = () => {
       if (message.type === "friend-request") {
         setFriendRequests((prev) => [
           ...prev,
-          { friend: { _id: message.friendId }, user: { _id: message.userId } },
+          {
+            friend: { _id: message.friendId },
+            user: {
+              _id: message.userId,
+              username: message.username,
+              profilePhoto: message.profilePhoto,
+            },
+          },
         ]);
       } else if (message.type === "chat-message") {
         let chatExists = false;

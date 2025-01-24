@@ -4,6 +4,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useWebSocket } from "../../hooks/webSocketContext";
 import { useUser } from "../../hooks/UserContext";
+import FriendsSearch from "./FriendsSearch";
+import { useNavigate } from "react-router-dom";
 
 const MessageComponent = ({
   onSendMessage,
@@ -15,11 +17,13 @@ const MessageComponent = ({
   const [inputValue, setInputValue] = useState("");
   const { chatId } = useParams("id");
   const socket = useWebSocket();
+  const [groupUsers, setGroupUsers] = useState([]);
 
   const token = localStorage.getItem("token");
   const { loggedUserInfo, chats } = useUser();
 
   const currentChat = chats.find((chat) => chat?.chatId === chatId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchChatMessages(chatId);
@@ -42,16 +46,52 @@ const MessageComponent = ({
     };
   }, [socket]);
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = async (e) => {
     if (e.key === "Enter" && inputValue.trim()) {
+      if (chatId === "new") {
+        try {
+          const newChatId = await createGroupChat();
+
+          if (newChatId) {
+            await sendMessageToServer(inputValue.trim(), newChatId);
+            navigate(`/chat/${newChatId}`);
+          }
+        } catch (error) {
+          console.error("Error creating group chat or sending message:", error);
+        }
+        setInputValue("");
+        return;
+      }
+
       sendMessageToServer(inputValue.trim());
       setInputValue("");
     }
   };
-  const sendMessageToServer = async (message) => {
+  const createGroupChat = async () => {
+    if (groupUsers.length === 0) {
+      console.error("No users selected for the group.");
+      return null;
+    }
     try {
       const response = await axios.post(
-        `/api/message/${chatId}/send`,
+        `/api/chat/new-group-chat`,
+        {
+          recipientsId: groupUsers.map((user) => user._id),
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const newChatId = response.data.chatId;
+      return newChatId;
+    } catch (error) {
+      console.error("error creating group", error);
+    }
+  };
+  const sendMessageToServer = async (message, targetChatId = chatId) => {
+    try {
+      const response = await axios.post(
+        `/api/message/${targetChatId}/send`,
         {
           content: message,
         },
@@ -65,6 +105,9 @@ const MessageComponent = ({
       throw error;
     }
   };
+  const addToGroup = (friend) => {
+    setGroupUsers((prev) => [...prev, friend]);
+  };
 
   useEffect(() => {
     if (chatHistoryRef.current) {
@@ -74,10 +117,21 @@ const MessageComponent = ({
 
   return (
     <div className="chat-container">
-      <div className="chat-information">
-        <img src={currentChat?.profilePhoto} className="friend-photo"></img>
-        <h1>{currentChat?.chatName}</h1>
-      </div>
+      {currentChat === undefined ? (
+        <div>
+          <FriendsSearch addToGroup={addToGroup} chatType="group" />
+          <div>
+            {groupUsers.map((el) => (
+              <div>{el.username}</div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="chat-information">
+          <img src={currentChat?.profilePhoto} className="friend-photo"></img>
+          <h1>{currentChat?.chatName}</h1>
+        </div>
+      )}
       <div className="chat-history" ref={chatHistoryRef}>
         {messages.map((message, index) => (
           <div

@@ -29,6 +29,25 @@ class ChatController {
       res.status(500).json({ message: "Error creating chat" });
     }
   }
+  async createGroupChat(req, res) {
+    try {
+      const { recipientId, groupName } = req.body;
+      const userId = req.user._id;
+      const participants = [recipientId, userId];
+
+      chat = await chatService.createChat(
+        participants,
+        (isGroup = true),
+        groupName
+      );
+      return res
+        .status(201)
+        .json(await chatService.getChatDetails(chat, userId));
+    } catch (err) {
+      console.error("Error creating chat", err);
+      res.status(500).json({ message: "Error creating chat" });
+    }
+  }
 
   async getChats(req, res) {
     const userId = req.user._id;

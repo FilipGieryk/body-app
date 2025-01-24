@@ -2,7 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import "./FriendsSearch.css";
 import { useUser } from "../../hooks/UserContext";
 
-const FriendsSearch = ({ createOrGetMessage }) => {
+const FriendsSearch = ({
+  createOrGetMessage,
+  chatType = "private",
+  addToGroup,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState([]);
   const componentRef = useRef(null);
@@ -27,7 +31,12 @@ const FriendsSearch = ({ createOrGetMessage }) => {
   };
 
   const handleFriendClick = (friend) => {
-    createOrGetMessage(friend);
+    if (chatType == "private") {
+      createOrGetMessage(friend);
+    }
+    if (chatType == "group") {
+      addToGroup(friend);
+    }
     setFilteredFriends([]);
   };
 

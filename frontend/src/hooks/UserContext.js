@@ -76,20 +76,20 @@ export const UserProvider = ({ children }) => {
   //   }
   // };
 
-  const handleAcceptRequest = async (friendId) => {
+  const handleAcceptRequest = async (friend) => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
         "/api/friendships/accept-request",
-        { friendId },
+        { friendId: friend._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setFriendRequests((prev) =>
-        prev.filter((req) => req.user._id !== friendId)
+        prev.filter((req) => req.user._id !== friend._id)
       );
       setLoggedUserInfo((prev) => ({
         ...prev,
-        friends: [...prev.friends, friendId],
+        friends: [...prev.friends, friend],
       }));
     } catch (error) {
       console.error("Error accepting friend request:", error);
@@ -124,6 +124,7 @@ export const UserProvider = ({ children }) => {
         setFriendRequests,
         setChats,
         chats,
+        fetchPendingRequests,
       }}
     >
       {children}

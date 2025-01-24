@@ -9,6 +9,11 @@ router.post(
   chatController.createOrGetChat
 );
 router.get("/", authenticateToken, chatController.getChats);
+router.get(
+  "/new-group-chat",
+  authenticateToken,
+  chatController.createGroupChat
+);
 router.get("/:chatId", authenticateToken, chatController.getChat);
 router.patch("/:chatId/last-message", chatController.updateLastMessage);
 router.delete("/:chatId", chatController.deleteChat);

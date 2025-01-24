@@ -3,7 +3,7 @@ import axios from "axios";
 import FriendsSearch from "./FriendsSearch";
 import { useEffect, useState, useRef } from "react";
 import { useWebSocket } from "../../hooks/webSocketContext";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../hooks/UserContext";
 const ChatComponent = ({ userId }) => {
   const {
@@ -13,9 +13,11 @@ const ChatComponent = ({ userId }) => {
     loggedUserInfo,
     chats,
   } = useUser();
-
-  const [showedInfo, setShowedInfo] = useState("chats");
   const navigate = useNavigate();
+  const [showedInfo, setShowedInfo] = useState("chats");
+  const createGroup = () => {
+    navigate("/chat/new");
+  };
 
   const createOrGetMessage = async (friend) => {
     try {
@@ -50,6 +52,7 @@ const ChatComponent = ({ userId }) => {
               Friend Requests
             </h1>
           )}
+          <button onClick={createGroup}>c</button>
         </div>
         <FriendsSearch
           userId={userId}
@@ -89,13 +92,11 @@ const ChatComponent = ({ userId }) => {
           <>
             {friendRequests.map((req) => (
               <div className="friend-container">
-                {/* <img className="friend-photo" src={req.user.profilePhoto}></img> */}
+                <img className="friend-photo" src={req.user.profilePhoto}></img>
                 <div className="friend-chat-info">
                   <h2>{req.user.username}</h2>
                 </div>
-                <button onClick={() => handleAcceptRequest(req.user._id)}>
-                  +
-                </button>
+                <button onClick={() => handleAcceptRequest(req.user)}>+</button>
                 <button onClick={() => handleDeclineRequest(req.user._id)}>
                   -
                 </button>
