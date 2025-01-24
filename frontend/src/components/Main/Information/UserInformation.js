@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../../../hooks/UserContext";
+import { useNavigate } from "react-router-dom";
 const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [requestStatus, setRequestStatus] = useState("");
@@ -10,6 +11,7 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
     handleDeclineRequest,
     friendRequests,
   } = useUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loggedUserInfo?.friends?.some((el) => el._id === userInfo._id)) {
@@ -50,6 +52,25 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
       setIsEditing(false); // Exit edit mode after saving
     } catch (error) {
       console.error("Error updating user info", error);
+    }
+  };
+
+  const createOrGetMessage = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "/api/chat/create-or-get",
+        {
+          recipientId: userInfo._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      navigate(`/chat/${response.data.chatId}`);
+    } catch (error) {
+      console.error("error creating chat", error);
     }
   };
 
@@ -109,6 +130,9 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
               }))
             }
           />
+          <input placeholder="yt"></input>
+          <input placeholder="insta"></input>
+          <input placeholder="x"></input>
           <button onClick={handleSaveChanges} className="edit-user-button">
             Save
           </button>
@@ -140,6 +164,7 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
               ) : (
                 <button onClick={handleSendFriendRequest}>Add Friend</button>
               )}
+              <button onClick={createOrGetMessage}>Message</button>
             </>
           )}
         </div>

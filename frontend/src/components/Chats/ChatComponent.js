@@ -3,7 +3,7 @@ import axios from "axios";
 import FriendsSearch from "./FriendsSearch";
 import { useEffect, useState, useRef } from "react";
 import { useWebSocket } from "../../hooks/webSocketContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../hooks/UserContext";
 const ChatComponent = ({ userId }) => {
   const {

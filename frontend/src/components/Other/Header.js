@@ -31,12 +31,7 @@ const Header = () => {
     refreshUserInfo,
     setLoggedUserInfo,
     loggedUserInfo,
-    chats,
     setChats,
-    friendRequests,
-
-    handleAcceptRequest,
-    handleDeclineRequest,
   } = useUser();
 
   const socket = useWebSocket();

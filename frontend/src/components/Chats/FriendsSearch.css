@@ -1,6 +1,7 @@
 .friend-search-container {
   position: relative;
   width: 100%;
+  background-color: var(--secondary);
 }
 
 .friends-search-input {
