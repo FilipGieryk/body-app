@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/Other/ProtectedRoute.js";
 import Workouts from "./components/Create/Workouts.js";
 import ChatPage from "./pages/chat/ChatPage.js";
 import { WebSocketProvider } from "./hooks/webSocketContext.js";
+import Help from "./pages/help/Help.js";
 import { UserProvider } from "./hooks/UserContext.js";
 
 const user = { isAdmin: true };
@@ -34,6 +35,7 @@ function App() {
               />
               <Route path="/" exact Component={GLTFViewer} />
               <Route path="/profile/:id" exact Component={Profile} />
+              <Route path="/help" exact Component={Help} />
               <Route path="/exercises" exact Component={ExercisesList} />
               <Route path="/workout/create" exact Component={Workouts} />
               <Route path="/workouts" exact Component={WorkoutsList} />

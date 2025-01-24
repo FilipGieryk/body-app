@@ -5,47 +5,24 @@ import { useParams } from "react-router-dom";
 import { useWebSocket } from "../../hooks/webSocketContext";
 import { useUser } from "../../hooks/UserContext";
 
-const MessageComponent = ({ onSendMessage }) => {
+const MessageComponent = ({
+  onSendMessage,
+  messages,
+  setMessages,
+  fetchChatMessages,
+}) => {
   const chatHistoryRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState([]);
   const { chatId } = useParams("id");
   const socket = useWebSocket();
+
   const token = localStorage.getItem("token");
   const { loggedUserInfo, chats } = useUser();
 
   const currentChat = chats.find((chat) => chat?.chatId === chatId);
-  useEffect(() => {
-    const fetchChatMessages = async () => {
-      try {
-        const response = await axios.get(`/api/message/${chatId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setMessages(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
-    // const markMessagesAsRead = async (chatId) => {
-    //   try {
-    //     const token = localStorage.getItem("token");
-    //     await axios.post(
-    //       `/api/chat/mark-read`,
-    //       { chatId },
-    //       {
-    //         headers: {
-    //           Authorization: `Bearer ${token}`, // Include the authorization token if needed
-    //         },
-    //       }
-    //     );
-    //     console.log("Messages marked as read");
-    //   } catch (error) {
-    //     console.error("Error marking messages as read:", error);
-    //   }
-    // };
-    fetchChatMessages();
-    // markMessagesAsRead();
+  useEffect(() => {
+    fetchChatMessages(chatId);
   }, [chatId]);
 
   useEffect(() => {

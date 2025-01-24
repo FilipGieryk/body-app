@@ -8,53 +8,14 @@ import { useUser } from "../../hooks/UserContext";
 const ChatComponent = ({ userId }) => {
   const {
     friendRequests,
-    setFriendRequests,
     handleAcceptRequest,
     handleDeclineRequest,
     loggedUserInfo,
     chats,
   } = useUser();
-  const socket = useWebSocket();
+
   const [showedInfo, setShowedInfo] = useState("chats");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleWebSocketMessage = (event) => {
-      const message = JSON.parse(event.data);
-
-      if (message.type === "friend-request") {
-        setFriendRequests((prev) => [
-          ...prev,
-          { friend: { _id: message.friendId }, user: { _id: message.userId } },
-        ]);
-      }
-    };
-    socket.addEventListener("message", handleWebSocketMessage);
-
-    return () => {
-      socket.removeEventListener("message", handleWebSocketMessage);
-    };
-  }, [socket]);
-  // put to messages mby bmy not
-  const markMessagesAsRead = async (chatId) => {
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        `/api/chat/mark-read`,
-        { chatId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the authorization token if needed
-          },
-        }
-      );
-      console.log("Messages marked as read");
-    } catch (error) {
-      console.error("Error marking messages as read:", error);
-    }
-  };
 
   const createOrGetMessage = async (friend) => {
     try {

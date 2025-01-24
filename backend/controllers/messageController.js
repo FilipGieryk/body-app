@@ -4,13 +4,22 @@ const { broadcast } = require("../websocket");
 class MessageController {
   async getMessages(req, res) {
     const { chatId } = req.params;
+    const userId = req.user._id;
 
     try {
-      const messages = await MessageService.getMessagesByChatId(chatId);
+      const messages = await MessageService.getMessagesByChatId(chatId, userId);
       res.status(200).json(messages);
-    } catch (err) {
-      console.error("Error fetching messages", err);
-      res.status(500).json({ message: "Error fetching messages" });
+    } catch (error) {
+      console.error("Error fetching messages", error);
+      if (error.message === "Chat not found") {
+        return res.status(404).json({ error: "Chat not found" });
+      }
+      if (error.message === "User is not a member of this chat") {
+        return res
+          .status(403)
+          .json({ error: "User is not a member of this chat" });
+      }
+      res.status(500).json({ error: "Error fetching messages" });
     }
   }
 

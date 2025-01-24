@@ -3,7 +3,17 @@ const UnreadMessage = require("../models/UnreadMessage");
 const Chat = require("../models/Chat");
 
 class MessageService {
-  async getMessagesByChatId(chatId) {
+  async getMessagesByChatId(chatId, userId) {
+    const chat = await Chat.findOne({ _id: chatId });
+
+    if (!chat) {
+      throw new Error("Chat not found");
+    }
+
+    const isMember = chat.participants.includes(userId);
+    if (!isMember) {
+      throw new Error("User is not a member of this chat");
+    }
     return await Message.find({ chatId }).sort({ timestamp: 1 });
   }
 

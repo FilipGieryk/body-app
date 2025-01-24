@@ -9,10 +9,12 @@ import {
   faUserPlus,
   faDumbbell,
   faComment,
+  faQuestion,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "../../hooks/UserContext";
+import { useWebSocket } from "../../hooks/webSocketContext";
 
 const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
@@ -29,7 +31,15 @@ const Header = () => {
     refreshUserInfo,
     setLoggedUserInfo,
     loggedUserInfo,
+    chats,
+    setChats,
+    friendRequests,
+
+    handleAcceptRequest,
+    handleDeclineRequest,
   } = useUser();
+
+  const socket = useWebSocket();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -62,6 +72,94 @@ const Header = () => {
     navigate("/");
   };
 
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleWebSocketMessage = (event) => {
+      const message = JSON.parse(event.data);
+
+      if (message.type === "friend-request") {
+        setFriendRequests((prev) => [
+          ...prev,
+          { friend: { _id: message.friendId }, user: { _id: message.userId } },
+        ]);
+      } else if (message.type === "chat-message") {
+        let chatExists = false;
+
+        setChats((prevChats) => {
+          chatExists = prevChats.some((chat) => chat.chatId === message.chatId);
+
+          if (chatExists) {
+            return prevChats.map((chat) =>
+              chat.chatId === message.chatId
+                ? {
+                    ...chat,
+                    hasUnread: true,
+                    lastMessage: {
+                      ...message,
+                      timestamp: new Date().toISOString(),
+                    },
+                  }
+                : chat
+            );
+          } else {
+            return [
+              ...prevChats,
+              {
+                chatId: message.chatId,
+                hasUnread: true,
+                lastMessage: {
+                  ...message,
+                  timestamp: new Date().toISOString(),
+                },
+                placeholder: true,
+              },
+            ];
+          }
+        });
+
+        // Fetch the full chat only if it doesn't exist
+        if (!chatExists) {
+          fetchChatById(message.chatId);
+        }
+      }
+    };
+
+    socket.addEventListener("message", handleWebSocketMessage);
+
+    return () => {
+      socket.removeEventListener("message", handleWebSocketMessage);
+    };
+  }, [socket]);
+
+  const fetchChatById = async (chatId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(`/api/chat/${chatId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the authorization token if needed
+        },
+      }); // Adjust the endpoint
+      if (!response.ok) {
+        throw new Error("Failed to fetch chat");
+      }
+
+      const fullChat = await response.json();
+
+      // Update the chat with the fetched data
+      setChats((prevChats) =>
+        prevChats.map((chat) =>
+          chat.chatId === chatId
+            ? { ...fullChat } // Replace the placeholder or existing chat with full data
+            : chat
+        )
+      );
+    } catch (error) {
+      console.error(`Error fetching chat ${chatId}:`, error);
+    }
+  };
+
   const links = [
     {
       icon: faHome,
@@ -72,6 +170,13 @@ const Header = () => {
     },
     ...(isLoggedIn
       ? [
+          {
+            icon: faQuestion,
+            text: "Help",
+            id: "help",
+            path: "/help",
+            action: () => navigate("/help"),
+          },
           {
             icon: faDumbbell,
             text: "Excercises",
@@ -108,6 +213,13 @@ const Header = () => {
           },
         ]
       : [
+          {
+            icon: faQuestion,
+            text: "Help",
+            id: "help",
+            path: "help",
+            action: () => navigate("/help"),
+          },
           {
             icon: faDumbbell,
             text: "Exercises",
