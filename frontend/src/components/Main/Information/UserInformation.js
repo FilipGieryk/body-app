@@ -12,8 +12,6 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
   } = useUser();
 
   useEffect(() => {
-    console.log(requestStatus);
-
     if (loggedUserInfo?.friends?.some((el) => el._id === userInfo._id)) {
       setRequestStatus("friends");
     } else if (

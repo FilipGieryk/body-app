@@ -10,21 +10,33 @@ const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
-  const isLoggedIn = Boolean(localStorage.getItem("token")); // Example check for login status
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!token) {
+      console.warn("No token found. Skipping WebSocket connection.");
+      return;
+    }
+    let decodedToken;
+    try {
+      decodedToken = JSON.parse(atob(token.split(".")[1]));
+    } catch (error) {
+      console.error("Invalid token:", error);
+      return;
+    }
+    const userId = decodedToken.id;
 
-    const webSocket = new WebSocket("ws://localhost:3000");
+    const webSocket = new WebSocket(
+      `ws://localhost:3000?userId=${encodeURIComponent(userId)}`
+    );
 
     webSocket.onopen = () => {
-      console.log("Connected to WebSocket server");
+      console.log("Connected to WebSocket server:", userId);
     };
 
     webSocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       console.log("Received WebSocket message:", message);
-      // Handle messages globally if needed, or delegate handling to other components
     };
 
     webSocket.onclose = () => {
@@ -41,7 +53,7 @@ export const WebSocketProvider = ({ children }) => {
     return () => {
       webSocket.close();
     };
-  }, [isLoggedIn]);
+  }, [token]);
 
   return (
     <WebSocketContext.Provider value={socket}>

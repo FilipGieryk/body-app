@@ -1,5 +1,5 @@
 const friendshipService = require("../services/friendshipService");
-const { broadcast } = require("../websocket");
+const { sendToUser } = require("../websocket");
 
 class FriendshipController {
   async sendRequest(req, res) {
@@ -10,10 +10,9 @@ class FriendshipController {
         friendId
       );
 
-      broadcast({
+      sendToUser(friendId, {
         type: "friend-request",
-        userId,
-        friendId,
+        from: fromUserId,
       });
       return res.status(201).json({ message: "Friend request sent", result });
     } catch (error) {

@@ -1,5 +1,6 @@
 const MessageService = require("../services/messageService");
-const { broadcast } = require("../websocket");
+const ChatService = require("../services/chatService");
+const { sendToUsers } = require("../websocket");
 
 class MessageController {
   async getMessages(req, res) {
@@ -35,8 +36,13 @@ class MessageController {
         content
       );
 
-      // Optionally notify WebSocket clients
-      broadcast({
+      const chat = await ChatService.getChatById(chatId);
+      if (!chat) {
+        return res.status(404).json({ message: "Chat not found" });
+      }
+      const participants = chat.participants;
+
+      sendToUsers(participants, {
         type: "chat-message",
         chatId,
         senderId,
