@@ -3,9 +3,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Rating from "./Rating";
 import SearchInput from "./SearchInput";
 import "./SearchList.css";
+import CreateWorkout from "../Create/CreateWorkout";
+import { useLocation } from "react-router-dom";
 const backendURL = "http://localhost:3000";
 
-const SearchList = ({ data, contentType, workoutId, onAddExercise }) => {
+const SearchList = ({ data, contentType, onAddExercise }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBodyParts, setSelectedBodyParts] = useState([]);
   const [sortOrder, setSortOrder] = useState({
@@ -13,6 +15,7 @@ const SearchList = ({ data, contentType, workoutId, onAddExercise }) => {
     order: "desc",
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const [hoveredWorkout, setHoveredWorkout] = useState(null);
   const [userId, setUserId] = useState("");
   const token = localStorage.getItem("token");
@@ -98,9 +101,11 @@ const SearchList = ({ data, contentType, workoutId, onAddExercise }) => {
   });
 
   const handleAddElement = (addEl) => {
-    workoutId === undefined
-      ? console.log("makenewworkut")
-      : onAddExercise(addEl);
+    if (location.pathname === "/exercises") {
+      navigate("/workout/create", { state: { addedExercise: addEl } });
+    } else {
+      onAddExercise(addEl);
+    }
   };
 
   return (

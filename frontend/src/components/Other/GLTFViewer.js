@@ -44,7 +44,7 @@ const GLTFViewer = () => {
       0.1,
       1000
     );
-    camera.position.z = 2;
+    camera.position.z = 5;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -70,7 +70,7 @@ const GLTFViewer = () => {
     }
 
     function initObject(scene) {
-      ObjectLoader.loadModel("models/body5.gltf", scene, (object) => {
+      ObjectLoader.loadModel("models/bodyy123.gltf", scene, (object) => {
         scene.add(object);
         allObjectsRef.current.push(object); // Add to persistent ref
         Utils.centerObject(object);

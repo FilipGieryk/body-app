@@ -2,7 +2,7 @@ const workoutService = require("../services/workoutService");
 
 class WorkoutController {
   async createWorkout(req, res) {
-    const { userId } = req.params;
+    const userId = req.user._id;
     const workoutData = req.body;
 
     try {

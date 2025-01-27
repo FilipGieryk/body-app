@@ -12,7 +12,7 @@ const WorkoutDetail = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [workoutSession, setWorkoutSession] = useState(null);
   const [userId, setUserId] = useState("");
-
+  console.log(workoutDetails);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -77,7 +77,8 @@ const WorkoutDetail = () => {
 
   return (
     <div className="workout-detail-container">
-      <h1 className="workout-detail-name">{workoutDetails.name}</h1>
+      <h1 className="workout-detail-name">{workoutDetails.workoutName}</h1>
+      <p className="workout-detail-name">{workoutDetails.workoutDetails}</p>
 
       {modifiedExercises.map((el, index) => (
         <Link

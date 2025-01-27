@@ -18,25 +18,77 @@
   align-items: center;
   flex-direction: column;
   background-color: var(--primary);
+  gap: 3rem;
 }
 .help-nav-splits {
   position: relative;
+  width: 150px; /* Set a fixed width */
+  height: 50px; /* Set a fixed height */
+  text-align: center;
+  font-size: 2rem; /* Make the text larger */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.splits-label {
+  display: block;
+  width: 100%;
+  height: 100%;
+  line-height: 50px; /* Vertically center text inside the box */
+  background-color: var(--primary);
+  color: white;
+  transition: opacity 0.3s ease;
 }
 .splits-options {
-  position: absolute; /* Position relative to parent container */
-  top: 100%; /* Position below the "splits" label */
+  position: absolute; /* Position the options relative to the parent */
+  top: 0; /* Keep in the same position as the label */
   left: 0;
-  background-color: #f9f9f9; /* Dropdown background color */
-  border: 1px solid #ccc; /* Optional border for dropdown */
-  padding: 10px;
-  display: none; /* Initially hidden */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  width: 100%; /* Match the width of the label */
+  height: 100%; /* Match the height of the label */
+  display: none; /* Hide the options by default */
+  background-color: var(--primary); /* Match the background */
+  display: flex;
+  flex-direction: column; /* Stack options vertically */
+  justify-content: center;
+  align-items: center;
+  gap: 5px; /* Add spacing between options */
+}
+
+.splits-options div {
+  width: 100%; /* Make options take up the full width */
+  text-align: center; /* Center text */
+  font-size: 1.5rem; /* Slightly smaller than label */
+  color: black;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.splits-options div:hover {
+  background-color: #ccc; /* Change background color on hover */
+  color: black; /* Change text color on hover */
 }
 .help-nav-splits:hover .splits-options {
-  display: block; /* Show on hover */
+  display: flex; /* Show the options on hover */
 }
+.help-nav-splits:hover .splits-label {
+  display: none; /* Hide the label when hovered */
+}
+
 .help-nav-rest {
   display: flex;
   flex-direction: column; /* Stack reps and sets vertically */
   gap: 5px; /* Add spacing between reps and sets */
+}
+.split-pros {
+  color: green;
+}
+.split-cons {
+  color: red;
+}
+strong {
+  color: black;
 }

@@ -1,7 +1,9 @@
+import WokroutsList from "../../components/Main/Workouts/WorkoutsList";
 import "./help.css";
 import { useState } from "react";
 const Help = () => {
   const splitsInfo = {
+    // example add workouts
     fullBody: {
       name: "Full Body",
       info: "A workout that targets all major muscle groups in one session.",
@@ -51,26 +53,24 @@ const Help = () => {
   return (
     <div className="help-container">
       <div>
-        <p className="help-content">help</p>
         <h1>
           Split - {selectedSplit ? selectedSplit.name : "Select an option"}
         </h1>
         <div className="selected-content">
-          <h2>{selectedSplit.name}</h2>
-          <p>
-            <strong>Info:</strong> {selectedSplit.info}
-          </p>
-          <p>
+          <p>{selectedSplit.info}</p>
+          <p className="split-pros">
             <strong>Pros:</strong> {selectedSplit.pros}
           </p>
-          <p>
+          <p className="split-cons">
             <strong>Cons:</strong> {selectedSplit.cons}
           </p>
           <p>
-            <strong>Example:</strong> {selectedSplit.example}
+            <strong>Workouts:</strong> {selectedSplit.workouts}
           </p>
           <p>
-            <strong>Workouts:</strong> {selectedSplit.workouts}
+            {/* add three made workouts for upperlower */}
+            <strong>Example:</strong>
+            <WokroutsList userIfno={selectedSplit.example} />
           </p>
         </div>
       </div>

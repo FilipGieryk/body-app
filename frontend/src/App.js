@@ -10,7 +10,7 @@ import AdminDashboard from "./components/Create/AdminDashboard/AdminDashboard.js
 import WorkoutDetail from "./components/Details/WorkoutDetail.js";
 import ExerciseDetail from "./components/Details/ExerciseDetail.js";
 import ProtectedRoute from "./components/Other/ProtectedRoute.js";
-import Workouts from "./components/Create/Workouts.js";
+import CreateWorkout from "./components/Create/CreateWorkout.js";
 import ChatPage from "./pages/chat/ChatPage.js";
 import { WebSocketProvider } from "./hooks/webSocketContext.js";
 import Help from "./pages/help/Help.js";
@@ -37,7 +37,7 @@ function App() {
               <Route path="/profile/:id" exact Component={Profile} />
               <Route path="/help" exact Component={Help} />
               <Route path="/exercises" exact Component={ExercisesList} />
-              <Route path="/workout/create" exact Component={Workouts} />
+              <Route path="/workout/create" exact Component={CreateWorkout} />
               <Route path="/workouts" exact Component={WorkoutsList} />
               <Route
                 path="/workouts/:workoutId"

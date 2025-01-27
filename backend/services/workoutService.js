@@ -9,7 +9,7 @@ class WorkoutService {
 
     const workoutExercises = await Promise.all(
       workoutData.exercises.map(async (ex) => {
-        const exercise = await Exercise.findById(ex.exercise);
+        const exercise = await Exercise.findById(ex._id);
         if (!exercise)
           throw new Error(`Exercise with ID ${ex.exercise} not found`);
         return {
