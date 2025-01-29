@@ -2,7 +2,7 @@ import styles from "./BodyPartInfo.module.css";
 import { useEffect, useState, useRef } from "react";
 import Thumbnail from "../../Thumbnail/Thumbnail";
 
-const BodyPartInfo = ({ staticInfo, exercises, animationDuration = 20 }) => {
+const BodyPartInfo = ({ staticInfo, exercises, animationDuration = 5 }) => {
   const [visibleText, setVisibleText] = useState([]);
   const [currentLine, setCurrentLine] = useState(0);
   const [showCursor, setShowCursor] = useState(true);
@@ -50,7 +50,6 @@ const BodyPartInfo = ({ staticInfo, exercises, animationDuration = 20 }) => {
       timeoutIds.current = [];
     };
   }, [currentLine, staticInfo, animationDuration]);
-  console.log(currentLine);
   return (
     <div className={styles.container}>
       {visibleText.map((text, index) => (

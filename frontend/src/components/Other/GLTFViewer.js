@@ -100,10 +100,6 @@ const GLTFViewer = () => {
       if (event.button === 0) {
         // Left mouse button
         isMouseDownRef.current = true;
-        // Log that the mouse was pressed
-        console.log(
-          "Mouse down detected, waiting for movement to start animation."
-        );
 
         // Pause the animation initially
         if (animationActionRef.current) {
@@ -182,20 +178,20 @@ const GLTFViewer = () => {
         true
       );
 
-      if (intersects.length > 0 && !clickedObjectRef.current) {
+      if (intersects.length > 0) {
         const newIntersected = intersects[0].object;
 
         if (
           newIntersected !== clickedOjbect &&
           currentIntersected !== newIntersected &&
-          !clickedObjectRef.current
+          currentIntersected !== clickedObjectRef.current
         ) {
           currentIntersected?.material.color.set(0.8, 0.8, 0.8);
-          if (!excludedMeshes.includes(newIntersected.name)) {
-            newIntersected.material.color.set(10, 10, 10);
-          }
-          currentIntersected = newIntersected;
         }
+        if (!excludedMeshes.includes(newIntersected.name)) {
+          newIntersected.material.color.set(10, 10, 10);
+        }
+        currentIntersected = newIntersected;
       } else if (
         currentIntersected &&
         currentIntersected !== clickedObjectRef.current &&

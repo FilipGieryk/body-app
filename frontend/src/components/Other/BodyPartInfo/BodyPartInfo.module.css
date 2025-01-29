@@ -60,4 +60,15 @@
 .exercises {
   display: flex;
   gap: 1em;
+  animation: appear 0.2s linear 1s forwards;
+  clip-path: inset(50% 0 50% 0);
+}
+
+@keyframes appear {
+  0% {
+    clip-path: inset(50% 0 50% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
 }
