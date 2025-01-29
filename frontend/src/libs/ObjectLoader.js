@@ -9,7 +9,8 @@ export class ObjectLoader {
       path,
       function (gltf) {
         const object = gltf.scene;
-
+        const animations = gltf.animations;
+        scene.add(object);
         // Traverse through the loaded object to handle meshes and custom data
         object.traverse((node) => {
           if (node.isMesh && node.userData && node.userData.gltfExtras) {
@@ -22,11 +23,12 @@ export class ObjectLoader {
           }
         });
 
-        // Add the loaded object to the scene
-        scene.add(object);
-
+        // mixerRef.current = new THREE.AnimationMixer(gltf.scene);
+        // gltf.animations.forEach((clip) => {
+        //   mixerRef.current.clipAction(clip).play(); // Play the animation
+        // });
         // Invoke the callback with the loaded object
-        if (onLoadedCallback) onLoadedCallback(object);
+        if (onLoadedCallback) onLoadedCallback(object, animations);
       },
       function (xhr) {
         // Log loading progress

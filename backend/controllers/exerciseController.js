@@ -28,6 +28,23 @@ class ExerciseController {
     }
   }
 
+  async getExercisesByBodyPart(req, res) {
+    const { bodyPart, limit } = req.query;
+
+    if (!bodyPart) {
+      return res.status(400).json({ error: "bodyPart is required" });
+    }
+    try {
+      const exercises = await exerciseService.getExerciseByBodyPart(
+        bodyPart,
+        limit
+      );
+      res.json(exercises);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
   async getExerciseById(req, res) {
     try {
       const exercise = await exerciseService.getExerciseById(req.params.id);

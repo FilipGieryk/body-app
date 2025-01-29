@@ -9,6 +9,18 @@ class ExerciseService {
   async getAllExercises() {
     return await Exercise.find();
   }
+  async getExerciseByBodyPart(bodyPart, limit) {
+    return await Exercise.find({
+      bodyPart: {
+        $elemMatch: {
+          part: bodyPart,
+          scale: { $gt: 39 },
+        },
+      },
+    })
+      .sort({ averageRating: -1 })
+      .limit(limit);
+  }
 
   async getExerciseById(id) {
     return await Exercise.findById(id);

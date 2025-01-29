@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.post("/", upload.single("media"), exerciseController.createExercise);
 router.get("/", exerciseController.getAllExercises);
-router.get("/:id", exerciseController.getExerciseById);
+router.get("/detail/:id", exerciseController.getExerciseById);
+router.get("/body-part", exerciseController.getExercisesByBodyPart);
 router.put("/:id", exerciseController.updateExercise);
 router.delete("/:id", exerciseController.deleteExercise);
 
