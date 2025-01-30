@@ -70,7 +70,7 @@ const Help = () => {
           <p>
             {/* add three made workouts for upperlower */}
             <strong>Example:</strong>
-            <WokroutsList userIfno={selectedSplit.example} />
+            {/* <WokroutsList userIfno={selectedSplit.example} /> */}
           </p>
         </div>
       </div>

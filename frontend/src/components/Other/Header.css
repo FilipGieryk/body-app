@@ -1,6 +1,10 @@
 /* .nav-animation {
   animation: moveNav 0.3s ease-in-out forwards;
 } */
+:root {
+  --prevPos: 0px;
+  --currPos: 0px;
+}
 .header-container {
   display: flex;
 
@@ -55,4 +59,29 @@
 }
 .shadow {
   box-shadow: inset 4px 5px 29px -10px rgba(83, 88, 97, 1);
+}
+@keyframes moveLine {
+  0% {
+    top: var(--prev-top);
+    width: 2px;
+    height: 5px;
+  }
+  50% {
+    width: 20px;
+    height: 40px;
+  }
+  100% {
+    top: var(--curr-top);
+    width: 2px;
+    height: 5px;
+  }
+}
+
+/* Line styles */
+#line {
+  position: absolute;
+  left: 55px;
+  height: 2px;
+  background-color: #1a1b1b;
+  z-index: 1;
 }

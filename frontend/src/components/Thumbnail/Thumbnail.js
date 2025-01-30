@@ -8,6 +8,7 @@ const Thumbnail = ({ data }) => {
       <div>
         <h2 className={styles.name}>{data?.name}</h2>
         {/* <BodyParts /> */}
+        {/* rating */}
         <GlitchButton />
       </div>
     </div>

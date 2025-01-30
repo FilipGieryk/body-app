@@ -32,6 +32,8 @@ const GLTFViewer = () => {
   let originalPosition = new THREE.Vector3();
   useEffect(() => {
     const container = document.getElementById("container");
+    if (!container) return; // Ensure the container exists
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -39,22 +41,20 @@ const GLTFViewer = () => {
       0.1,
       1000
     );
-    camera.position.z = 5;
+
+    // Set initial camera position farther away
+    // camera.position.set(0, 10, -20); // Start behind the object
+    const initialPosition = new THREE.Vector3(0, 10, -20); // Behind the object
+    const middlePosition = new THREE.Vector3(15, 10, 0);
+    const targetPosition = new THREE.Vector3(0, 0, 5); // Move to front
 
     const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    document.body.appendChild(renderer.domElement);
+    mountRef.current.appendChild(renderer.domElement);
+
+    sceneRef.current = scene;
+    cameraRef.current = camera;
     rendererRef.current = renderer;
-
-    // Handle window resize
-    window.addEventListener("resize", () => {
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    });
-
-    initLights(scene);
-    initObject(scene);
 
     function initLights(scene) {
       const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -80,9 +80,53 @@ const GLTFViewer = () => {
       );
     }
 
-    sceneRef.current = scene; // Store scene in ref
-    cameraRef.current = camera; // Store camera in ref
-    rendererRef.current = renderer; // Store renderer in ref
+    initLights(scene);
+    initObject(scene);
+    // Resize event listener
+    const onResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener("resize", onResize);
+
+    // Smooth camera transition
+    let startTime = performance.now();
+    const duration = 2000;
+    function animateCamera(time) {
+      let elapsed = time - startTime;
+      let progress = Math.min(elapsed / duration, 1);
+
+      if (progress < 0.5) {
+        // First half: Move from initial to middle
+        camera.position.lerpVectors(
+          initialPosition,
+          middlePosition,
+          progress * 2
+        );
+      } else {
+        // Second half: Move from middle to target
+        camera.position.lerpVectors(
+          middlePosition,
+          targetPosition,
+          (progress - 0.5) * 2
+        );
+      }
+
+      camera.lookAt(0, 0, 0);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateCamera);
+      }
+    }
+    requestAnimationFrame(animateCamera);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (mountRef.current) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -276,7 +320,13 @@ const GLTFViewer = () => {
     animate();
     return () => {
       // Cleanup
-      document.body.removeChild(rendererRef.current.domElement);
+      if (mountRef.current && rendererRef.current) {
+        mountRef.current.removeChild(rendererRef.current.domElement);
+      }
+      window.addEventListener("pointermove", onPointerMove);
+      window.addEventListener("mousedown", onMouseDown);
+      window.addEventListener("mouseup", onMouseUp);
+      window.addEventListener("mousemove", onMouseMove);
     };
   }, []); // Empty dependency array to prevent re-runs
 

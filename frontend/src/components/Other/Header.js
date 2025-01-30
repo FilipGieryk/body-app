@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Header.css";
 import Login from "./Login";
 import {
   faHome,
-  faUser,
   faSignOutAlt,
   faSignInAlt,
   faUserPlus,
@@ -11,18 +10,18 @@ import {
   faComment,
   faQuestion,
 } from "@fortawesome/free-solid-svg-icons";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "../../hooks/UserContext";
 import { useWebSocket } from "../../hooks/webSocketContext";
 
 const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
-  const [isNavHovered, setIsNavHovered] = useState(false);
   const [visibleModal, setVisibleModal] = useState(null);
-  const [hoveredLink, setHoveredLink] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState();
+
+  const [prevPos, setPrevPos] = useState();
+  const [currPos, setCurrPos] = useState();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,21 +31,37 @@ const Header = () => {
     setLoggedUserInfo,
     loggedUserInfo,
     setChats,
-    fetchPendingRequests,
   } = useUser();
 
   const socket = useWebSocket();
+
+  useEffect(() => {
+    if (prevPos?.y !== undefined && currPos?.y !== undefined) {
+      document.documentElement.style.setProperty(
+        "--prev-top",
+        `${prevPos.y}px`
+      );
+      document.documentElement.style.setProperty(
+        "--curr-top",
+        `${currPos.y}px`
+      );
+
+      const line = document.getElementById("line");
+      if (line) {
+        line.style.animation = "none";
+        void line.offsetHeight;
+        line.style.animation = "moveLine 0.3s ease forwards";
+      }
+    }
+  }, [currPos]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       refreshUserInfo();
       setIsLoggedIn(true);
-      const decodedToken = JSON.parse(atob(token.split(".")[1]));
-      setUserId(decodedToken.id);
     } else {
       setIsLoggedIn(false);
-      setUserId(null);
     }
   }, [isLoggedIn]);
 
@@ -261,24 +276,35 @@ const Header = () => {
 
   return (
     <header className="header-container">
-      <nav
-        className="navigation-container"
-        onMouseEnter={() => setIsNavHovered(true)}
-        onMouseLeave={() => {
-          setIsNavHovered(false);
-          setHoveredLink(null);
-        }}
-      >
+      <nav className="navigation-container">
         {links.map((link) => (
           <a
+            key={link.id}
+            href={link.path}
             className={`navigation-button ${
               location.pathname === link.path ? "shadow" : ""
             }`}
-            onClick={link.action}
+            onClick={(e) => {
+              e.preventDefault();
+              const rect = e.target.getBoundingClientRect();
+              setPrevPos(currPos);
+              setCurrPos({
+                y: rect.top + rect.height / 2,
+              });
+              console.log(currPos);
+              link.action();
+            }}
           >
             <FontAwesomeIcon icon={link.icon} />
           </a>
         ))}
+        <div
+          // ref={lineRef}
+          id="line"
+          style={{
+            transition: "all 0.3s ease",
+          }}
+        />
       </nav>
 
       {isLoginVisible && !isLoggedIn && (
