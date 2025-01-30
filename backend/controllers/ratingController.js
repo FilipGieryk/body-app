@@ -2,8 +2,9 @@ const ratingService = require("../services/ratingService");
 
 class RatingController {
   async addOrUpdateRating(req, res) {
-    const { userId, rating, contentType } = req.body;
+    const { rating, contentType } = req.body;
     const { contentId } = req.params;
+    const userId = req.user._id;
 
     try {
       const response = await ratingService.addOrUpdateRating(

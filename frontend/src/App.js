@@ -15,45 +15,49 @@ import ChatPage from "./pages/chat/ChatPage.js";
 import { WebSocketProvider } from "./hooks/webSocketContext.js";
 import Help from "./pages/help/Help.js";
 import { UserProvider } from "./hooks/UserContext.js";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const user = { isAdmin: true };
 function App() {
+  const queryClient = new QueryClient();
   return (
     <Router>
-      <WebSocketProvider>
-        <UserProvider>
-          <Header />
-          <div className="content-box" id="container">
-            <Routes>
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute isAdmin={user.isAdmin}>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/" exact Component={GLTFViewer} />
-              <Route path="/profile/:id" exact Component={Profile} />
-              <Route path="/help" exact Component={Help} />
-              <Route path="/exercises" exact Component={ExercisesList} />
-              <Route path="/workout/create" exact Component={CreateWorkout} />
-              <Route path="/workouts" exact Component={WorkoutsList} />
-              <Route
-                path="/workouts/:workoutId"
-                exact
-                Component={WorkoutDetail}
-              />
-              <Route path="/chat/*" exact Component={ChatPage} />
-              <Route
-                path="/exercises/:exerciseId"
-                exact
-                Component={ExerciseDetail}
-              />
-            </Routes>
-          </div>
-        </UserProvider>
-      </WebSocketProvider>
+      <QueryClientProvider client={queryClient}>
+        <WebSocketProvider>
+          <UserProvider>
+            <Header />
+            <div className="content-box" id="container">
+              <Routes>
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute isAdmin={user.isAdmin}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/" exact Component={GLTFViewer} />
+                <Route path="/profile/:id" exact Component={Profile} />
+                <Route path="/help" exact Component={Help} />
+                <Route path="/exercises" exact Component={ExercisesList} />
+                <Route path="/workout/create" exact Component={CreateWorkout} />
+                <Route path="/workouts" exact Component={WorkoutsList} />
+                <Route
+                  path="/workouts/:workoutId"
+                  exact
+                  Component={WorkoutDetail}
+                />
+                <Route path="/chat/*" exact Component={ChatPage} />
+                <Route
+                  path="/exercises/:exerciseId"
+                  exact
+                  Component={ExerciseDetail}
+                />
+              </Routes>
+            </div>
+          </UserProvider>
+        </WebSocketProvider>
+      </QueryClientProvider>
     </Router>
   );
 }

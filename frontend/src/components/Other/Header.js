@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "../../hooks/UserContext";
 import { useWebSocket } from "../../hooks/webSocketContext";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
@@ -70,7 +71,6 @@ const Header = () => {
   };
 
   const handleLoginSuccess = (userId) => {
-    // Set isLoggedIn to true and userId when login is successful
     setIsLoggedIn(true);
     setIsLoginVisible(false);
   };
@@ -150,6 +150,7 @@ const Header = () => {
     };
   }, [socket]);
 
+  // kick this out
   const fetchChatById = async (chatId) => {
     try {
       const token = localStorage.getItem("token");
@@ -278,9 +279,9 @@ const Header = () => {
     <header className="header-container">
       <nav className="navigation-container">
         {links.map((link) => (
-          <a
+          <NavLink
             key={link.id}
-            href={link.path}
+            to={link.path}
             className={`navigation-button ${
               location.pathname === link.path ? "shadow" : ""
             }`}
@@ -291,15 +292,13 @@ const Header = () => {
               setCurrPos({
                 y: rect.top + rect.height / 2,
               });
-              console.log(currPos);
               link.action();
             }}
           >
             <FontAwesomeIcon icon={link.icon} />
-          </a>
+          </NavLink>
         ))}
         <div
-          // ref={lineRef}
           id="line"
           style={{
             transition: "all 0.3s ease",

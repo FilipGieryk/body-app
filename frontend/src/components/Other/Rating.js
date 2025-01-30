@@ -1,50 +1,38 @@
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { useRating } from "../../hooks/useRating";
 
-const Rating = ({ contentId, userId, averageRating, contentType }) => {
+const Rating = ({ itemId, averageRating }) => {
   const [rating, setRating] = useState(0);
-  const rateWorkout = async (selectedRating) => {
-    try {
-      if (selectedRating < 1 || selectedRating > 5) {
-        throw new Error("rating must be between 1 and 5");
-      }
-      const response = await axios.post(`api/rating/${contentId}`, {
-        userId: userId,
-        contentId: contentId,
-        contentType: contentType,
-        rating: selectedRating,
-      });
+  const { submitRating } = useRating(itemId);
 
-      console.log("rating updatedsuccesfuly");
-      setRating(selectedRating);
-    } catch (error) {
-      console.error("error updateing rating ", error.response);
-    }
+  const handleSubmit = async (rating) => {
+    submitRating(rating);
   };
 
   const handleRateClick = (e, selectedRating) => {
     e.preventDefault();
     setRating(selectedRating);
-    rateWorkout(selectedRating);
+    handleSubmit(selectedRating);
   };
   return (
     <div>
       <p style={{ display: "inline-block" }}>{averageRating}</p>
-      {userId &&
-        [1, 2, 3, 4, 5].map((star) => (
-          <span
-            key={star}
-            onClick={(e) => handleRateClick(e, star)}
-            style={{
-              cursor: "pointer",
-              fontSize: "20px",
-              color: star <= rating ? "gold" : "gray",
-            }}
-          >
-            ★
-          </span>
-        ))}
+      {/* {userId && */}
+      {[1, 2, 3, 4, 5].map((star) => (
+        <span
+          key={star}
+          onClick={(e) => handleRateClick(e, star)}
+          style={{
+            cursor: "pointer",
+            fontSize: "20px",
+            color: star <= rating ? "gold" : "gray",
+          }}
+        >
+          ★
+        </span>
+      ))}
     </div>
   );
 };
