@@ -1,4 +1,3 @@
-import styles from "./BodyPartInfo.module.css";
 import { useEffect, useState, useRef } from "react";
 import Thumbnail from "../../Thumbnail/Thumbnail";
 
@@ -51,19 +50,20 @@ const BodyPartInfo = ({ staticInfo, exercises, animationDuration = 5 }) => {
     };
   }, [currentLine, staticInfo, animationDuration]);
   return (
-    <div className={styles.container}>
+    <div className="absolute top-10 left-10 p-5 bg-black/70 shadow-l blur-[0.6px] w-150 h-200 animate-appear-slow">
       {visibleText.map((text, index) => (
-        <div key={index} className={styles.animatedText}>
+        <div
+          key={index}
+          className="text-white text-2xl text-left mb-15 font-bold "
+        >
           {text}
 
-          {index === currentLine && showCursor && (
-            <span className={styles.cursor}>|</span>
-          )}
+          {index === currentLine && showCursor && <span>|</span>}
         </div>
       ))}
 
       {currentLine === 2 && (
-        <div className={styles.exercises}>
+        <div className="flex gap-10 animate-appear-fast clip-hide">
           <Thumbnail data={exercises[0]} />
           <Thumbnail data={exercises[1]} />
         </div>

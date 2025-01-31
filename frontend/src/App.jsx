@@ -1,20 +1,21 @@
+import { useState } from "react";
+import "./App.css";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Other/Header";
-import GLTFViewer from "./components/Other/GLTFViewer.js";
-import Profile from "./pages/profile/Profile.js";
-import "./styles/style.css";
-import ExercisesList from "./pages/exercise/ExercisesList.js";
-import WorkoutsList from "./pages/workout/WorkoutsList.js";
-import AdminDashboard from "./components/Create/AdminDashboard/AdminDashboard.js";
-import WorkoutDetail from "./components/Details/WorkoutDetail.js";
-import ExerciseDetail from "./components/Details/ExerciseDetail.js";
-import ProtectedRoute from "./components/Other/ProtectedRoute.js";
-import CreateWorkout from "./components/Create/CreateWorkout.js";
-import ChatPage from "./pages/chat/ChatPage.js";
-import { WebSocketProvider } from "./hooks/webSocketContext.js";
-import Help from "./pages/help/Help.js";
-import { UserProvider } from "./hooks/UserContext.js";
+import GLTFViewer from "./components/Other/GLTFViewer.jsx";
+import Profile from "./pages/profile/Profile.jsx";
+import ExercisesList from "./pages/exercise/ExercisesList.jsx";
+import WorkoutsList from "./pages/workout/WorkoutsList.jsx";
+import AdminDashboard from "./components/Create/AdminDashboard/AdminDashboard.jsx";
+import WorkoutDetail from "./components/Details/WorkoutDetail.jsx";
+import ExerciseDetail from "./components/Details/ExerciseDetail.jsx";
+import ProtectedRoute from "./components/Other/ProtectedRoute.jsx";
+import CreateWorkout from "./components/Create/CreateWorkout.jsx";
+import ChatPage from "./pages/chat/ChatPage.jsx";
+import { WebSocketProvider } from "./hooks/webSocketContext.jsx";
+import Help from "./pages/help/Help.jsx";
+import { UserProvider } from "./hooks/UserContext.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const user = { isAdmin: true };
@@ -26,7 +27,10 @@ function App() {
         <WebSocketProvider>
           <UserProvider>
             <Header />
-            <div className="content-box" id="container">
+            <div
+              className="absolute top-7 left-11 w-23/25 h-24/25 rounded-3xl z-0 shadow-2xl"
+              id="container"
+            >
               <Routes>
                 <Route
                   path="/admin"

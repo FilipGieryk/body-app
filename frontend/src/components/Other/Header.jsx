@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import "./Header.css";
 import Login from "./Login";
 import {
   faHome,
@@ -276,14 +275,14 @@ const Header = () => {
   ];
 
   return (
-    <header className="header-container">
-      <nav className="navigation-container">
+    <header className="flex justify-end w-screen h-screen">
+      <nav className="flex flex-col justify-center pr-7">
         {links.map((link) => (
           <NavLink
             key={link.id}
             to={link.path}
-            className={`navigation-button ${
-              location.pathname === link.path ? "shadow" : ""
+            className={`flex items-center justify-center rounded-2xl bg-white h-15 w-15 text-xl hover:shadow-inner first:mt-8 first:mb-auto last:mb-5 nth-4:mb-auto ${
+              location.pathname === link.path ? "shadow-inner" : ""
             }`}
             onClick={(e) => {
               e.preventDefault();
@@ -298,13 +297,14 @@ const Header = () => {
             <FontAwesomeIcon icon={link.icon} />
           </NavLink>
         ))}
-        <div
-          id="line"
-          style={{
-            transition: "all 0.3s ease",
-          }}
-        />
       </nav>
+      <div
+        id="line"
+        className="absolute l-55 h-2 bg-black"
+        style={{
+          transition: "all 0.3s ease",
+        }}
+      />
 
       {isLoginVisible && !isLoggedIn && (
         <Login

@@ -1,4 +1,7 @@
+import { data } from "react-router-dom";
 import WokroutsList from "../../components/Main/Workouts/WorkoutsList";
+import Thumbnail from "../../components/Thumbnail/Thumbnail";
+import { useHelpWorkouts } from "../../hooks/useHelpWorkouts";
 import "./help.css";
 import { useState } from "react";
 const Help = () => {
@@ -9,7 +12,7 @@ const Help = () => {
       info: "A workout that targets all major muscle groups in one session.",
       pros: "Efficient for building overall strength.",
       cons: "Can be tiring if not managed properly.",
-      example: "Squats, Deadlifts, Push-ups, etc.",
+      example: ["67952ff76349301c915710ea", "679530b46349301c915713df"],
       workouts: "3-4 times a week.",
     },
     pushPullLegs: {
@@ -47,53 +50,60 @@ const Help = () => {
   };
   const [selectedSplit, setSelectedSplit] = useState(splitsInfo["fullBody"]);
 
+  const {
+    data: workouts,
+    error,
+    isLoading,
+  } = useHelpWorkouts(selectedSplit.example);
+
   const handleSplitClick = (split) => {
     setSelectedSplit(splitsInfo[split]);
   };
   return (
+    // <div className="help-container">
+    //   <div>
+    //     <h1>
+    //       Split - {selectedSplit ? selectedSplit.name : "Select an option"}
+    //     </h1>
+    //     <div className="selected-content">
+    //       <p>{selectedSplit.info}</p>
+    //       <p className="split-pros">
+    //         <strong>Pros:</strong> {selectedSplit.pros}
+    //       </p>
+    //       <p className="split-cons">
+    //         <strong>Cons:</strong> {selectedSplit.cons}
+    //       </p>
+    //       <p>
+    //         <strong>Workouts:</strong> {selectedSplit.workouts}
+    //       </p>
+    //       <p>
+    //         {/* add three made workouts for upperlower */}
+    //         <strong>Example:</strong>
+    //         {/* <WokroutsList userIfno={selectedSplit.example} /> */}
+    //         <div className="examples">
+    //           {workouts?.map((el) => (
+    //             <Thumbnail className="change-height" data={el} />
+    //           ))}
+    //         </div>
+    //       </p>
+    //     </div>
+    //   </div>
+    //   <div>
+    //     <button>a</button>
+    //     <button>b</button>
+    //   </div>
+    // </div>
     <div className="help-container">
-      <div>
-        <h1>
-          Split - {selectedSplit ? selectedSplit.name : "Select an option"}
-        </h1>
-        <div className="selected-content">
-          <p>{selectedSplit.info}</p>
-          <p className="split-pros">
-            <strong>Pros:</strong> {selectedSplit.pros}
-          </p>
-          <p className="split-cons">
-            <strong>Cons:</strong> {selectedSplit.cons}
-          </p>
-          <p>
-            <strong>Workouts:</strong> {selectedSplit.workouts}
-          </p>
-          <p>
-            {/* add three made workouts for upperlower */}
-            <strong>Example:</strong>
-            {/* <WokroutsList userIfno={selectedSplit.example} /> */}
-          </p>
-        </div>
+      <div className="top">
+        <p>difficulty</p>
+        <p className="text-red-500">time</p>
       </div>
-      {/* 
-      
-      */}
-      <div className="help-nav">
-        <div className="help-nav-splits">
-          <div className="splits-label">splits</div>
-          <div className="splits-options">
-            <div onClick={() => handleSplitClick("fullBody")}>Full Body</div>
-            <div onClick={() => handleSplitClick("pushPullLegs")}>
-              Push Pull Legs
-            </div>
-            <div onClick={() => handleSplitClick("upperLower")}>
-              Upper Lower
-            </div>
-            <div onClick={() => handleSplitClick("bodyPart")}>Body Part</div>
-          </div>
-        </div>
-        <div className="help-nav-rest">
-          <div onClick={() => handleSplitClick("repsSets")}>Reps Sets</div>
-        </div>
+      <div className="side-nav-left"></div>
+      <div className="middle">content</div>
+      <div className="side-nav-right"></div>
+      <div className="bottom-nav">
+        <button className="bottom-nav-button">splits</button>
+        <button className="bottom-nav-button">reps</button>
       </div>
     </div>
   );

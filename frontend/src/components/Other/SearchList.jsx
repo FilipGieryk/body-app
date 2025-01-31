@@ -7,7 +7,7 @@ import CreateWorkout from "../Create/CreateWorkout";
 import { useLocation } from "react-router-dom";
 const backendURL = "http://localhost:3000";
 
-const SearchList = ({ data, contentType, onAddExercise }) => {
+const SearchList = ({ content, contentType, onAddExercise }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBodyParts, setSelectedBodyParts] = useState([]);
   const [sortOrder, setSortOrder] = useState({
@@ -56,8 +56,8 @@ const SearchList = ({ data, contentType, onAddExercise }) => {
   const changeSearchQuery = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
-
-  const filteredContent = data.filter((item) => {
+  console.log(content);
+  const filteredContent = content?.filter((item) => {
     const isWorkout = item.exercises && Array.isArray(item.exercises);
     const matchesSearchQuery = item.name.toLowerCase().includes(searchQuery);
 

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import "./WorkoutsList.css";
+
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Rating from "../../components/Other/Rating";
 import SearchList from "../../components/Other/SearchList";
 
 const WorkoutsList = () => {
-  const [data, setData] = useState([]);
+  const [content, setContent] = useState([]);
   useEffect(() => {
     const fetchExercises = async () => {
       try {
@@ -18,8 +18,7 @@ const WorkoutsList = () => {
     };
     fetchExercises();
   }, []);
-
-  return <SearchList data={data} contentType={"Workout"} />;
+  return <SearchList content={content} contentType={"Workout"} />;
 };
 
 export default WorkoutsList;

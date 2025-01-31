@@ -49,11 +49,11 @@ input:not(:placeholder-shown) + span + .label {
   border-radius: 0.5rem;
   transition: all 0.3s ease;
 }
-.active {
+/* .active {
   background-color: var(--third);
   color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
+} */
 .login-header-element {
   /* make third darker */
   background-color: var(--third);

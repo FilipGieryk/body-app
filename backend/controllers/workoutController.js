@@ -35,11 +35,27 @@ class WorkoutController {
       res.status(500).json({ error: err.message });
     }
   }
+  async getWorkoutsByIds(req, res) {
+    const { workoutIds } = req.query;
+    if (!workoutIds) {
+      return res.status(400).json({ error: "No workout IDs provided" });
+    }
+    try {
+      const idsArray = workoutIds.split(",");
+      const workouts = await workoutService.getWorkoutsByIds(idsArray);
+      res.status(200).json(workouts.filter(Boolean));
+    } catch (error) {
+      console.error("Error fetching workouts:", error.message);
+      res.status(400).json({ error: error.message });
+    }
+  }
 
   async getAllWorkouts(req, res) {
+    console.log("te");
     try {
       const workouts = await workoutService.getAllWorkouts();
       res.json(workouts);
+      console.log(workouts);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

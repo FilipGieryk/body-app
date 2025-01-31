@@ -8,12 +8,14 @@ import SearchList from "../../components/Other/SearchList";
 
 const backendURL = "http://localhost:3000";
 const ExcercisesList = ({ workoutId, onAddExercise }) => {
-  const [data, setData] = useState([]);
+  const [content, setContent] = useState([]);
   useEffect(() => {
     const fetchExercises = async () => {
       try {
+        console.log("fetching");
         const response = await axios.get("/api/admin/exercises");
-        setData(response.data);
+        setContent(response.data);
+        console.log(response);
       } catch (err) {
         console.error("error", err);
       }
@@ -23,7 +25,7 @@ const ExcercisesList = ({ workoutId, onAddExercise }) => {
 
   return (
     <SearchList
-      data={data}
+      content={content}
       contentType={"Exercise"}
       workoutId={workoutId}
       onAddExercise={onAddExercise}

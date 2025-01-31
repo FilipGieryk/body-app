@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import "./SearchInput.css";
+
 import { useState } from "react";
 import CheckboxList from "./CheckboxList";
 
@@ -20,7 +20,7 @@ const SearchInput = ({
       <button onClick={() => toggleSortOrder("averageRating")}>
         rating({sortOrder.order === "asc" ? "A-Z" : "Z-A"})
       </button>
-      <div className="exercises-search">
+      <div className="shadow-lg">
         <input
           className="exercises-search-input"
           value={searchQuery}

@@ -48,6 +48,9 @@ class WorkoutService {
     if (!workout) throw new Error("Workout not found");
     return workout;
   }
+  async getWorkoutsByIds(workoutIds) {
+    return Promise.all(workoutIds.map((id) => Workout.findById(id)));
+  }
 
   async getAllWorkouts() {
     return await Workout.find()
