@@ -1,6 +1,7 @@
 @import "tailwindcss";
 /* --prevPos: 0px;
 --currPos: 0px; */
+
 @layer components {
   .btn-glitch {
     @apply relative w-24 h-16 text-3xl text-white bg-black border-0;
@@ -36,6 +37,22 @@
   }
   .clip-hide {
     clip-path: inset(50% 0 50% 0);
+  }
+  .clip-corners {
+    clip-path: circle(58.6% at 50% 59%);
+  }
+
+  .circle-radius {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    border-color: transparent white transparent white;
+    /* clippath */
+  }
+  .after-circle-radius::after {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    border-color: transparent white transparent white;
+  }
+  .clip-path-square-right {
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 50%, 61% 29%);
   }
 }
 

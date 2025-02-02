@@ -51,11 +51,9 @@ class WorkoutController {
   }
 
   async getAllWorkouts(req, res) {
-    console.log("te");
     try {
       const workouts = await workoutService.getAllWorkouts();
       res.json(workouts);
-      console.log(workouts);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

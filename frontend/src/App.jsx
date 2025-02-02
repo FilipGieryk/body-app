@@ -28,7 +28,7 @@ function App() {
           <UserProvider>
             <Header />
             <div
-              className="absolute top-7 left-11 w-23/25 h-24/25 rounded-3xl z-0 shadow-2xl"
+              className="absolute top-7 left-11 w-23/25 h-24/25 rounded-3xl z-0 shadow-2xl overflow-hidden"
               id="container"
             >
               <Routes>
