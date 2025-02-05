@@ -5,15 +5,16 @@ const CheckboxList = ({ handleBodyPartChange, selectedBodyParts }) => {
 
   return (
     <>
-      <div className="w-xs text-base top-24 right-xs">
+      <div className="relative flex items-center justify-center w-60 h-10 rounded-xl text-xl bg-amber-200 shadow-lg z-100">
         <div
+          className="z-100"
           onClick={() => setShowBodyParts(!showBodyParts)}
           style={{ cursor: "pointer" }}
         >
           {showBodyParts ? "Hide Body Parts" : "Select Body Parts"}
         </div>
         {showBodyParts && (
-          <div className="flex flex-col absolute bg-amber-200 w-full h-full">
+          <div className="flex flex-col absolute bg-amber-200 w-full h-fit rounded-xl py-2 top-6 ">
             {bodyParts.map((bodyPart) => (
               <label key={bodyPart}>
                 <input

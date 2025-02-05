@@ -68,11 +68,6 @@
   color: #706767;
   background-color: rgba(103, 112, 119, 0.295);
 }
-.search-container-search {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
 
 .search-list::-webkit-scrollbar {
   /* border: none; */

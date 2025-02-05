@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Rating from "./Rating";
+import Rating from "../Other/Rating";
 import SearchInput from "./SearchInput";
 import "./SearchList.css";
 import CreateWorkout from "../Create/CreateWorkout";
@@ -56,7 +56,6 @@ const SearchList = ({ content, contentType, onAddExercise }) => {
   const changeSearchQuery = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
-  console.log(content);
   const filteredContent = content?.filter((item) => {
     const isWorkout = item.exercises && Array.isArray(item.exercises);
     const matchesSearchQuery = item.name.toLowerCase().includes(searchQuery);

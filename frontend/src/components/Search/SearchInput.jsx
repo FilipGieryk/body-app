@@ -3,6 +3,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 import CheckboxList from "./CheckboxList";
+import Sorting from "./Sorting";
 
 const SearchInput = ({
   searchQuery,
@@ -13,26 +14,17 @@ const SearchInput = ({
   sortOrder,
 }) => {
   return (
-    <div className="search-container-search">
-      <button onClick={() => toggleSortOrder("name")}>
-        name({sortOrder.order === "asc" ? "A-Z" : "Z-A"})
-      </button>
-      <button onClick={() => toggleSortOrder("averageRating")}>
-        rating({sortOrder.order === "asc" ? "A-Z" : "Z-A"})
-      </button>
-      <div className="shadow-lg">
+    <div className="flex items-center justify-around">
+      <div className="shadow-lg rounded-2xl flex items-center justify-center">
         <input
-          className="exercises-search-input"
+          className="text-3xl p-4 outline-0"
           value={searchQuery}
           onChange={changeSearchQuery}
           placeholder="search"
         ></input>
-        <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
+        <FontAwesomeIcon className="text-xl p-3" icon={faMagnifyingGlass} />
       </div>
-      {/* // <SearchInput */}
-      {/* //   searchQuery={searchQuery} */}
-      {/* //   changeSearchQuery={changeSearchQuery} */}
-      {/* // /> */}
+      <Sorting sortOrder={sortOrder} toggleSortOrder={toggleSortOrder} />
       <CheckboxList
         handleBodyPartChange={handleBodyPartChange}
         selectedBodyParts={selectedBodyParts}

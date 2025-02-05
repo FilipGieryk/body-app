@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import "./ExercisesList.css";
 import axios from "axios";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
-import SearchList from "../../components/Other/SearchList";
+import SearchList from "../../components/Search/SearchList";
 
 const backendURL = "http://localhost:3000";
 const ExcercisesList = ({ workoutId, onAddExercise }) => {
