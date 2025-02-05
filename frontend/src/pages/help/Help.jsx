@@ -106,16 +106,16 @@ const Help = () => {
   const [selectCategory, setSelectCategory] = useState("left");
   // section
   const clipPaths = {
-    fullBody: "inset(0 50% 75% 0)",
-    pushPullLegs: "inset(25% 50% 60% 0)",
-    upperLower: "inset(40% 50% 40% 0)",
-    bodyPart: "inset(50% 50% 20% 0)",
-    generalFitness: "polygon(50% 50%, 100% 50%, 100% 75%, 50% 75%)",
-    endurance: "polygon(50% 75%, 100% 75%, 100% 100%, 50% 100%)",
-    hypertrophy: "inset(0 0 0 0)",
-    muscleStrength: "inset(0 0 0 0)",
-    powerSingleRep: "inset(0 0 0 0)",
-    powerMultiReps: "inset(0 0 0 0)",
+    fullBody: "inset(0 50% 70% 0)",
+    pushPullLegs: "inset(30% 50% 50% 0)",
+    upperLower: "inset(50% 50% 30% 0)",
+    bodyPart: "inset(70% 50% 0% 0)",
+    generalFitness: "inset(0 0 74% 50%)",
+    endurance: "inset(27% 0 62% 50%)",
+    hypertrophy: "inset(38% 0 50% 50%)",
+    muscleStrength: "inset(51% 0 37% 50%)",
+    powerSingleRep: "inset(63% 0 26% 50%)",
+    powerMultiReps: "inset(75% 0 0% 50%)",
   };
   const [selectSection, setSelectSection] = useState("fullBody");
   // is necessary
@@ -224,8 +224,8 @@ const Help = () => {
 
             return (
               <motion.button
-                key={splitKey.name}
-                className="absolute text-2xl hover:text-white w-40 h-40 text-white"
+                key={`${splitKey}-${selectCategory}`}
+                className="absolute text-2xl hover:text-white w-40 h-40 text-gray-500 focus:text-white"
                 style={{
                   transform: `translate(-50%, -50%)`,
                   top: `calc(50% + ${yPos}%)`,
@@ -235,12 +235,13 @@ const Help = () => {
                       : `calc(50% + ${xPos}%)`,
                 }}
                 onClick={() => handleSectionClick(splitKey)}
-                animate={{}}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 2, ease: "easeOut" }}
               >
                 •
                 <span
-                  className="absolute w-40 h-20 text-white"
+                  className="absolute w-40 h-20 "
                   style={{
                     left: selectCategory === "left" ? `-70%` : `70%`,
                   }}
