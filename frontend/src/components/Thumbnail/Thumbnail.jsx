@@ -6,7 +6,7 @@ const Thumbnail = ({ data, className }) => {
     <div className={clsx(className)}>
       <img
         src={data?.media}
-        className="w-full h-[60%] rounded-2xl overflow-visible"
+        className="w-full h-[15rem] rounded-2xl overflow-visible bg-gray-200/50 "
       ></img>
       <div className="grid grid-cols-2 grid-rows-2">
         <h2 className="mg-0 text-3xl truncate text-start">{data?.name}</h2>

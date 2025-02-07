@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useRating } from "../../hooks/useRating";

@@ -275,7 +275,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="flex justify-end w-screen h-screen">
+    <header className="flex justify-end w-screen h-screen z-200">
       <nav className="flex flex-col justify-center pr-7">
         {links.map((link) => (
           <NavLink

@@ -115,9 +115,9 @@ const SearchList = ({ content, contentType, onAddExercise }) => {
         selectedBodyParts={selectedBodyParts}
         sortOrder={sortOrder}
       />
-      <div className="grid grid-cols-3 overflow-y-scroll min-h-full max-h-full h-100 gap-x-20 justify-items-center px-10 pt-10">
+      <div className="grid grid-cols-3 overflow-y-scroll min-h-full max-h-full h-100 gap-x-20 justify-items-center px-10 pt-10 gap-y-10">
         {sortedExercises.map((el, index) => (
-          <Thumbnail className="h-90 w-100" data={el} />
+          <Thumbnail className="h-fit w-100" data={el} />
         ))}
       </div>
     </div>

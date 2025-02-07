@@ -15,7 +15,7 @@
   /* opacity: 80%; */
   backdrop-filter: blur(1rem);
   border-radius: 5rem;
-  z-index: 5;
+  z-index: 200;
 }
 .label {
   position: absolute;
@@ -109,6 +109,7 @@ input:not(:placeholder-shown) + span + .label {
 
 .login {
   animation: moveLogin 0.5s ease-in-out forwards;
+  inde
 }
 .login-hide {
   animation-direction: reverse;

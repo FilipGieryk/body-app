@@ -18,7 +18,7 @@ const ChatComponent = ({ userId }) => {
   const createGroup = () => {
     navigate("/chat/new");
   };
-
+  // in service
   const createOrGetMessage = async (friend) => {
     try {
       const token = localStorage.getItem("token");
