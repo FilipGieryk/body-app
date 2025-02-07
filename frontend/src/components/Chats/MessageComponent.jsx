@@ -116,7 +116,7 @@ const MessageComponent = ({
   }, [messages]);
 
   return (
-    <div className="chat-container">
+    <div className="grid grid-rows-[0.1fr 1fr 0.2fr] h-full max-h-[100vh] rounded-4xl">
       {currentChat === undefined ? (
         <div>
           <FriendsSearch addToGroup={addToGroup} chatType="group" />
@@ -127,26 +127,34 @@ const MessageComponent = ({
           </div>
         </div>
       ) : (
-        <div className="chat-information">
-          <img src={currentChat?.profilePhoto} className="friend-photo"></img>
+        <div className="flex items-center gap-8 w-80">
+          <img
+            src={currentChat?.profilePhoto}
+            className="h-28 rounded-4xl"
+          ></img>
           <h1>{currentChat?.chatName}</h1>
         </div>
       )}
-      <div className="chat-history" ref={chatHistoryRef}>
+      <div
+        className="w-full h-full flex flex-col overflow-y-auto"
+        ref={chatHistoryRef}
+      >
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`chat-messages ${
-              message.senderId === loggedUserInfo._id ? "sent" : "received"
+            className={`text-4xl w-max px-2 py-8 rounded-4xl ${
+              message.senderId === loggedUserInfo._id
+                ? "self-end"
+                : "self-start"
             }`}
           >
             {message.content}
           </div>
         ))}
       </div>
-      <div className="chat-message">
+      <div className="h-400 flex-row items-center justify-center rounded-[0 0 0 2rem]">
         <input
-          className="chat-message-input"
+          className="w-[80%] h-[40%] rounded-4xl"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}

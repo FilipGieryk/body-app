@@ -63,7 +63,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="friends-container">
+    <div className="grid gap-y-4 w-[95%] gap-8 h-full rounded-xl grid-cols-[0.3fr 1fr] aboslute transition-all overflow-hidden">
       <ChatComponent />
       <Routes>
         <Route

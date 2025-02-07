@@ -39,10 +39,15 @@ const ChatComponent = ({ userId }) => {
   };
 
   return (
-    <div className="friend-list-container">
-      <div className="friend-list-navigation">
-        <div className="friend-list-header">
-          <h1 onClick={() => setShowedInfo("chats")}>Chats</h1>
+    <div className="rounded-xl">
+      <div className="h-[10%]">
+        <div className="flex text-xl h-[80%] p-0 rounded-[2rem 2rem 0 0]">
+          <h1
+            className="m-0 text-center p-2 text-2xl"
+            onClick={() => setShowedInfo("chats")}
+          >
+            Chats
+          </h1>
           {/* if pending requests show if not dont show */}
 
           {friendRequests?.some(
@@ -59,7 +64,7 @@ const ChatComponent = ({ userId }) => {
           createOrGetMessage={createOrGetMessage}
         />
       </div>
-      <div className="friend-list-friends">
+      <div className="relative w-full">
         {showedInfo === "chats" ? (
           <>
             {chats
@@ -70,18 +75,16 @@ const ChatComponent = ({ userId }) => {
                   new Date(a.lastMessage.timestamp)
               )
               .map((chat) => (
-                <Link className="link" to={`/chat/${chat.chatId}`}>
-                  <div className="friend-container">
+                <Link className="decoration-0" to={`/chat/${chat.chatId}`}>
+                  <div className="flex items-center decoration-0 h-32 w-full gap-4">
                     <img
-                      className="friend-photo"
+                      className="h-28 rounded-4xl"
                       src={chat.profilePhoto}
                       alt="friend-profile-picture"
                     ></img>
-                    <div className="friend-chat-info">
+                    <div className="text-xl">
                       <h2>{chat.chatName}</h2>
-                      <p className="friend-last-message">
-                        {chat.lastMessage?.content}
-                      </p>
+                      <p className="m-0">{chat.lastMessage?.content}</p>
                     </div>
                     {chat.hasUnread && <div className="notification-dot"></div>}
                   </div>
@@ -91,10 +94,13 @@ const ChatComponent = ({ userId }) => {
         ) : (
           <>
             {friendRequests.map((req) => (
-              <div className="friend-container">
-                <img className="friend-photo" src={req.user.profilePhoto}></img>
-                <div className="friend-chat-info">
-                  <h2>{req.user.username}</h2>
+              <div className="flex items-center decoration-0 h-32 w-full gap-4">
+                <img
+                  className="h-28 rounded-4xl"
+                  src={req.user.profilePhoto}
+                ></img>
+                <div className="text-xl">
+                  <h2 className="m-0">{req.user.username}</h2>
                 </div>
                 <button onClick={() => handleAcceptRequest(req.user)}>+</button>
                 <button onClick={() => handleDeclineRequest(req.user._id)}>

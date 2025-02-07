@@ -141,7 +141,7 @@ const Help = () => {
     setSelectSplit(splitsInfo[category][Object.keys(splitsInfo[category])[0]]);
   };
   return (
-    <div className="help-container relative after:absolute rounded-2xl [background-image:linear-gradient(243deg,_#000000_1%,_#3b0a18_40%,_#000000_100%)] after:[background-image:linear-gradient(243deg,_#000000_1%,_#3b0a18_31%,_#000000_100%)]  after:content-[''] after:bg-black after:w-full after:h-full after:blur-3xl after:z-10">
+    <div className="grid grid-cols-5 grid-rows-[1fr 3fr 1fr] justify-between items-center h-full min-w-full justify-items-center relative after:absolute rounded-2xl [background-image:linear-gradient(243deg,_#000000_1%,_#3b0a18_40%,_#000000_100%)] after:[background-image:linear-gradient(243deg,_#000000_1%,_#3b0a18_31%,_#000000_100%)]  after:content-[''] after:bg-black after:w-full after:h-full after:blur-3xl after:z-10">
       {/* // top */}
       <div className="[grid-area:top] flex gap-10 text-xl justify-between z-20">
         <p className="text-red-500 bg-white/10 rounded-2xl p-3">difficulty:</p>

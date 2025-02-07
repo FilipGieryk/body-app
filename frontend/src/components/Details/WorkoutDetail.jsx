@@ -76,13 +76,13 @@ const WorkoutDetail = () => {
   };
 
   return (
-    <div className="workout-detail-container">
-      <h1 className="workout-detail-name">{workoutDetails.workoutName}</h1>
-      <p className="workout-detail-name">{workoutDetails.workoutDetails}</p>
+    <div className="flex justify-center flex-col items-center">
+      <h1 className="text-5xl mb-40">{workoutDetails.workoutName}</h1>
+      <p className="text-5xl mb-40">{workoutDetails.workoutDetails}</p>
 
       {modifiedExercises.map((el, index) => (
         <Link
-          className="workout-detail-element"
+          className="flex items-center justify-around text-5xl rounded-4xl decoration-0 text-black w-[90%] h-40"
           to={`/exercises/${el.exercise._id}`}
         >
           {/* <h2>{el.exercise}</h2> */}

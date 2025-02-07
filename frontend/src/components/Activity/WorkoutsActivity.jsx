@@ -66,7 +66,7 @@ const WorkoutsActivity = ({ userInfo, className }) => {
   const workoutSessions = userInfo.workoutSessions;
   return (
     <div className={`workout-activity-container ${className}`}>
-      <div className="workout-activity-count">
+      <div className="grid grid-cols-1 items-center justify-items-center">
         <div className="workout-sessions-container">
           {workoutSessions.slice(-4).map((el) => (
             <div className="workout-session-container">{el.user}</div>
@@ -74,7 +74,7 @@ const WorkoutsActivity = ({ userInfo, className }) => {
         </div>
         <button onClick={() => navigate("/workouts")}>StartWorkout</button>
       </div>
-      <div className="workout-activity-count">
+      <div className="grid grid-cols-1 items-center justify-items-center">
         <div className="workout-activity-table-container">
           <table className="workout-activity-table">
             <thead>

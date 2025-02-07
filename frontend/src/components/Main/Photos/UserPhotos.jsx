@@ -47,13 +47,16 @@ const Photos = ({ userInfo, userId }) => {
   };
 
   return (
-    <div className="profile-photos-container">
+    <div className="flex relative items-center w-[90%] h-full m-auto py-2 text-4xl overflow-x-auto whitespace-nowrap">
       {userPhotos.photos.length > 0 ? (
         userPhotos.photos.map((el) => (
-          <div className="profile-photo-element">
-            <img className="photo" src={el}></img>
+          <div className="inline-block min-w-100 h-[95%] rounded-4xl relative">
+            <img
+              className="w-full h-full overflow-hidden rounded-4xl"
+              src={el}
+            ></img>
             <button
-              className="delete-button"
+              className="absolute top-[10%] right-4 bg-transparent border-0 text-gray-400 translate-[50% -50%] transition-all"
               onClick={() => handleDeletePhoto(el)}
             >
               X
@@ -67,12 +70,14 @@ const Photos = ({ userInfo, userId }) => {
       )}
 
       {userId === userInfo._id && (
-        <div className="profile-photo-element">
-          <span className="add-photo-icon">+</span>
+        <div className="inline-block min-w-100 h-[95%] rounded-4xl relative">
+          <span className="absolute flex top-[50%] left-[50%] w-20 h-20 text-7xl rounded-4xl translate-[-50% -50%] text-center justify-center items-center transition-all">
+            +
+          </span>
           <input
             type="file"
             id="file-upload"
-            className="add-photo-icon"
+            className="absolute flex top-[50%] left-[50%] w-20 h-20 text-7xl rounded-4xl translate-[-50% -50%] text-center justify-center items-center transition-all"
             onChange={handleFileChange}
           />
         </div>

@@ -57,8 +57,8 @@ const CreateWorkout = () => {
   };
 
   return (
-    <div className="workout-detail-container">
-      <h1 className="workout-detail-name">
+    <div className="flex justify-center flex-col items-center">
+      <h1 className="text-5xl mb-40">
         <input value={name} onChange={(e) => setName(e.target.value)} />
       </h1>
       <textarea
@@ -67,7 +67,7 @@ const CreateWorkout = () => {
       />
       {exercises.map((el, index) => (
         <Link
-          className="workout-detail-element"
+          className="flex items-center justify-around text-5xl rounded-4xl decoration-0 text-black w-[90%] h-40"
           to={`/exercises/${el._id}`}
           // key={el.exercise._id} // Ensure unique key for each element
         >
