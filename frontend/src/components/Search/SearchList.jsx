@@ -5,6 +5,7 @@ import SearchInput from "./SearchInput";
 import "./SearchList.css";
 import CreateWorkout from "../Create/CreateWorkout";
 import { useLocation } from "react-router-dom";
+import Thumbnail from "../Thumbnail/Thumbnail";
 const backendURL = "http://localhost:3000";
 
 const SearchList = ({ content, contentType, onAddExercise }) => {
@@ -16,12 +17,9 @@ const SearchList = ({ content, contentType, onAddExercise }) => {
   });
   const navigate = useNavigate();
   const location = useLocation();
-  const [hoveredWorkout, setHoveredWorkout] = useState(null);
   const [userId, setUserId] = useState("");
   const token = localStorage.getItem("token");
   const [hoveredIndex, setHoveredIndex] = useState(null);
-
-  const [showBodyParts, setShowBodyParts] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -108,7 +106,7 @@ const SearchList = ({ content, contentType, onAddExercise }) => {
   };
 
   return (
-    <div className="search-list-container">
+    <div className="grid grid-cols-1 grid-rows-[max-content] min-h-full w-full max-h-full gap-2 overflow-hidden ">
       <SearchInput
         searchQuery={searchQuery}
         changeSearchQuery={changeSearchQuery}
@@ -117,79 +115,9 @@ const SearchList = ({ content, contentType, onAddExercise }) => {
         selectedBodyParts={selectedBodyParts}
         sortOrder={sortOrder}
       />
-      <div className="search-list-elements-container">
+      <div className="grid grid-cols-3 overflow-y-scroll min-h-full max-h-full h-100 gap-x-20 justify-items-center px-10 pt-10">
         {sortedExercises.map((el, index) => (
-          <div
-            className="search-list-element"
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            style={{
-              height: hoveredIndex === index ? "50rem" : "40rem",
-              transition: "transform 0.3s ease",
-              overflow: "hidden",
-
-              marginBottom: hoveredIndex === index ? "-10rem" : "0",
-              zIndex: hoveredIndex === index ? 10 : 1,
-            }}
-          >
-            <Link className="search-list-element-info" to={el._id}>
-              <img
-                className="search-list-element-img"
-                src={`${backendURL}/${el.media}`}
-              />
-              <div className="search-list-element-details">
-                <div>
-                  <h1>{el.name}</h1>
-                  {contentType != "Workout" && (
-                    <button
-                      onClick={(event) => {
-                        event.preventDefault();
-                        handleAddElement(el);
-                      }}
-                    >
-                      +
-                    </button>
-                  )}
-                  {el.user && (
-                    <a
-                      href={`/profile/${el.user._id}`}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {el.user.username}
-                    </a>
-                  )}
-                </div>
-                <div className="search-list-element-details-right">
-                  <Rating
-                    contentId={el._id}
-                    userId={userId}
-                    contentType={contentType}
-                    averageRating={el.averageRating}
-                  ></Rating>
-                  <div key={index} className="bodyparts-list">
-                    {el.bodyPart
-                      .sort((a, b) => b.scale - a.scale)
-                      .slice(0, hoveredIndex === index ? el.bodyPart.length : 2)
-                      .map((bp) => (
-                        <div
-                          className={`bodypart-container ${
-                            el.bodyPart.length === 1 ? "single-bodypart" : ""
-                          }`}
-                          style={{
-                            backgroundColor: `rgb(${Math.min(
-                              bp.scale * 2.55,
-                              255
-                            )}, 0, 0)`,
-                          }}
-                        >
-                          {bp.part}
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
+          <Thumbnail className="h-90 w-100" data={el} />
         ))}
       </div>
     </div>

@@ -17,9 +17,9 @@ const Rating = ({ itemId, averageRating }) => {
     handleSubmit(selectedRating);
   };
   return (
-    <div>
-      <p style={{ display: "inline-block" }}>{averageRating}</p>
+    <div className="flex justify-end items-center">
       {/* {userId && */}
+      <p className="text-xl">{averageRating}</p>
       {[1, 2, 3, 4, 5].map((star) => (
         <span
           key={star}

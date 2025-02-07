@@ -351,7 +351,7 @@ const GLTFViewer = () => {
   }, [selectedObject]);
 
   return (
-    <div ref={mountRef} style={{ width: "100%", height: "100%" }}>
+    <div ref={mountRef} className="w-full h-full z-10">
       {bodyPartInfo && (
         <BodyPartInfo
           staticInfo={bodyPartInfo}

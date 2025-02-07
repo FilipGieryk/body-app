@@ -3,13 +3,18 @@ import Rating from "../Other/Rating";
 import clsx from "clsx";
 const Thumbnail = ({ data, className }) => {
   return (
-    <div className={clsx("w-60 h-80 border-1", className)}>
-      <img src={data?.media} className="w-full h-[50%]"></img>
-
-      <h2 className="mg-0 text-3xl">{data?.name}</h2>
+    <div className={clsx(className)}>
+      <img
+        src={data?.media}
+        className="w-full h-[60%] rounded-2xl overflow-visible"
+      ></img>
+      <div className="grid grid-cols-2 grid-rows-2">
+        <h2 className="mg-0 text-3xl truncate text-start">{data?.name}</h2>
+        <Rating averageRating={data.averageRating} />
+      </div>
       {/* <BodyParts /> */}
       {/* <Rating itemId={data._id} averageRating={data.averageRating} /> */}
-      <GlitchButton content={"ADD"} />
+      {/* <GlitchButton content={"ADD"} /> */}
     </div>
   );
 };

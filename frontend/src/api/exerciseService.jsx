@@ -19,3 +19,20 @@ export const fetchExercises = async (bodyPart, limit = 2) => {
     }
   }
 };
+
+export const updateExercise = async (id, exerciseData) => {
+  try {
+    const response = await axios.put(`/api/admin/exercises/:id`, exerciseData);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(`Server error: ${error.response.status}`);
+    } else if (error.request) {
+      // No response received
+      throw new Error("Network error: No response from server");
+    } else {
+      // Something went wrong in the request setup
+      throw new Error(`Request error: ${error.message}`);
+    }
+  }
+};

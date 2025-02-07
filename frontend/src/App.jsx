@@ -28,9 +28,10 @@ function App() {
           <UserProvider>
             <Header />
             <div
-              className="absolute top-7 left-11 w-23/25 h-24/25 rounded-3xl z-0 shadow-2xl overflow-hidden"
+              className="absolute top-7 left-11 w-23/25 h-24/25 z-10 "
               id="container"
             >
+              <div className="absolute inset-0 -left-11 -right-10 -bottom-20 bg-[url(./assets/bg-brush.png)] bg-center bg-[length:104%_105%] z-[-10] opacity-5" />
               <Routes>
                 <Route
                   path="/admin"

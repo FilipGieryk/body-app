@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AdminDashboard.css";
+import { useParams } from "react-router-dom";
 
 const AdminDashboard = () => {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     name: "",
     bodyPart: [],
@@ -11,7 +13,6 @@ const AdminDashboard = () => {
   const [mediaFile, setMediaFile] = useState(null);
   const [message, setMessage] = useState("");
   const [bodyPart, setBodyPart] = useState("");
-
   const [scaleInput, setScaleInput] = useState(null);
   // Fetch existing exercises
 
