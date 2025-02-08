@@ -48,9 +48,9 @@ const Header = () => {
 
       const line = document.getElementById("line");
       if (line) {
-        line.style.animation = "none";
+        // line.style.animation = "none";
         void line.offsetHeight;
-        line.style.animation = "moveLine 0.3s ease forwards";
+        // line.style.animation = "moveLine 0.3s ease forwards";
       }
     }
   }, [currPos]);

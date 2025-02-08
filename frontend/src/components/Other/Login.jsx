@@ -45,12 +45,12 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
 
   return (
     <div
-      className={`animate-[moveLogin] flex absolute flex-col justify-center items-center h-20 -top-28 right-28 blur-xs z-200 w-80 my-auto p-8 border-2 rounded-2xl shadow ${
+      className={`animate-login duration-200 flex absolute flex-col justify-center items-center h-90 bottom-50 right-200 blur-s z-200 w-120 my-auto p-8 border-2 rounded-2xl shadow ${
         !isVisible ? "login-hide" : ""
       }`}
       id="login-container"
     >
-      <div className="absolute top-8 text-2xl w-56 rounded-2xl px-2 py-4">
+      <div className="absolute left-20 top-0 text-base w-56 rounded-2xl px-2 py-4">
         <h1
           className={`inline cursor-pointer px-2 py-4 rounded-xl transition-all ${
             activeTab === "login" ? "active" : ""
@@ -121,7 +121,7 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
         </div>
         <input
           type="submit"
-          className="w-full px-2.8 text-white border-0 rounded-xl cursor-pointer transition-all"
+          className="w-full px-2.8 text-black border-1 rounded-xl cursor-pointer transition-all"
           value={activeTab === "login" ? "Login" : "Register"}
           id="login-form-submit"
         />

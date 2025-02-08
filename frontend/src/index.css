@@ -42,6 +42,10 @@
     clip-path: circle(58.6% at 50% 59%);
   }
 
+  .animate-login {
+    animation: moveLogin;
+  }
+
   .circle-radius {
     border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
     border-color: transparent white transparent white;
@@ -148,11 +152,11 @@
 
   @keyframes moveLogin {
     0% {
-      top: 50rem;
-      left: -rem;
+      top: 10rem;
+      left: 1rem;
     }
     100% {
-      top: 50%;
+      top: 30%;
       right: 50%;
       width: 40rem;
       height: 30rem;
