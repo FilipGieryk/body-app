@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import "../Details/WorkoutDetail.css";
 import axios from "axios";
 import ExercisesList from "../../pages/exercise/ExercisesList";
 const CreateWorkout = () => {

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import "./UserPhotos.css";
 
 const Photos = ({ userInfo, userId }) => {
   const [userPhotos, setUserPhotos] = useState(userInfo);

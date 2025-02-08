@@ -46,14 +46,14 @@ const Profile = () => {
 
   return (
     <>
-      <div className="profile-layout">
-        <div className="test">
-          <div className={"profile-grid-layout"}>
+      <div className="flex w-full h-full items-center justify-between overflow-hidden">
+        <div className="w-full h-full flex flex-col overflow-hidden">
+          <div className="grid grid-rows-2 grid-cols-[1fr 2fr] w-full h-full gap-4 transition-all">
             <UserInformation userInfo={userInfo} userId={id} />
-            <div className="profile-grid-item photos">
+            <div className="flex rounded-2xl flex-col justify-start items-center px-8 photos">
               {userInfo && <Photos userInfo={userInfo} userId={id} />}
             </div>
-            <div className="profile-grid-item workouts">
+            <div className="flex rounded-2xl flex-col justify-start items-center px-8 workouts">
               <WokroutsList userInfo={userInfo} />
             </div>
           </div>

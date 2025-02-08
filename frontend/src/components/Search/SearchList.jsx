@@ -106,7 +106,7 @@ const SearchList = ({ content, contentType, onAddExercise }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 grid-rows-[max-content] min-h-full w-full max-h-full gap-2 overflow-hidden ">
+    <div className="grid grid-cols-1 grid-rows-[max-content] min-h-full w-full max-h-full gap-2">
       <SearchInput
         searchQuery={searchQuery}
         changeSearchQuery={changeSearchQuery}

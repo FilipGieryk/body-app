@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import "./WorkoutsList.css";
 import { useState } from "react";
 const WokroutsList = ({ userInfo }) => {
   return (

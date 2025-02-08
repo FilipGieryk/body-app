@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import "./WorkoutDetail.css";
 import { Link } from "react-router-dom";
 import ExercisesList from "../../pages/exercise/ExercisesList";
 

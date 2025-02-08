@@ -1,4 +1,3 @@
-import "./ChatComponent.css";
 import axios from "axios";
 import FriendsSearch from "./FriendsSearch";
 import { useEffect, useState, useRef } from "react";
@@ -86,7 +85,9 @@ const ChatComponent = ({ userId }) => {
                       <h2>{chat.chatName}</h2>
                       <p className="m-0">{chat.lastMessage?.content}</p>
                     </div>
-                    {chat.hasUnread && <div className="notification-dot"></div>}
+                    {chat.hasUnread && (
+                      <div className="w-5 h-5 bg-red-500 absolute top-2 -right-3 rounded-[50%] translate-y-[-100%]"></div>
+                    )}
                   </div>
                 </Link>
               ))}

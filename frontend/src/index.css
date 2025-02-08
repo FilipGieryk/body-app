@@ -54,6 +54,15 @@
   .clip-path-square-right {
     clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 50%, 61% 29%);
   }
+  .help-grid-area {
+    grid-template-areas:
+      ". . top . ."
+      "left-nav text text text right-nav"
+      ". . footer . .";
+  }
+  .login-hide {
+    animation-direction: reverse;
+  }
 }
 
 /* Keyframes for glitch animation */
@@ -125,6 +134,30 @@
     100% {
       letter-spacing: 2px;
       transform: translate(0);
+    }
+  }
+
+  @keyframes loginUnderline {
+    0% {
+      border: none;
+    }
+    100% {
+      border-bottom: solid 1px white;
+    }
+  }
+
+  @keyframes moveLogin {
+    0% {
+      top: 50rem;
+      left: -rem;
+    }
+    100% {
+      top: 50%;
+      right: 50%;
+      width: 40rem;
+      height: 30rem;
+      transform: translate(-70%, -50%);
+      z-index: 10;
     }
   }
 }

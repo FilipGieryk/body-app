@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./FriendsSearch.css";
 import { useUser } from "../../hooks/UserContext";
 
 const FriendsSearch = ({

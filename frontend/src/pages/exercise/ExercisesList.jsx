@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./ExercisesList.css";
 import axios from "axios";
 import SearchList from "../../components/Search/SearchList";
 

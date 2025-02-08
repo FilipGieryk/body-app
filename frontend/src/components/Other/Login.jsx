@@ -46,12 +46,14 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
 
   return (
     <div
-      className={`login ${!isVisible ? "login-hide" : ""}`}
+      className={`animate-[moveLogin] flex absolute flex-col justify-center items-center h-20 -top-28 right-28 blur-xs z-200 w-80 my-auto p-8 border-2 rounded-2xl shadow ${
+        !isVisible ? "login-hide" : ""
+      }`}
       id="login-container"
     >
-      <div className="login-header-container">
+      <div className="absolute top-8 text-2xl w-56 rounded-2xl px-2 py-4">
         <h1
-          className={`login-header-element ${
+          className={`inline cursor-pointer px-2 py-4 rounded-xl transition-all ${
             activeTab === "login" ? "active" : ""
           }`}
           onClick={() => setActiveTab("login")}
@@ -59,7 +61,7 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
           Login
         </h1>
         <h1
-          className={`login-header-element ${
+          className={`inline cursor-pointer px-2 py-4 rounded-xl transition-all ${
             activeTab === "register" ? "active" : ""
           }`}
           onClick={() => setActiveTab("register")}
@@ -69,9 +71,9 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
       </div>
 
       <form id="login-form" onSubmit={handleSubmit}>
-        <div class="input">
+        <div class="mx-4">
           <input
-            class="login-input"
+            class="w-full p-2 border-0 border-b-1"
             type="text"
             id="username"
             name="username"
@@ -79,14 +81,16 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <span class="underline"></span>
-          <label class="label">login</label>
+          <span class="block h-0.5 bg-amber-50"></span>
+          <label class="absolute inset-0 pointer-events-none text-2xl text-transparent ">
+            login
+          </label>
         </div>
         <br />
         {activeTab === "register" && (
-          <div className="input">
+          <div className="mx-4">
             <input
-              className="login-input"
+              className="w-full p-2 border-0 border-b-1"
               type="email"
               id="email"
               name="email"
@@ -94,13 +98,15 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <span className="underline"></span>
-            <label className="label">Email</label>
+            <span className="block h-0.5 bg-amber-50"></span>
+            <label className="absolute inset-0 pointer-events-none text-2xl text-transparent ">
+              Email
+            </label>
           </div>
         )}
-        <div class="input">
+        <div class="mx-4">
           <input
-            class="login-input"
+            class="w-full p-2 border-0 border-b-1"
             type="password"
             id="password"
             name="password"
@@ -108,12 +114,15 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <span class="underline"></span>
-          <label class="label">password</label>
+          <span class="block h-0.5 bg-amber-50"></span>
+          <label class="absolute inset-0 pointer-events-none text-2xl text-transparent ">
+            password
+          </label>
           <br />
         </div>
         <input
           type="submit"
+          className="w-full px-2.8 text-white border-0 rounded-xl cursor-pointer transition-all"
           value={activeTab === "login" ? "Login" : "Register"}
           id="login-form-submit"
         />

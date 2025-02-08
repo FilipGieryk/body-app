@@ -109,18 +109,20 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
   };
 
   return (
-    <div className="profile-grid-item about">
+    <div className="flex rounded-2xl flex-col justify-start items-center px-8 row-start-1 row-end-3">
       {isEditing ? (
-        <div className="profile-grid-inner display-column">
-          <div className="profile-edit-container">
+        <div className="flex relative text-4xl justify-start items-center flex-col">
+          <div className="flex justify-center relative">
             <img
               src={userInfo.profilePhoto}
-              className="profile-pic profile-edit-photo"
+              className="mt-20 w-60 rounded-[50%] transition-all profile-edit-photo"
             ></img>
-            <p className="profile-edit-photo-text">+</p>
+            <p className="absolute top-0 translate-y-[50%] invisible text-4xl transition-all opacity-0">
+              +
+            </p>
           </div>
           <input
-            className="profile-edit-text"
+            className="w-20 h-8 border-2 mx-8"
             type="text"
             value={userInfo.username}
             onChange={(e) =>
@@ -133,17 +135,23 @@ const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
           <input placeholder="yt"></input>
           <input placeholder="insta"></input>
           <input placeholder="x"></input>
-          <button onClick={handleSaveChanges} className="edit-user-button">
+          <button
+            onClick={handleSaveChanges}
+            className="absolute top-0 -right-60 w-20 h-20 rounded-[50%] border-0"
+          >
             Save
           </button>
         </div>
       ) : (
-        <div className="profile-grid-inner display-column">
-          <img src={userInfo.profilePhoto} className="profile-pic"></img>
+        <div className="flex relative text-4xl justify-start items-center flex-col">
+          <img
+            src={userInfo.profilePhoto}
+            className="mt-20 w-60 rounded-[50%] transition-all"
+          ></img>
           <p>{userInfo?.username}</p>
           {loggedUserInfo?._id === userInfo?._id ? (
             <button
-              className="edit-user-button"
+              className="absolute top-0 -right-60 w-20 h-20 rounded-[50%] border-0"
               onClick={() => setIsEditing(true)}
             ></button>
           ) : (

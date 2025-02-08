@@ -1,6 +1,0 @@
-.help-container {
-  grid-template-areas:
-    ". . top . ."
-    "left-nav text text text right-nav"
-    ". . footer . .";
-}
