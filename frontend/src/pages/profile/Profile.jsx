@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./Profile.css";
 import axios from "axios";
 import { useParams } from "react-router";
 import Photos from "../../components/Main/Photos/UserPhotos";

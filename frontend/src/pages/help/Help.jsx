@@ -1,9 +1,4 @@
-import { data } from "react-router-dom";
-import WokroutsList from "../../components/Main/Workouts/WorkoutsList";
-import Thumbnail from "../../components/Thumbnail/Thumbnail";
-import { useHelpWorkouts } from "../../hooks/useHelpWorkouts";
 import { motion } from "framer-motion";
-import "./help.css";
 import { useState } from "react";
 const Help = () => {
   const splitsInfo = {
@@ -143,7 +138,7 @@ const Help = () => {
   return (
     <div className="grid grid-cols-5 grid-rows-[1fr 3fr 1fr] justify-between items-center h-full min-w-full justify-items-center relative after:absolute rounded-2xl [background-image:linear-gradient(243deg,_#000000_1%,_#3b0a18_40%,_#000000_100%)] after:[background-image:linear-gradient(243deg,_#000000_1%,_#3b0a18_31%,_#000000_100%)]  after:content-[''] after:bg-black after:w-full after:h-full after:blur-3xl after:z-10">
       {/* // top */}
-      <div className="[grid-area:top] flex gap-10 text-xl justify-between z-20">
+      <div className="col-start-3 row-start-0 flex gap-10 text-xl justify-between z-20">
         <p className="text-red-500 bg-white/10 rounded-2xl p-3">difficulty:</p>
         <p className="text-red-500 bg-white/10 rounded-2xl p-3">
           workouts: {selectSplit.workouts}
@@ -151,7 +146,7 @@ const Help = () => {
         <p className="text-red-500 bg-black/20 rounded-2xl p-3">time</p>
       </div>
       {/* middle */}
-      <div className="[grid-area:text] z-100 text-white self-stretch">
+      <div className="col-start-1 col-end-6 row-start-2 row-end-3 z-100 text-white self-stretch">
         <h1 className="mb-20">{selectSplit.name}</h1>
         <p className="text-xl mb-10">{selectSplit.info}</p>
         <table className="w-full mb-30">
@@ -167,7 +162,7 @@ const Help = () => {
         <p>{selectSplit.example}</p>
       </div>
       {/* bottom */}
-      <div className="flex bg-white justify-around w-120 p-1 rounded-md [grid-area:footer] z-60">
+      <div className="flex bg-white justify-around w-120 p-1 rounded-md col-start-1 col-end-6 row-start-3 z-60">
         <motion.button
           className="bg-amber-400 rounded-md w-30 h-15 hover:bg-amber-300"
           onClick={() => handleChangeCategory("left")}

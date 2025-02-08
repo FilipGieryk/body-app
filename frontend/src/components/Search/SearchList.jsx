@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Rating from "../Other/Rating";
 import SearchInput from "./SearchInput";
-import "./SearchList.css";
 import CreateWorkout from "../Create/CreateWorkout";
 import { useLocation } from "react-router-dom";
 import Thumbnail from "../Thumbnail/Thumbnail";
