@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquare } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect } from "react";
 import { redirect, useNavigate } from "react-router-dom";
-import "./WorkoutsActivity.css";
 
 const WorkoutsActivity = ({ userInfo, className }) => {
   const navigate = useNavigate();
@@ -65,24 +64,25 @@ const WorkoutsActivity = ({ userInfo, className }) => {
   }, []);
   const workoutSessions = userInfo.workoutSessions;
   return (
-    <div className={`workout-activity-container ${className}`}>
+    <div
+      className={`grid gap-x-4 w-[85%] h-full rounded-4xl absolute top-[100%] transition-all ${className}`}
+    >
       <div className="grid grid-cols-1 items-center justify-items-center">
-        <div className="workout-sessions-container">
+        <div className="flex gap-8">
           {workoutSessions.slice(-4).map((el) => (
-            <div className="workout-session-container">{el.user}</div>
+            <div className="w-120 h-160 rounded-4xl text-2xl">{el.user}</div>
           ))}
         </div>
         <button onClick={() => navigate("/workouts")}>StartWorkout</button>
       </div>
       <div className="grid grid-cols-1 items-center justify-items-center">
-        <div className="workout-activity-table-container">
-          <table className="workout-activity-table">
-            <thead>
+        <div className="h-[90%] w-[90%] rounded-xl">
+          <table className="h-[20%] w-full border-spacing-0 border-collapse">
+            <thead className="text-2xl">
               <tr>
                 <td></td>
                 {months.map((month, index) => (
                   <td
-                    className="activity-table-head-element"
                     key={index}
                     style={{ textAlign: "start", fontWeight: "bold" }}
                   >
@@ -94,7 +94,7 @@ const WorkoutsActivity = ({ userInfo, className }) => {
             <tbody>
               {daysOfWeek.map((day, rowIndex) => (
                 <tr key={rowIndex}>
-                  <td>{day}</td>
+                  <td className="text-center p-0 h-2">{day}</td>
 
                   {daysByMonth.map((monthData, monthIndex) => {
                     {
@@ -115,7 +115,7 @@ const WorkoutsActivity = ({ userInfo, className }) => {
                         return (
                           <td
                             key={dayIndex}
-                            className="activity-table-body-element"
+                            className="activity-table-body-element text-center p-0 h-2"
                           >
                             <FontAwesomeIcon
                               className="activity-square"
