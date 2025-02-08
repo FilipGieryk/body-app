@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { ObjectLoader } from "../../libs/ObjectLoader.jsx"; // Ensure the correct path
-import { Utils } from "../../libs/Utils.jsx"; // Ensure the correct path
-import { MouseControls } from "../../libs/MouseControls.jsx"; // Ensure the correct path
-import BodyPartInfo from "./BodyPartInfo/BodyPartInfo.jsx";
+import { ObjectLoader } from "./libs/ObjectLoader.jsx"; // Ensure the correct path
+import { Utils } from "./libs/Utils.jsx"; // Ensure the correct path
+import { MouseControls } from "./libs/MouseControls.jsx"; // Ensure the correct path
+import BodyPartInfo from "../thumbnail/BodyPartInfo.jsx";
 import { getBodyPartInfo } from "../../data/bodyPartsData.jsx";
 import { fetchExercises } from "../../api/exerciseService.jsx";
 const GLTFViewer = () => {

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Rating from "../../components/Other/Rating";
-import SearchList from "../../components/Search/SearchList";
+import Rating from "../components/thumbnail/Rating";
+import SearchList from "../components/search/SearchList";
 
 const WorkoutsList = () => {
   const [content, setContent] = useState([]);

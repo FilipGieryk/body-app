@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import SearchList from "../../components/Search/SearchList";
+import SearchList from "../components/search/SearchList";
 
 const backendURL = "http://localhost:3000";
 const ExcercisesList = ({ workoutId, onAddExercise }) => {

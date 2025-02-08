@@ -97,9 +97,12 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <form className="simple-form" onSubmit={handleSubmit}>
+      <form
+        className="grid w-full grid-cols-3 grid-rows-3 h-full justify-items-center items-center m-auto"
+        onSubmit={handleSubmit}
+      >
         <input
-          className="grid-text"
+          className="col-start-1 col-end-3 row-start-1 row-end-1 text-center"
           type="text"
           name="name"
           placeholder="Exercise Name"
@@ -109,7 +112,7 @@ const AdminDashboard = () => {
         />
         <div>
           <input
-            className="grid-enum"
+            className="col-start-3 row-start-1 row-end-1"
             type="text"
             name="bodyPart"
             placeholder="Body Part"
@@ -117,10 +120,10 @@ const AdminDashboard = () => {
             onChange={handleBodyPart}
           />
           <button onClick={addBodyPart}>+</button>
-          <div className="bodyparts-list">
+          <div className="grid grid-cols-2 gap-4">
             {formData.bodyPart.map((bp, index) => (
               <div
-                className="bodypart-container"
+                className="w-28 h-12 inline-block text-center bg-amber-800 text-2xl rounded-2xl"
                 onClick={() => changeBodyPartScale(index)}
               >
                 {bp.part}
@@ -141,7 +144,7 @@ const AdminDashboard = () => {
                       onChange={(e) => handleScaleChange(e, index)}
                       className="scale-input"
                     />
-                    <span className="scale-value">{bp.scale || 0}</span>
+                    <span className="text-2xl text-black">{bp.scale || 0}</span>
                   </div>
                 )}
               </div>
@@ -149,19 +152,19 @@ const AdminDashboard = () => {
           </div>
         </div>
         <input
-          className="grid-photo"
+          className="col-start-3 row-start-2"
           type="file"
           name="media"
           onChange={handleFileChange}
           accept="image/*,video/*"
         />
         <input
-          className="grid-video"
+          className="col-start-1 col-end-2 row-start-2"
           type="text"
           name="videoLink"
           onChange={handleChange}
         />
-        <button className="grid-button" type="submit">
+        <button className="col-start-1 col-end-4 row-start-3" type="submit">
           Create Exercise
         </button>
       </form>

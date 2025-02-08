@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import ChatComponent from "../../components/Chats/ChatComponent";
-import MessageComponent from "../../components/Chats/MessageComponent";
+import ChatComponent from "../components/chats/ChatComponent";
+import MessageComponent from "../components/chats/MessageComponent";
 import { useParams } from "react-router-dom";
-import { useUser } from "../../hooks/UserContext";
+import { useUser } from "../hooks/UserContext";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";

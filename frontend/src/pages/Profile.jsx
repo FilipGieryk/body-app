@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
-import Photos from "../../components/Main/Photos/UserPhotos";
-import WokroutsList from "../../components/Main/Workouts/WorkoutsList";
-import WorkoutsActivity from "../../components/Activity/WorkoutsActivity";
-import UserInformation from "../../components/Main/Information/UserInformation";
-import { useUser } from "../../hooks/UserContext";
+import Photos from "../components/userProfile/UserPhotos";
+import WokroutsList from "../components/userProfile/WorkoutsList";
+import WorkoutsActivity from "../components/activity/WorkoutsActivity";
+import UserInformation from "../components/userProfile/UserInformation";
+import { useUser } from "../hooks/UserContext";
 const Profile = () => {
   let { id } = useParams();
   const [userInfo, setUserInfo] = useState({

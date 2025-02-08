@@ -1,5 +1,5 @@
-import GlitchButton from "../Buttons/GlitchButton";
-import Rating from "../Other/Rating";
+import GlitchButton from "../buttons/GlitchButton";
+import Rating from "./Rating";
 import clsx from "clsx";
 const Thumbnail = ({ data, className }) => {
   return (

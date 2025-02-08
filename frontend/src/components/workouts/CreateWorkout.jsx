@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import ExercisesList from "../../pages/exercise/ExercisesList";
+import ExercisesList from "../../pages/ExercisesList";
 const CreateWorkout = () => {
   const location = useLocation();
   const addedExercise = location.state?.addedExercise || null;

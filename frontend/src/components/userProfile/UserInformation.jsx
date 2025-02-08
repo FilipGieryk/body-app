@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useUser } from "../../../hooks/UserContext";
+import { useUser } from "../../hooks/UserContext";
 import { useNavigate } from "react-router-dom";
 const UserInformation = ({ userInfo, setUserInfo, socket, userId }) => {
   const [isEditing, setIsEditing] = useState(false);

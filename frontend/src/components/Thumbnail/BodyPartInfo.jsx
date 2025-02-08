@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import Thumbnail from "../../Thumbnail/Thumbnail";
+import Thumbnail from "./Thumbnail";
 
 const BodyPartInfo = ({ staticInfo, exercises, animationDuration = 5 }) => {
   const [visibleText, setVisibleText] = useState([]);
