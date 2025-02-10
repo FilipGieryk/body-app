@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useWebSocket } from "../../hooks/webSocketContext";
 import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../hooks/UserContext";
+import { useCreateOrGetChat } from "../../hooks/chats/useCreateOrGetChat";
 const ChatComponent = ({ userId }) => {
   const {
     friendRequests,
@@ -18,23 +19,9 @@ const ChatComponent = ({ userId }) => {
     navigate("/chat/new");
   };
   // in service
-  const createOrGetMessage = async (friend) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "/api/chat/create-or-get",
-        {
-          recipientId: friend._id,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      navigate(`/chat/${response.data.chatId}`);
-    } catch (error) {
-      console.error("error creating chat", error);
-    }
+  const { data, isSuccess, isError, Error } = useCreateOrGetChat();
+  const createOrGetChat = () => {
+    data;
   };
 
   return (
@@ -58,10 +45,7 @@ const ChatComponent = ({ userId }) => {
           )}
           <button onClick={createGroup}>c</button>
         </div>
-        <FriendsSearch
-          userId={userId}
-          createOrGetMessage={createOrGetMessage}
-        />
+        <FriendsSearch userId={userId} createOrGetChat={createOrGetChat} />
       </div>
       <div className="relative w-full">
         {showedInfo === "chats" ? (

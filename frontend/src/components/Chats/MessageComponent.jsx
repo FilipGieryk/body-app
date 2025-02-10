@@ -5,6 +5,7 @@ import { useWebSocket } from "../../hooks/webSocketContext";
 import { useUser } from "../../hooks/UserContext";
 import FriendsSearch from "./FriendsSearch";
 import { useNavigate } from "react-router-dom";
+import { useSendMessageToServer } from "../../hooks/messages/useSendMessageToServer";
 
 const MessageComponent = ({
   onSendMessage,
@@ -66,44 +67,10 @@ const MessageComponent = ({
       setInputValue("");
     }
   };
-  const createGroupChat = async () => {
-    if (groupUsers.length === 0) {
-      console.error("No users selected for the group.");
-      return null;
-    }
-    try {
-      const response = await axios.post(
-        `/api/chat/new-group-chat`,
-        {
-          recipientsId: groupUsers.map((user) => user._id),
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const newChatId = response.data.chatId;
-      return newChatId;
-    } catch (error) {
-      console.error("error creating group", error);
-    }
-  };
-  const sendMessageToServer = async (message, targetChatId = chatId) => {
-    try {
-      const response = await axios.post(
-        `/api/message/${targetChatId}/send`,
-        {
-          content: message,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("failed to send message:", error);
-      throw error;
-    }
-  };
+
+  const { data, isError, isSuccess, Error } = useSendMessageToServer();
+
+  // send message to server was here
   const addToGroup = (friend) => {
     setGroupUsers((prev) => [...prev, friend]);
   };

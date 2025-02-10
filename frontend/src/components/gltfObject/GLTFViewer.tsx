@@ -5,31 +5,29 @@ import { Utils } from "./libs/Utils.jsx"; // Ensure the correct path
 import { MouseControls } from "./libs/MouseControls.jsx"; // Ensure the correct path
 import BodyPartInfo from "../thumbnail/BodyPartInfo.jsx";
 import { getBodyPartInfo } from "../../data/bodyPartsData.jsx";
-import { fetchExercises } from "../../api/exerciseService.jsx";
-const GLTFViewer = () => {
-  const mountRef = useRef(null);
-  const mouse = new THREE.Vector2();
-  const allObjectsRef = useRef([]); // Persistent reference for objects
-  const sceneRef = useRef();
-  const cameraRef = useRef();
-  const rendererRef = useRef();
-  const mixerRef = useRef(null);
+import { fetchExercises } from "../../api/exerciseService.tsx";
+const GLTFViewer: React.FC = () => {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const mouse = useRef(new THREE.Vector2());
+  const allObjectsRef = useRef<THREE.Object3D[]>([]);
+  const sceneRef = useRef<THREE.Scene>();
+  const cameraRef = useRef<THREE.PerspectiveCamera>();
+  const rendererRef = useRef<THREE.WebGLRenderer>();
+  const mixerRef = useRef<THREE.AnimationMixer | null>(null);
   const clockRef = useRef(new THREE.Clock());
-  const clickedObjectRef = useRef();
+  const clickedObjectRef = useRef<THREE.Object3D | null>();
   const isMouseDownRef = useRef(false);
-  const animationActionRef = useRef(null);
+  const animationActionRef = useRef<THREE.AnimationAction | null>(null);
   const hasMovedObjectRef = useRef(false);
-  const mouseMovedRef = useRef(false);
   const lastMousePosition = useRef({ x: 0, y: 0 });
 
-  const [selectedObject, setSelectedObject] = useState();
+  const [selectedObject, setSelectedObject] = useState<string | undefined>();
   const bodyPartInfo = getBodyPartInfo(selectedObject);
-  const [exercises, setExercises] = useState([]);
+  const [exercises, setExercises] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   let clickedOjbect = null;
-  let originalPosition = new THREE.Vector3();
   useEffect(() => {
     const container = document.getElementById("container");
     if (!container) return; // Ensure the container exists
@@ -42,57 +40,40 @@ const GLTFViewer = () => {
       1000
     );
 
-    // Set initial camera position farther away
-    // camera.position.set(0, 10, -20); // Start behind the object
-    const initialPosition = new THREE.Vector3(0, 10, -20); // Behind the object
-    const middlePosition = new THREE.Vector3(15, 10, 0);
-    const targetPosition = new THREE.Vector3(0, 0, 5); // Move to front
-
     const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    mountRef.current.appendChild(renderer.domElement);
+    mountRef.current?.appendChild(renderer.domElement);
 
     sceneRef.current = scene;
     cameraRef.current = camera;
     rendererRef.current = renderer;
 
-    function initLights(scene) {
-      const light = new THREE.DirectionalLight(0xffffff, 1);
-      light.position.set(0.3, 1, 0.3).normalize();
-      scene.add(light);
-    }
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(0.3, 1, 0.3).normalize();
+    scene.add(light);
 
-    function initObject(scene) {
-      ObjectLoader.loadModel(
-        "models/check9.gltf",
-        scene,
-        (object, animations) => {
-          // scene.add(object);
-          allObjectsRef.current.push(object); // Add to persistent ref
-          mixerRef.current = new THREE.AnimationMixer(object);
+    ObjectLoader.loadModel(
+      "models/check9.gltf",
+      scene,
+      (object: THREE.Object3D, animations: any[]) => {
+        // scene.add(object);
+        allObjectsRef.current.push(object); // Add to persistent ref
+        mixerRef.current = new THREE.AnimationMixer(object);
 
-          const clip = animations[0];
-          animationActionRef.current = mixerRef.current.clipAction(clip);
-          // animationActionRef.current.play();
-          scene.add(object);
-          Utils.centerObject(object);
-        }
-      );
-    }
+        const clip = animations[0];
+        animationActionRef.current = mixerRef.current.clipAction(clip);
+        // animationActionRef.current.play();
+        scene.add(object);
+        Utils.centerObject(object);
+      }
+    );
 
-    initLights(scene);
-    initObject(scene);
-    // Resize event listener
-    const onResize = () => {
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    };
-    window.addEventListener("resize", onResize);
-
-    // Smooth camera transition
+    const initialPosition = new THREE.Vector3(0, 10, -20); // Behind the object
+    const middlePosition = new THREE.Vector3(15, 10, 0);
+    const targetPosition = new THREE.Vector3(0, 0, 5); // Move to front
     let startTime = performance.now();
     const duration = 2000;
+
     function animateCamera(time) {
       let elapsed = time - startTime;
       let progress = Math.min(elapsed / duration, 1);
@@ -121,6 +102,16 @@ const GLTFViewer = () => {
     }
     requestAnimationFrame(animateCamera);
 
+    // Resize event listener
+    const onResize = () => {
+      if (camera && container) {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      }
+    };
+    window.addEventListener("resize", onResize);
+
     return () => {
       window.removeEventListener("resize", onResize);
       if (mountRef.current) {
@@ -132,53 +123,48 @@ const GLTFViewer = () => {
   useEffect(() => {
     mountRef.current.appendChild(rendererRef.current.domElement);
 
-    const onPointerMove = (event) => {
-      const rect = rendererRef.current.domElement.getBoundingClientRect();
-      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-    };
-
-    let currentIntersected = null;
-
     const onMouseDown = (event) => {
       if (event.button === 0) {
-        // Left mouse button
         isMouseDownRef.current = true;
-
-        // Pause the animation initially
         if (animationActionRef.current) {
           animationActionRef.current.paused = true;
         }
-
-        // Record the initial mouse position to calculate movement later
         const rect = rendererRef.current.domElement.getBoundingClientRect();
         lastMousePosition.current = {
           x: event.clientX - rect.left,
           y: event.clientY - rect.top,
         };
 
-        // Handle object movement, if necessary
         const objectToMove = allObjectsRef.current[0];
         if (objectToMove && !hasMovedObjectRef.current) {
-          // objectToMove.position.y -= 3; // Move down by 3 units
-          hasMovedObjectRef.current = true; // Mark as moved
+          hasMovedObjectRef.current = true;
           console.log(`Object moved to position: ${objectToMove.position.y}`);
         }
       }
     };
-    const onMouseUp = (event) => {
+
+    const onMouseUp = (event: { button: number }) => {
       if (event.button === 0) {
-        // Left mouse button
         isMouseDownRef.current = false;
         if (animationActionRef.current) {
-          animationActionRef.current.paused = true; // Stop the animation on mouse up
+          animationActionRef.current.paused = true;
         }
       }
     };
 
-    function onClick(event) {
+    const onPointerMove = (event: MouseEvent) => {
+      if (!rendererRef.current) return;
+      const rect = rendererRef.current.domElement.getBoundingClientRect();
+      mouse.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    };
+
+    let currentIntersected = null;
+
+    const onClick = () => {
+      if (!cameraRef.current) return;
       const raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(mouse, cameraRef.current);
+      raycaster.setFromCamera(mouse.current, cameraRef.current);
       const intersects = raycaster.intersectObjects(
         allObjectsRef.current[0].children[1].children,
         true
@@ -186,36 +172,23 @@ const GLTFViewer = () => {
       let clickedObject = null;
       if (intersects.length > 0) {
         clickedObject = intersects[0].object;
-        // If nothing is clicked
-        if (clickedObjectRef.current) {
-          if (clickedObjectRef.current != clickedObject) {
-            // Reset the color of previously clicked object if any
-            clickedObjectRef.current.material.color.set(0.8, 0.8, 0.8);
-            // setClickedObject(null); // Clear clicked object
-          }
+        if (
+          clickedObjectRef.current &&
+          clickedObjectRef.current != clickedObject
+        ) {
+          clickedObjectRef.current.material.color.set(0.8, 0.8, 0.8);
         }
-
-        // If something is clicked
-
-        // Only proceed if the clicked object is different from the current clicked object
-        if (clickedObject.name !== "Mesh1__0") {
-          // Reset previous clicked object's color if it exists
-          if (clickedObject) {
-            clickedObject.material.color.set(0.8, 0.8, 0.8); // Reset color
-          }
-
-          // Set the new clicked object and change its color
-          clickedObject.material.color.set(10, 0, 0); // Set color to red
+        if (clickedObject != null) {
+          clickedObject.material.color.set(10, 0, 0);
           setSelectedObject(clickedObject.name);
-          // Update the clicked object state
           clickedObjectRef.current = clickedObject;
         }
       }
-    }
+    };
 
     function checkHover() {
       const raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(mouse, cameraRef.current);
+      raycaster.setFromCamera(mouse.current, cameraRef.current);
       const excludedMeshes = ["Arms", "Head", "Legs"];
       const intersects = raycaster.intersectObjects(
         allObjectsRef.current,
@@ -224,11 +197,9 @@ const GLTFViewer = () => {
 
       if (intersects.length > 0) {
         const newIntersected = intersects[0].object;
-
         if (
-          newIntersected !== clickedOjbect &&
-          currentIntersected !== newIntersected &&
-          currentIntersected !== clickedObjectRef.current
+          newIntersected !== clickedObjectRef.current &&
+          currentIntersected !== newIntersected
         ) {
           currentIntersected?.material.color.set(0.8, 0.8, 0.8);
         }
@@ -238,8 +209,7 @@ const GLTFViewer = () => {
         currentIntersected = newIntersected;
       } else if (
         currentIntersected &&
-        currentIntersected !== clickedObjectRef.current &&
-        !clickedObjectRef.current
+        currentIntersected !== clickedObjectRef.current
       ) {
         currentIntersected.material.color.set(0.8, 0.8, 0.8);
         currentIntersected = null;
@@ -251,29 +221,25 @@ const GLTFViewer = () => {
 
     const animate = () => {
       checkHover();
-      // rendererRef.current.render(sceneRef.current, cameraRef.current);
       requestAnimationFrame(animate);
       if (mixerRef.current) {
-        const delta = clockRef.current.getDelta(); // Time since last frame
-        mixerRef.current.update(delta); // Update the mixer
+        const delta = clockRef.current.getDelta();
+        mixerRef.current.update(delta);
       }
-      rendererRef.current.render(sceneRef.current, cameraRef.current);
+      if (rendererRef.current)
+        rendererRef.current.render(sceneRef.current, cameraRef.current);
     };
     const onMouseMove = (event) => {
-      if (!isMouseDownRef.current) return;
+      if (!isMouseDownRef.current || !rendererRef.current) return;
 
       const rect = rendererRef.current.domElement.getBoundingClientRect();
       const mouseX = event.clientX - rect.left;
       const width = rect.width;
 
-      // Determine the direction of animation based on mouse movement
-
       if (animationActionRef.current) {
-        // Calculate the change in mouse position
         const deltaX = event.clientX - lastMousePosition.current.x;
 
         if (Math.abs(deltaX) > 2) {
-          // Resume animation when significant movement is detected
           animationActionRef.current.paused = false;
 
           if (!animationActionRef.current.isRunning()) {
@@ -281,32 +247,27 @@ const GLTFViewer = () => {
           }
 
           if (deltaX < 0) {
-            // Move left: play forward animation
             animationActionRef.current.timeScale = 1;
             animationActionRef.current.setLoop(THREE.LoopRepeat, Infinity);
           } else {
-            // Move right: play backward animation
             animationActionRef.current.timeScale = -1;
             animationActionRef.current.setLoop(THREE.LoopRepeat, Infinity);
           }
 
-          // Update animation time incrementally based on mouse movement
           const animationDuration =
             animationActionRef.current.getClip().duration;
           const timeIncrement = (deltaX / width) * animationDuration;
 
           animationActionRef.current.time += timeIncrement;
           if (animationActionRef.current.time >= animationDuration) {
-            animationActionRef.current.time %= animationDuration; // Wrap forward
+            animationActionRef.current.time %= animationDuration;
           } else if (animationActionRef.current.time < 0) {
             animationActionRef.current.time =
               animationDuration +
-              (animationActionRef.current.time % animationDuration); // Wrap backward
+              (animationActionRef.current.time % animationDuration);
           }
-          // Update the last mouse position
           lastMousePosition.current = { x: event.clientX, y: event.clientY };
         } else {
-          // Pause the animation if the mouse hasn't moved significantly
           animationActionRef.current.paused = true;
         }
       }
@@ -319,16 +280,14 @@ const GLTFViewer = () => {
 
     animate();
     return () => {
-      // Cleanup
       if (mountRef.current && rendererRef.current) {
-        // mountRef.current.removeChild(rendererRef.current.domElement);
       }
       window.addEventListener("pointermove", onPointerMove);
       window.addEventListener("mousedown", onMouseDown);
       window.addEventListener("mouseup", onMouseUp);
       window.addEventListener("mousemove", onMouseMove);
     };
-  }, []); // Empty dependency array to prevent re-runs
+  }, []);
 
   useEffect(() => {
     const loadExercises = async () => {

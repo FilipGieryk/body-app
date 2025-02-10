@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Rating from "../thumbnail/Rating";
 import SearchInput from "./SearchInput";
-import CreateWorkout from "../workouts/CreateWorkout";
+import CreateWorkout from "../workouts/CreateWorkout.tsx";
 import { useLocation } from "react-router-dom";
 import Thumbnail from "../thumbnail/Thumbnail";
 const backendURL = "http://localhost:3000";

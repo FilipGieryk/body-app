@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import ExercisesList from "../../pages/ExercisesList";
+
+import { useCreateWorkout } from "../../hooks/workouts/useCreateWorkout";
 const CreateWorkout = () => {
   const location = useLocation();
   const addedExercise = location.state?.addedExercise || null;
@@ -15,28 +16,13 @@ const CreateWorkout = () => {
 
   const token = localStorage.getItem("token");
 
-  const handleSaveChanges = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post(
-        "/api/workouts/create",
-        {
-          name,
-          description,
-          exercises,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Workout added successfully:", response.data);
-    } catch (error) {
-      console.error("Error adding workout:", error);
-    }
+  const { mutate, isError, isSuccess, error } = useCreateWorkout();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newWorkout = { name, description, exercises };
+    mutate(newWorkout);
   };
-
+  // fix
   const handleInputClick = (event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -56,7 +42,7 @@ const CreateWorkout = () => {
   };
 
   return (
-    <div className="flex justify-center flex-col items-center">
+    <form className="flex justify-center flex-col items-center">
       <h1 className="text-5xl mb-40">
         <input value={name} onChange={(e) => setName(e.target.value)} />
       </h1>
@@ -121,9 +107,9 @@ const CreateWorkout = () => {
           </button>
         </Link>
       ))}
-      <button onClick={handleSaveChanges}>Finish Workout</button>
+      <button onClick={handleSubmit}>Finish Workout</button>
       <ExercisesList onAddExercise={handleAddExercise} />
-    </div>
+    </form>
   );
 };
 

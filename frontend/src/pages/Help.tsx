@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import React from "react";
 import { useState } from "react";
 const Help = () => {
   const splitsInfo = {
@@ -125,12 +126,12 @@ const Help = () => {
   //   error,
   //   isLoading,
   // } = useHelpWorkouts(selectedSplit.example);
-  const handleSectionClick = (split) => {
+  const handleSectionClick = (split: React.SetStateAction<string>) => {
     setSelectSection(split);
     setSelectSplit(splitsInfo[selectCategory][split]);
   };
 
-  const handleChangeCategory = (category) => {
+  const handleChangeCategory = (category: string) => {
     setSelectCategory(category);
     setSelectSection(Object.keys(splitsInfo[category])[0]);
     setSelectSplit(splitsInfo[category][Object.keys(splitsInfo[category])[0]]);

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import ExercisesList from "../../pages/ExercisesList";
 
 const WorkoutDetail = () => {
   const { workoutId } = useParams();
@@ -11,7 +10,6 @@ const WorkoutDetail = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [workoutSession, setWorkoutSession] = useState(null);
   const [userId, setUserId] = useState("");
-  console.log(workoutDetails);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
