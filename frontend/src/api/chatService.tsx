@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const createOrGetChat = async (friend) => {
+export const createOrGetChat = async (friend: { _id: any; }) => {
   try {
     const response = await axios.post(
       "/api/chat/create-or-get",

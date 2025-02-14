@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ObjectLoader } from "./libs/ObjectLoader.jsx"; // Ensure the correct path
 import { Utils } from "./libs/Utils.jsx"; // Ensure the correct path
-import { MouseControls } from "./libs/MouseControls.jsx"; // Ensure the correct path
 import BodyPartInfo from "../thumbnail/BodyPartInfo.jsx";
 import { getBodyPartInfo } from "../../data/bodyPartsData.jsx";
 import { fetchExercises } from "../../api/exerciseService.tsx";
@@ -27,7 +26,6 @@ const GLTFViewer: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  let clickedOjbect = null;
   useEffect(() => {
     const container = document.getElementById("container");
     if (!container) return; // Ensure the container exists
@@ -74,7 +72,7 @@ const GLTFViewer: React.FC = () => {
     let startTime = performance.now();
     const duration = 2000;
 
-    function animateCamera(time) {
+    function animateCamera(time: number) {
       let elapsed = time - startTime;
       let progress = Math.min(elapsed / duration, 1);
 
