@@ -1,11 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import { data, useParams } from "react-router-dom";
-import { useWebSocket } from "../../hooks/webSocketContext";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useUser } from "../../hooks/UserContext";
-import FriendsSearch from "./FriendsSearch";
-import { useNavigate } from "react-router-dom";
-import { useSendMessageToServer } from "../../hooks/messages/useSendMessageToServer";
 import { useAutoScroll } from "../../hooks/useAutoScroll";
 import { useGetChatMessages } from "../../hooks/messages/useGetChatMessages";
 import { useHandleKeyDown } from "../../hooks/messages/useHandleKeyDown";

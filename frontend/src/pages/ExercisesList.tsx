@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import SearchList from "../components/search/SearchList";
-import { useGetExercises } from "../hooks/exercises/useGetExercises";
+import SearchContainer from "../components/search/SearchContainer";
 
-const backendURL = "http://localhost:3000";
-const ExcercisesList = ({ workoutId, onAddExercise }) => {
-  const { data, isLoading, isError, error } = useGetExercises();
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>error occured {error.message}</p>;
+const ExcercisesList = ({ onAddExercise }) => {
+  const [filteredData, setFilteredData] = useState([]);
 
+  const handleFilteredDataChange = (data) => {
+    setFilteredData(data);
+  };
   return (
-    <SearchList
-      content={data}
-      contentType={"Exercise"}
-      workoutId={workoutId}
-      onAddExercise={onAddExercise}
-    />
+    <div className="grid grid-cols-1 grid-rows-[max-content] min-h-full w-full max-h-full gap-2">
+      <SearchContainer
+        contentType={"exercises"}
+        onFilteredDataChange={handleFilteredDataChange}
+      />
+      <SearchList data={filteredData} onAddExercise={onAddExercise} />
+    </div>
   );
 };
 export default ExcercisesList;

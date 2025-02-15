@@ -1,26 +1,22 @@
-import React from "react";
-import SearchList from "../components/search/SearchList.jsx";
-import { useGetWorkouts } from "../hooks/workouts/useGetWorkouts.tsx";
+import React, { useState } from "react";
+import SearchList from "../components/search/SearchList";
+import SearchContainer from "../components/search/SearchContainer";
 
-const WorkoutsList = () => {
-  const { data, isLoading, isError, error } = useGetWorkouts();
+const ExcercisesList = ({ onAddExercise }) => {
+  const [filteredData, setFilteredData] = useState([]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const handleFilteredDataChange = (data) => {
+    setFilteredData(data);
+  };
 
-  if (isError) {
-    return <div>Error: {error?.message}</div>;
-  }
-
-  console.log(data);
   return (
-    <SearchList
-      content={data}
-      contentType={"Workout"}
-      onAddExercise={undefined}
-    />
+    <div className="grid grid-cols-1 grid-rows-[max-content] min-h-full w-full max-h-full gap-2">
+      <SearchContainer
+        contentType={"workouts"}
+        onFilteredDataChange={handleFilteredDataChange}
+      />
+      <SearchList data={filteredData} onAddExercise={onAddExercise} />
+    </div>
   );
 };
-
-export default WorkoutsList;
+export default ExcercisesList;
