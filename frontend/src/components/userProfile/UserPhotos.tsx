@@ -13,7 +13,8 @@ const Photos = ({ userInfo, userId }) => {
   } = useUserPhotos();
   console.log(userInfo);
   return (
-    <div className="flex relative items-center w-[90%] h-full m-auto py-2 text-4xl overflow-x-auto whitespace-nowrap">
+    <div className="flex relative items-center w-[90%] h-full m-auto py-2 text-4xl  whitespace-nowrap">
+      <div className="bg-[url(./assets/brush-profile-horizontal.png)]  w-[110%] h-full bg-cover  absolute"></div>
       {userInfo.photos?.length > 0 ? (
         userInfo.photos.map((photo) => (
           <div className="inline-block min-w-100 h-[95%] rounded-4xl relative">

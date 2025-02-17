@@ -29,6 +29,7 @@ const UserInformation = ({ userInfo }) => {
 
   return (
     <div className="flex rounded-2xl flex-col justify-start items-center px-8 row-start-1 row-end-3">
+      <div className="bg-[url(./assets/brush-profile-vertical.png)]  w-[25%] h-[110%] -top-10 bg-cover bg-no-repeat absolute"></div>
       {isEditing ? (
         <div className="flex relative text-4xl justify-start items-center flex-col">
           <div className="flex justify-center relative">

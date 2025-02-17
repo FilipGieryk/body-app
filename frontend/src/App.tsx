@@ -32,7 +32,9 @@ function App() {
                 className="absolute inset-4 w-23/25 h-24/25 z-10 "
                 id="container"
               >
-                <div className="absolute inset-0 -left-11 -right-10 -bottom-20 bg-[url(./assets/bg-brush.png)] bg-center bg-[length:104%_105%] z-[-10] opacity-5" />
+                {" "}
+                {/* <div className="absolute inset-0 -left-11 -right-10 -bottom-20 bg-[url(./assets/bg-brush.png)] bg-center bg-[length:104%_105%] z-[-10] " />
+                 */}
                 <Routes>
                   <Route
                     path="/admin"

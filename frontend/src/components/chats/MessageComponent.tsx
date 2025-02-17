@@ -53,13 +53,13 @@ const MessageComponent = () => {
   // do this with sendmessage or separate api aclls and hooks
 
   return (
-    <div className="grid grid-rows-[10%_80%_10%] h-full min-h-full max-h-full rounded-4xl">
+    <div className="grid grid-rows-[10%_80%_10%] h-full min-h-full max-h-full rounded-4xl ">
       <div className="flex items-center gap-8 w-80">
         {/* <img src={currentChat?.profilePhoto} className="h-28 rounded-4xl"></img>
           <h1>{currentChat?.chatName}</h1> */}
       </div>
       <div
-        className="w-full h-full flex flex-col overflow-y-auto"
+        className="w-full h-full flex flex-col overflow-y-auto bg-[url(./assets/bg-message.jpg)] bg-cover"
         ref={containerRef}
       >
         {data.map((message, index) => (
