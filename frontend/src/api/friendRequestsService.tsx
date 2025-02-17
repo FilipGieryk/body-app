@@ -15,7 +15,9 @@ export interface FriendRequest {
 
 export const fetchFriendRequests = async (): Promise<FriendRequest[]> => {
   try {
-    const response = await axios.get(`${URL}/pending-requests`, { headers });
+    console.log("sd");
+    const response = await axios.get(`/${URL}/pending-requests`, { headers });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(
@@ -41,5 +43,27 @@ export const declineFriendRequest = async (friendId: string): Promise<void> => {
     throw new Error(
       error.response?.data?.message || "Error declining friend request"
     );
+  }
+};
+
+export const sendFriendRequest = async (friendId: string) => {
+  try {
+    await axios.post(`${URL}/send-request`, { friendId }, { headers });
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error sending friend request"
+    );
+  }
+};
+
+export const deleteFriendship = async (friendId: string) => {
+  try {
+    await axios.delete(
+      "/api/friendships/remove-friend",
+      { friendId },
+      { headers }
+    );
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error deleting friend");
   }
 };

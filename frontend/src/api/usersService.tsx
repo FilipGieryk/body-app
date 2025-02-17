@@ -1,5 +1,10 @@
 import axios from "axios";
 
+const headers = {
+  Authorization: `Bearer ${localStorage.getItem("token")}`,
+  "Content-Type": "application/json",
+};
+
 export interface NewUser {
   username: string;
   email: string;
@@ -29,43 +34,38 @@ export const getUserById = async (id: string) => {
     throw error;
   }
 };
+export const addUserPhoto = async (updatedPhotos: string[]): Promise<void> => {
+  try {
+    await axios.put(
+      `/api/users/photos`,
+      { photos: updatedPhotos },
+      { headers }
+    );
+  } catch (error: any) {
+    console.error("Failed to add photo", error);
+    throw error;
+  }
+};
+export const deleteUserPhoto = async (
+  updatedPhotos: string[]
+): Promise<void> => {
+  try {
+    await axios.delete(`/api/users/photos`, {
+      data: { photos: updatedPhotos },
+      headers,
+    });
+  } catch (error: any) {
+    console.error("Failed to delete photo", error);
+    throw error;
+  }
+};
 
-// export const updateUser = async (id:string) => {
-//   try {
-//     const token = localStorage.getItem("token");
-//     const response = await axios.put(
-//       `/api/users/${id}`,
-//       {
-//         username: userInfo.username,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
-//     setUserInfo(response.data);
-//     alert("User info updated successfully");
-//     setIsEditing(false); // Exit edit mode after saving
-//   } catch (error) {
-//     console.error("Error updating user info", error);
-//   }
-// };
-
-// export const deletUserPhoto = async (photoPath) => {
-//   try {
-//     const token = localStorage.getItem("token");
-//     await axios.delete(`/api/users/${userId}/photos`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//       data: { photoPath },
-//     });
-//     setUserPhotos((prevUserInfo) => ({
-//       ...prevUserInfo,
-//       photos: prevUserInfo.photos.filter((photo) => photo !== photoPath),
-//     }));
-//   } catch (error) {
-//     console.error("Failed to delete photo", error);
-//   }
-// };
+export const updateUser = async (updatedFields: Partial<User>) => {
+  try {
+    const response = await axios.put(`/api/users/`, updatedFields, { headers });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user info", error);
+    throw error;
+  }
+};

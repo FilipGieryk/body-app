@@ -6,6 +6,8 @@ import {
   acceptFriendRequest,
   declineFriendRequest,
   FriendRequest,
+  sendFriendRequest,
+  deleteFriendship,
 } from "../api/friendRequestsService.tsx";
 
 interface FriendRequestsContextType {
@@ -15,6 +17,9 @@ interface FriendRequestsContextType {
   error: Error | null;
   acceptRequest: (friendId: string) => void;
   declineRequest: (friendId: string) => void;
+  sendRequest: (friendId: string) => void;
+  removeFriend: (friendId: string) => void;
+  getFriendshipStatus: (userId: string, loggedUserInfo: any) => string;
 }
 
 const FriendRequestsContext = createContext<
@@ -49,12 +54,59 @@ export const FriendRequestsProvider: React.FC<{
     },
   });
 
+  const mutationSendRequest = useMutation({
+    mutationFn: sendFriendRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+    },
+  });
+
+  const mutationDeleteFriend = useMutation({
+    mutationFn: deleteFriendship,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+    },
+  });
+
   const acceptRequest = (friendId: string) => {
     mutationAccept.mutate(friendId);
   };
 
   const declineRequest = (friendId: string) => {
     mutationDecline.mutate(friendId);
+  };
+
+  const sendRequest = (friendId: string) => {
+    mutationSendRequest.mutate(friendId);
+  };
+  const removeFriend = (friendId: string) => {
+    mutationDeleteFriend.mutate(friendId);
+  };
+
+  const getFriendshipStatus = (userId: string, loggedUserInfo: any) => {
+    if (!loggedUserInfo) return "none";
+
+    if (
+      loggedUserInfo.friends?.some((el: { _id: string }) => el._id === userId)
+    ) {
+      return "friends";
+    } else if (
+      friendRequests.some(
+        (req) =>
+          req.friend._id === userId && req.user._id === loggedUserInfo._id
+      )
+    ) {
+      return "sent";
+    } else if (
+      friendRequests.some(
+        (req) =>
+          req.user._id === userId && req.friend._id === loggedUserInfo._id
+      )
+    ) {
+      return "received";
+    } else {
+      return "none";
+    }
   };
 
   return (
@@ -66,6 +118,9 @@ export const FriendRequestsProvider: React.FC<{
         error,
         acceptRequest,
         declineRequest,
+        sendRequest,
+        removeFriend,
+        getFriendshipStatus,
       }}
     >
       {children}

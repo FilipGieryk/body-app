@@ -80,7 +80,6 @@ class FriendshipController {
 
   async getPendingRequests(req, res) {
     const userId = req.user._id;
-
     try {
       const pendingRequests = await friendshipService.getPendingRequests(
         userId
