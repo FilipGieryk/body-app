@@ -18,7 +18,7 @@ export const ChatComponent = () => {
         )
         .map((chat: any) => (
           <Link className="decoration-0" to={`/chat/${chat.chatId}`}>
-            <div className="flex items-center decoration-0 h-32 w-full gap-4">
+            <div className="flex items-center decoration-0 h-32 w-full gap-4 bg-[url(./assets/user-brush.png)] bg-[length:100%_100%]">
               <img
                 className="h-28 rounded-4xl"
                 src={chat.profilePhoto}

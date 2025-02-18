@@ -1,5 +1,21 @@
 import axios from "axios";
 
+const URL = "/api/auth";
+
+export const login = async (username, password) => {
+  const response = await axios.post(`${URL}/login`, { username, password });
+  return response.data;
+};
+
+export const register = async (username, password, email) => {
+  const response = await axios.post(`${URL}/register`, {
+    username,
+    password,
+    email,
+  });
+  return response.data;
+};
+
 // const handleSubmit = async (e) => {
 //   e.preventDefault();
 //   try {

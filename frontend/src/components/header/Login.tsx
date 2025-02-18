@@ -1,47 +1,29 @@
 import React, { useState } from "react";
-import axios from "axios";
+import useLogin from "../../hooks/useLogin";
+import useRegister from "../../hooks/useRegister";
 
 const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [email, setEmail] = useState("");
   const [activeTab, setActiveTab] = useState(loginStatus);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (activeTab === "login") {
-        console.log(activeTab);
-        const response = await axios.post(
-          "http://localhost:3000/api/auth/login",
-          {
-            username,
-            password,
-          }
-        );
-        setMessage(response.data.message);
-        console.log(response.data);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("isAdmin", response.data.isAdmin);
-        onLoginSuccess();
-      } else if (activeTab === "register") {
-        const response = await axios.post(
-          "http://localhost:3000/api/auth/register",
-          {
-            username,
-            password,
-            email,
-          }
-        );
-        setMessage(response.data.message);
-        localStorage.setItem("token", response.data.token); // Store the token
-        onLoginSuccess();
-      }
-    } catch (error) {
-      setMessage(error.response?.data?.message || "An error occurred");
-    }
-  };
+  const {
+    username: loginUsername,
+    setUsername: setLoginUsername,
+    password: loginPassword,
+    setPassword: setLoginPassword,
+    handleLogin,
+    isLoading: isLoginLoading,
+  } = useLogin(onLoginSuccess);
+
+  const {
+    username: registerUsername,
+    setUsername: setRegisterUsername,
+    password: registerPassword,
+    setPassword: setRegisterPassword,
+    email,
+    setEmail,
+    handleRegister,
+    isLoading: isRegisterLoading,
+  } = useRegister(onLoginSuccess);
 
   return (
     <div
@@ -69,24 +51,68 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
         </h1>
       </div>
 
-      <form id="login-form" onSubmit={handleSubmit}>
-        <div class="mx-4">
+      {activeTab === "login" && (
+        <form id="login-form" onSubmit={handleLogin}>
+          <div className="mx-4">
+            <input
+              className="w-full p-2 border-0 border-b-1"
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              value={loginUsername}
+              onChange={(e) => setLoginUsername(e.target.value)}
+            />
+            <span className="block h-0.5 bg-amber-50"></span>
+            <label className="absolute inset-0 pointer-events-none text-2xl text-transparent ">
+              Username
+            </label>
+          </div>
+          <br />
+          <div className="mx-4">
+            <input
+              className="w-full p-2 border-0 border-b-1"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
+            <span className="block h-0.5 bg-amber-50"></span>
+            <label className="absolute inset-0 pointer-events-none text-2xl text-transparent ">
+              Password
+            </label>
+            <br />
+          </div>
           <input
-            class="w-full p-2 border-0 border-b-1"
-            type="text"
-            id="username"
-            name="username"
-            placeholder="login"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="submit"
+            className="w-full px-2.8 text-black border-1 rounded-xl cursor-pointer transition-all"
+            value={isLoginLoading ? "Logging in..." : "Login"}
+            id="login-form-submit"
+            disabled={isLoginLoading}
           />
-          <span class="block h-0.5 bg-amber-50"></span>
-          <label class="absolute inset-0 pointer-events-none text-2xl text-transparent ">
-            login
-          </label>
-        </div>
-        <br />
-        {activeTab === "register" && (
+        </form>
+      )}
+
+      {activeTab === "register" && (
+        <form id="register-form" onSubmit={handleRegister}>
+          <div className="mx-4">
+            <input
+              className="w-full p-2 border-0 border-b-1"
+              type="text"
+              id="register-username"
+              name="register-username"
+              placeholder="Username"
+              value={registerUsername}
+              onChange={(e) => setRegisterUsername(e.target.value)}
+            />
+            <span className="block h-0.5 bg-amber-50"></span>
+            <label className="absolute inset-0 pointer-events-none text-2xl text-transparent ">
+              Username
+            </label>
+          </div>
+          <br />
           <div className="mx-4">
             <input
               className="w-full p-2 border-0 border-b-1"
@@ -102,30 +128,32 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
               Email
             </label>
           </div>
-        )}
-        <div class="mx-4">
-          <input
-            class="w-full p-2 border-0 border-b-1"
-            type="password"
-            id="password"
-            name="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <span class="block h-0.5 bg-amber-50"></span>
-          <label class="absolute inset-0 pointer-events-none text-2xl text-transparent ">
-            password
-          </label>
           <br />
-        </div>
-        <input
-          type="submit"
-          className="w-full px-2.8 text-black border-1 rounded-xl cursor-pointer transition-all"
-          value={activeTab === "login" ? "Login" : "Register"}
-          id="login-form-submit"
-        />
-      </form>
+          <div className="mx-4">
+            <input
+              className="w-full p-2 border-0 border-b-1"
+              type="password"
+              id="register-password"
+              name="register-password"
+              placeholder="Password"
+              value={registerPassword}
+              onChange={(e) => setRegisterPassword(e.target.value)}
+            />
+            <span className="block h-0.5 bg-amber-50"></span>
+            <label className="absolute inset-0 pointer-events-none text-2xl text-transparent ">
+              Password
+            </label>
+            <br />
+          </div>
+          <input
+            type="submit"
+            className="w-full px-2.8 text-black border-1 rounded-xl cursor-pointer transition-all"
+            value={isRegisterLoading ? "Registering..." : "Register"}
+            id="register-form-submit"
+            disabled={isRegisterLoading}
+          />
+        </form>
+      )}
     </div>
   );
 };

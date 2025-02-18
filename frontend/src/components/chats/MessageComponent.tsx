@@ -53,8 +53,8 @@ const MessageComponent = () => {
   // do this with sendmessage or separate api aclls and hooks
 
   return (
-    <div className="grid grid-rows-[10%_80%_10%] h-full min-h-full max-h-full rounded-4xl ">
-      <div className="flex items-center gap-8 w-80">
+    <div className="grid grid-rows-[10%_80%_10%] h-full min-h-full max-h-full rounded-4xl">
+      <div className="flex items-center gap-8 w-full bg-[url(./assets/user-brush.png)] bg-[length:100%_100%]">
         {/* <img src={currentChat?.profilePhoto} className="h-28 rounded-4xl"></img>
           <h1>{currentChat?.chatName}</h1> */}
       </div>
@@ -75,7 +75,7 @@ const MessageComponent = () => {
           </div>
         ))}
       </div>
-      <div className=" flex-row items-center justify-center rounded-[0 0 0 2rem]">
+      <div className=" flex-row items-center justify-center rounded-[0 0 0 2rem] bg-[url(./assets/message-input-bg.png)] bg-[length:100%_110%] bg-[-50%_200%]">
         <input
           className="w-[80%] h-[40%] rounded-4xl"
           value={inputValue}
