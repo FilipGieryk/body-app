@@ -2,41 +2,38 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import React from "react";
+import { useGetExercise } from "../../hooks/exercises/useGetExercise";
 const ExerciseDetail = () => {
   const [exercise, setExercise] = useState("");
   const { exerciseId } = useParams();
-  useEffect(() => {
-    const fetchExercise = async () => {
-      try {
-        const response = await axios.get(`/api/admin/exercises/${exerciseId}`);
-        setExercise(response.data);
-      } catch (error) {
-        console.error("failed to fetch exercise", error);
-      }
-    };
-    fetchExercise();
-  }, []);
+  if (!exerciseId) return;
+  const { data, isLoading, isError, error } = useGetExercise(exerciseId);
 
   function getYouTubeVideoId(url) {
     const urlObj = new URL(url);
     if (urlObj.hostname === "youtu.be") {
-      return urlObj.pathname.slice(1); // Extract ID from short URLs
+      return urlObj.pathname.slice(1);
     }
     if (urlObj.hostname.includes("youtube.com")) {
-      return urlObj.searchParams.get("v"); // Extract ID from query string
+      return urlObj.searchParams.get("v");
     }
-    return null; // Not a valid YouTube URL
+    return null;
   }
+
+  if (isLoading) return <div>Loading...</div>;
   return (
-    <div className="outer-box">
-      <div>{exercise.name}</div>
-      {exercise?.videoLink?.includes("youtube.com") ||
-      exercise?.videoLink?.includes("youtu.be") ? (
+    <div className="outer-box grid grid-cols-2 grid-rows-3 h-full">
+      <div className="text-6xl row-start-1 col-start-1 col-end-3">
+        {data.name}
+      </div>
+      {data?.videoLink?.includes("youtube.com") ||
+      data?.videoLink?.includes("youtu.be") ? (
         <iframe
-          width="350"
-          height="200"
+          className="row-start-2 col-start-1"
+          width="570"
+          height="290"
           src={`https://www.youtube.com/embed/${getYouTubeVideoId(
-            exercise.videoLink
+            data.videoLink
           )}`}
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -44,10 +41,11 @@ const ExerciseDetail = () => {
         ></iframe>
       ) : (
         <video controls width={600}>
-          <source src={exercise.videoLink} type="video/mp4"></source>
+          <source src={data.videoLink} type="video/mp4"></source>
         </video>
       )}
-      <div>{exercise.media}</div>
+      <div>{data.media}</div>
+      <div className="col-start-1 col-end-3">{data.description}</div>
     </div>
   );
 };

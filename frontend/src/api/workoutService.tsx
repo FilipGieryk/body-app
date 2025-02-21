@@ -44,20 +44,12 @@ export const createWorkout = async (
   }
 };
 
-// export const fetchWorkoutById = async (workoutId) => {
-//   try {
-//     const response = await axios.get(`/api/workouts/${workoutId}`);
-//     const fetchedData = response.data;
-//     setModifiedExercises(
-//       fetchedData.exercises.map((exercise) => ({
-//         ...exercise,
-//       }))
-//     );
-//     setWorkoutDetails({
-//       workoutName: fetchedData.name,
-//       workoutCreator: fetchedData.user,
-//     });
-//   } catch (error) {
-//     console.error("couldnt get workout", error);
-//   }
-// };
+export const fetchWorkoutById = async (workoutId) => {
+  try {
+    const response = await axios.get(`/api/workouts/${workoutId}`);
+    return response.data;
+  } catch (error) {
+    console.error("couldnt get workout", error);
+    throw error;
+  }
+};

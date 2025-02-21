@@ -8,17 +8,22 @@ import {
   faDumbbell,
   faComment,
   faQuestion,
+  faBasketballBall,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "../../hooks/UserContext";
 import { useWebSocket } from "../../hooks/webSocketContext";
 import { NavLink } from "react-router-dom";
+import { useWorkout } from "../../context/WorkoutContext.tsx";
+import { ExerciseBasket } from "./ExerciseBasket.tsx";
 
 export const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [visibleModal, setVisibleModal] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { exercises, setInitialExercises, handleDeleteExercise } = useWorkout();
+  const [isBasketVisible, setIsBasketVisible] = useState(false);
 
   const [prevPos, setPrevPos] = useState();
   const [currPos, setCurrPos] = useState();
@@ -178,7 +183,7 @@ export const Header = () => {
     }
   };
 
-  const links = [
+  const baseLinks = [
     {
       icon: faHome,
       text: "Home",
@@ -186,92 +191,89 @@ export const Header = () => {
       path: "/",
       action: () => navigate("/"),
     },
-    ...(isLoggedIn
+    {
+      icon: faQuestion,
+      text: "Help",
+      id: "help",
+      path: "/help",
+      action: () => navigate("/help"),
+    },
+    {
+      icon: faDumbbell,
+      text: "Exercises",
+      id: "exercises",
+      path: "/exercises",
+      action: () => navigate("/exercises"),
+    },
+    {
+      icon: faDumbbell,
+      text: "Workouts",
+      id: "workouts",
+      path: "/workouts",
+      action: () => navigate("/workouts"),
+    },
+  ];
+
+  const loggedInLinks = [
+    {
+      icon: faHome,
+      text: "Profile",
+      id: "profile",
+      path: `/profile/${loggedUserInfo?._id}`,
+      action: () => navigate(`/profile/${loggedUserInfo._id}`),
+    },
+    {
+      icon: faComment,
+      text: "Chat",
+      id: "chat",
+      path: `/chat`,
+      action: () => navigate(`/chat`),
+    },
+    {
+      icon: faSignOutAlt,
+      text: "Logout",
+      id: "logout",
+      action: handleLogout,
+    },
+  ];
+
+  const loggedOutLinks = [
+    {
+      icon: faSignInAlt,
+      text: "Login",
+      id: "login",
+      action: () => {
+        setVisibleModal("login");
+        toggleLogin();
+      },
+    },
+    {
+      icon: faUserPlus,
+      text: "Register",
+      id: "register",
+      path: "/register",
+      action: () => {
+        setVisibleModal("register");
+        toggleLogin();
+      },
+    },
+  ];
+
+  const links = [
+    ...baseLinks,
+    ...(exercises?.length > 0
       ? [
           {
-            icon: faQuestion,
-            text: "Help",
-            id: "help",
-            path: "/help",
-            action: () => navigate("/help"),
-          },
-          {
             icon: faDumbbell,
-            text: "Excercises",
-            id: "excercises",
-            path: "/exercises",
-            action: () => navigate("/exercises"),
-          },
-          {
-            icon: faDumbbell,
-            text: "Workouts",
-            id: "workouts",
-            path: "/workouts",
-            action: () => navigate("/workouts"),
-          },
-          {
-            icon: faHome,
-            text: "Profile",
-            id: "profile",
-            path: `/profile/${loggedUserInfo?._id}`,
-            action: () => navigate(`/profile/${loggedUserInfo._id}`),
-          },
-          {
-            icon: faComment,
-            test: "Chat",
-            id: "chat",
-            path: `/chat`,
-            action: () => navigate(`/chat`),
-          },
-          {
-            icon: faSignOutAlt,
-            text: "Logout",
-            id: "logout",
-            action: handleLogout,
+            text: "Basket",
+            id: "basket",
+            action: () => {
+              setIsBasketVisible((prev) => !prev);
+            },
           },
         ]
-      : [
-          {
-            icon: faQuestion,
-            text: "Help",
-            id: "help",
-            path: "help",
-            action: () => navigate("/help"),
-          },
-          {
-            icon: faDumbbell,
-            text: "Exercises",
-            id: "exercises",
-            path: "exercises",
-            action: () => navigate("/exercises"),
-          },
-          {
-            icon: faDumbbell,
-            text: "Workouts",
-            id: "workouts",
-            path: "workouts",
-            action: () => navigate("/workouts"),
-          },
-          {
-            icon: faSignInAlt,
-            text: "Login",
-            id: "login",
-            action: () => {
-              setVisibleModal("login");
-              toggleLogin();
-            },
-          },
-          {
-            icon: faUserPlus,
-            text: "Register",
-            id: "register",
-            path: "register",
-            action: () => {
-              setVisibleModal("register");
-              toggleLogin();
-            },
-          },
-        ]),
+      : []),
+    ...(isLoggedIn ? loggedInLinks : loggedOutLinks),
   ];
 
   return (
@@ -298,6 +300,7 @@ export const Header = () => {
           </NavLink>
         ))}
       </nav>
+      {isBasketVisible && isLoggedIn && <ExerciseBasket />}
       <div
         id="line"
         className="absolute l-55 h-2 bg-black"

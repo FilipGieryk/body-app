@@ -59,7 +59,7 @@ const MessageComponent = () => {
           <h1>{currentChat?.chatName}</h1> */}
       </div>
       <div
-        className="w-full h-full flex flex-col overflow-y-auto bg-[url(./assets/bg-message.jpg)] bg-cover"
+        className="w-full rounded-2xl h-full flex flex-col self-center overflow-y-auto bg-[length:90%_100%]"
         ref={containerRef}
       >
         {data.map((message, index) => (

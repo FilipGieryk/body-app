@@ -42,10 +42,13 @@ export const fetchExercises = async () => {
 
 export const fetchExerciseById = async (exerciseId: string) => {
   try {
-    const response = await axios.get(`/api/admin/exercises/${exerciseId}`);
+    const response = await axios.get(
+      `/api/admin/exercises/detail/${exerciseId}`
+    );
     return response.data;
   } catch (error) {
     console.error("failed to fetch exercise", error);
+    throw error;
   }
 };
 

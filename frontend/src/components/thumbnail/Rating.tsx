@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useRating } from "../../hooks/useRating";
+import React from "react";
 
 const Rating = ({ itemId, averageRating }) => {
   const [rating, setRating] = useState(0);
@@ -17,7 +18,6 @@ const Rating = ({ itemId, averageRating }) => {
   };
   return (
     <div className="flex justify-end items-center">
-      {/* {userId && */}
       <p className="text-xl">{averageRating}</p>
       {[1, 2, 3, 4, 5].map((star) => (
         <span

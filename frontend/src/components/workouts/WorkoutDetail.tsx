@@ -1,164 +1,129 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import { useGetWorkout } from "../../hooks/workouts/useGetWorkout";
+import ExercisesList from "../../pages/ExercisesList";
+import { useAddWorkoutSession } from "../../hooks/workouts/useAddWorkoutSession";
+import { useWorkout } from "../../context/WorkoutContext";
 
 const WorkoutDetail = () => {
   const { workoutId } = useParams();
-  const [modifiedExercises, setModifiedExercises] = useState([]);
-  const [workoutDetails, setWorkoutDetails] = useState([]);
+  if (!workoutId) return null;
+
   const [isEdit, setIsEdit] = useState(false);
-  const [userId, setUserId] = useState("");
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = JSON.parse(atob(token.split(".")[1]));
-      setUserId(decodedToken.id);
+  const { data, isLoading } = useGetWorkout(workoutId);
+  const { mutate: addSession } = useAddWorkoutSession();
+  const { exercises, setInitialExercises, handleDeleteExercise } = useWorkout();
+
+  // Start workout and move all exercises to context
+  const handleStartWorkout = () => {
+    if (data?.exercises) {
+      const initialExercises = data.exercises.map((el) => ({
+        ...el.exercise, // Copy exercise object
+        sets: el.sets, // Include sets, repetitions, weight
+        repetitions: el.repetitions,
+        weight: el.weight,
+      }));
+      setInitialExercises(initialExercises);
     }
-    const fetchWorkout = async () => {
-      try {
-        const response = await axios.get(`/api/workouts/${workoutId}`);
-        const fetchedData = response.data;
-        setModifiedExercises(
-          fetchedData.exercises.map((exercise) => ({
-            ...exercise,
-          }))
-        );
-        setWorkoutDetails({
-          workoutName: fetchedData.name,
-          workoutCreator: fetchedData.user,
-        });
-      } catch (error) {
-        console.error("couldnt get workout", error);
-      }
-    };
-    fetchWorkout();
-  }, []);
-
-  const handleSaveChanges = async () => {
-    try {
-      const response = await axios.post(
-        "/api/workout-sessions/add",
-        {
-          workoutId,
-          modifiedExercises,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handleInputClick = (event) => {
-    event.stopPropagation(); // Prevents the event from propagating to the anchor
-    event.preventDefault(); // Prevents the anchor's default redirection behavior
+    setIsEdit(true);
   };
 
-  const handleDeleteElement = (elToRemove) => {
-    setModifiedExercises((prevExercises) =>
-      prevExercises.filter((el) => el != elToRemove)
-    );
+  // Save changes to workout session
+  const handleSaveChanges = () => {
+    addSession({ workoutId, exercises });
+    setIsEdit(false);
   };
 
-  const handleAddExercise = (newElement) => {
-    setModifiedExercises((prevElements) => [
-      ...prevElements,
-      { exercise: newElement },
-    ]);
-  };
+  if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="flex justify-center flex-col items-center">
-      <h1 className="text-5xl mb-40">{workoutDetails.workoutName}</h1>
-      <p className="text-5xl mb-40">{workoutDetails.workoutDetails}</p>
+    <div className="flex flex-col items-center h-full overflow-y-scroll">
+      <h1 className="text-5xl mb-40">{data.workoutName}</h1>
+      <p className="text-5xl mb-40">{data.workoutDetails}</p>
 
-      {modifiedExercises.map((el, index) => (
-        <Link
-          className="flex items-center justify-around text-5xl rounded-4xl decoration-0 text-black w-[90%] h-40"
-          to={`/exercises/${el.exercise._id}`}
-        >
-          {/* <h2>{el.exercise}</h2> */}
-          {/* {el.exercise.bodyPart.map((part) => (
-            <p>{part}</p>
-          ))} */}
-
-          {!isEdit ? (
-            <>
+      {!isEdit
+        ? // When NOT editing, show exercises from workout data
+          data.exercises.map((el, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-around text-5xl rounded-4xl decoration-0 text-black w-[90%] h-40"
+            >
+              <p>{el.exercise.name}</p>
               <p>{el.sets}</p>
               <p>{el.repetitions}</p>
               <p>{el.weight}</p>
-            </>
-          ) : (
-            <>
-              <input
-                value={el.sets}
-                onClick={handleInputClick}
-                onChange={(e) =>
-                  setModifiedExercises((prev) =>
-                    prev.map((exercise, idx) =>
-                      idx === index
-                        ? { ...exercise, sets: e.target.value }
-                        : exercise
-                    )
-                  )
-                }
-              />
-              <input
-                value={el.repetitions}
-                onClick={handleInputClick}
-                onChange={(e) =>
-                  setModifiedExercises((prev) =>
-                    prev.map((exercise, idx) =>
-                      idx === index
-                        ? { ...exercise, repetitions: e.target.value }
-                        : exercise
-                    )
-                  )
-                }
-              />
-              <input
-                value={el.weight}
-                onClick={handleInputClick}
-                onChange={(e) =>
-                  setModifiedExercises((prev) =>
-                    prev.map((exercise, idx) =>
-                      idx === index
-                        ? { ...exercise, weight: e.target.value }
-                        : exercise
-                    )
-                  )
-                }
-              />
-            </>
-          )}
-
-          <p>{el.exercise.averageRating}</p>
-          {isEdit && (
-            <button
-              onClick={(event) => {
-                event.preventDefault();
-                handleDeleteElement(el);
-              }}
+              <p>{el.exercise.averageRating}</p>
+            </div>
+          ))
+        : // When editing, show exercises from context (modifiable)
+          exercises.map((el, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-around text-5xl rounded-4xl decoration-0 text-black w-[90%] h-40"
             >
-              X
-            </button>
-          )}
-        </Link>
-      ))}
+              <p>{el.name}</p>
+              <input
+                type="number"
+                value={el.sets}
+                onChange={(e) =>
+                  setInitialExercises((prev) =>
+                    prev.map((ex) =>
+                      ex._id === el._id ? { ...ex, sets: e.target.value } : ex
+                    )
+                  )
+                }
+              />
+              <input
+                type="number"
+                value={el.repetitions}
+                onChange={(e) =>
+                  setInitialExercises((prev) =>
+                    prev.map((ex) =>
+                      ex._id === el._id
+                        ? { ...ex, repetitions: e.target.value }
+                        : ex
+                    )
+                  )
+                }
+              />
+              <input
+                type="number"
+                value={el.weight}
+                onChange={(e) =>
+                  setInitialExercises((prev) =>
+                    prev.map((ex) =>
+                      ex._id === el._id ? { ...ex, weight: e.target.value } : ex
+                    )
+                  )
+                }
+              />
+              <p>{el.averageRating}</p>
+              <button
+                onClick={() => handleDeleteExercise(el._id)}
+                className="bg-red-500 px-3 py-1 rounded text-white"
+              >
+                X
+              </button>
+            </div>
+          ))}
+
       {isEdit ? (
         <>
-          <button onClick={handleSaveChanges}>finish workout</button>
-          <ExercisesList
-            workoutId={workoutId}
-            onAddExercise={handleAddExercise}
-          />
+          <button
+            onClick={handleSaveChanges}
+            className="mt-4 bg-green-500 px-4 py-2 rounded text-white"
+          >
+            Finish Workout
+          </button>
+          <ExercisesList workoutId={workoutId} />
         </>
       ) : (
-        <button onClick={() => setIsEdit(!isEdit)}>start workout</button>
+        <button
+          onClick={handleStartWorkout}
+          className="mt-4 bg-blue-500 px-4 py-2 rounded text-white"
+        >
+          Start Workout
+        </button>
       )}
     </div>
   );
