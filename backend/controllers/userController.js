@@ -23,6 +23,25 @@ class UserController {
     }
   }
 
+  async addUserPhoto(req, res) {
+    try {
+      console.log(req.files);
+      const userId = req.user._id;
+      const files = req.files;
+      if (!files || files.length === 0) {
+        return res.status(400).json({ message: "No files uploadade" });
+      }
+
+      const addedPhotos = await userService.addUserPhoto(userId, files);
+      res
+        .status(200)
+        .json({ message: "Photo added successfully", photo: addedPhotos });
+    } catch (err) {
+      console.error("Failed to add photo:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
   async deleteUserPhoto(req, res) {
     const { id } = req.params;
     const { photoPath } = req.body;

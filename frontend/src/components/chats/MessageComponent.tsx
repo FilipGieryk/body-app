@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUser } from "../../hooks/UserContext";
 import { useAutoScroll } from "../../hooks/useAutoScroll";
-import { useGetChatMessages } from "../../hooks/messages/useGetChatMessages";
+import { useGetChatMessages } from "../../hooks/fetch/messages/useGetChatMessages";
 import { useHandleKeyDown } from "../../hooks/messages/useHandleKeyDown";
 import React from "react";
 const MessageComponent = () => {
@@ -29,6 +29,7 @@ const MessageComponent = () => {
   if (isError) {
     return <div>Error Loading Messages</div>;
   }
+  console.log(data);
 
   // const currentChat = chats.find(
   //   (chat: { chatId: string | undefined }) => chat?.chatId === chatId
@@ -54,7 +55,7 @@ const MessageComponent = () => {
 
   return (
     <div className="grid grid-rows-[10%_80%_10%] h-full min-h-full max-h-full rounded-4xl">
-      <div className="flex items-center gap-8 w-full bg-[url(./assets/user-brush.png)] bg-[length:100%_100%]">
+      <div className="flex items-center gap-8 w-full">
         {/* <img src={currentChat?.profilePhoto} className="h-28 rounded-4xl"></img>
           <h1>{currentChat?.chatName}</h1> */}
       </div>
@@ -66,7 +67,7 @@ const MessageComponent = () => {
           <div
             key={index}
             className={`text-4xl w-max px-2 py-8 rounded-4xl ${
-              message.senderId === loggedUserInfo._id
+              message.senderId === loggedUserInfo._id || !message.senderId
                 ? "self-end"
                 : "self-start"
             }`}
@@ -75,7 +76,7 @@ const MessageComponent = () => {
           </div>
         ))}
       </div>
-      <div className=" flex-row items-center justify-center rounded-[0 0 0 2rem] bg-[url(./assets/message-input-bg.png)] bg-[length:100%_110%] bg-[-50%_200%]">
+      <div className=" flex-row items-center justify-center rounded-[0 0 0 2rem]">
         <input
           className="w-[80%] h-[40%] rounded-4xl"
           value={inputValue}

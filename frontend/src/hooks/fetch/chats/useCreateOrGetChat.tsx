@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { createOrGetChat } from "../../api/chatService";
+import { createOrGetChat } from "../../../api/chatService";
 export const useCreateOrGetChat = () => {
   return useMutation({
     mutationFn: createOrGetChat,

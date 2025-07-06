@@ -15,7 +15,7 @@ export const ProfileContainer = () => {
 
   return (
     // <div className="w-full h-full flex flex-col overflow-hidden">
-    <div className="grid grid-rows-2 grid-cols-[33%_66%] w-full h-full gap-4 transition-all">
+    <div className="grid grid-rows-[55%_35%] grid-cols-[30%_66%] w-full h-full gap-4 transition-all m-10">
       <UserInformation userInfo={data} />
       <div className="flex rounded-2xl flex-col justify-start items-center px-8 photos">
         {data && <Photos userInfo={data} userId={id} />}

@@ -34,13 +34,14 @@ export const getUserById = async (id: string) => {
     throw error;
   }
 };
-export const addUserPhoto = async (updatedPhotos: string[]): Promise<void> => {
+export const addUserPhoto = async (formData): Promise<void> => {
   try {
-    await axios.put(
-      `/api/users/photos`,
-      { photos: updatedPhotos },
-      { headers }
-    );
+    await axios.put(`/api/users/photos`, formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
   } catch (error: any) {
     console.error("Failed to add photo", error);
     throw error;

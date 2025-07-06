@@ -1,15 +1,6 @@
 import { useState, useEffect } from "react";
 import Login from "./Login.tsx";
-import {
-  faHome,
-  faSignOutAlt,
-  faSignInAlt,
-  faUserPlus,
-  faDumbbell,
-  faComment,
-  faQuestion,
-  faBasketballBall,
-} from "@fortawesome/free-solid-svg-icons";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "../../hooks/UserContext";
@@ -17,6 +8,13 @@ import { useWebSocket } from "../../hooks/webSocketContext";
 import { NavLink } from "react-router-dom";
 import { useWorkout } from "../../context/WorkoutContext.tsx";
 import { ExerciseBasket } from "./ExerciseBasket.tsx";
+import {
+  getBaseLinks,
+  getLoggedOutLinks,
+  getLoggedInLinks,
+} from "../../data/navLinks.ts";
+import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
+import { useNotification } from "../../context/NotificationContext.tsx";
 
 export const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
@@ -37,28 +35,7 @@ export const Header = () => {
     loggedUserInfo,
     setChats,
   } = useUser();
-
-  const socket = useWebSocket();
-
-  useEffect(() => {
-    if (prevPos?.y !== undefined && currPos?.y !== undefined) {
-      document.documentElement.style.setProperty(
-        "--prev-top",
-        `${prevPos.y}px`
-      );
-      document.documentElement.style.setProperty(
-        "--curr-top",
-        `${currPos.y}px`
-      );
-
-      const line = document.getElementById("line");
-      if (line) {
-        // line.style.animation = "none";
-        void line.offsetHeight;
-        // line.style.animation = "moveLine 0.3s ease forwards";
-      }
-    }
-  }, [currPos]);
+  const { hasNewMessage } = useNotification();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -86,178 +63,14 @@ export const Header = () => {
     setFriendRequests([]);
     navigate("/");
   };
-
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleWebSocketMessage = (event) => {
-      const message = JSON.parse(event.data);
-
-      if (message.type === "friend-request") {
-        setFriendRequests((prev) => [
-          ...prev,
-          {
-            friend: { _id: message.friendId },
-            user: {
-              _id: message.userId,
-              username: message.username,
-              profilePhoto: message.profilePhoto,
-            },
-          },
-        ]);
-      } else if (message.type === "chat-message") {
-        let chatExists = false;
-
-        setChats((prevChats) => {
-          chatExists = prevChats.some((chat) => chat.chatId === message.chatId);
-
-          if (chatExists) {
-            return prevChats.map((chat) =>
-              chat.chatId === message.chatId
-                ? {
-                    ...chat,
-                    hasUnread: true,
-                    lastMessage: {
-                      ...message,
-                      timestamp: new Date().toISOString(),
-                    },
-                  }
-                : chat
-            );
-          } else {
-            return [
-              ...prevChats,
-              {
-                chatId: message.chatId,
-                hasUnread: true,
-                lastMessage: {
-                  ...message,
-                  timestamp: new Date().toISOString(),
-                },
-                placeholder: true,
-              },
-            ];
-          }
-        });
-
-        // Fetch the full chat only if it doesn't exist
-        if (!chatExists) {
-          fetchChatById(message.chatId);
-        }
-      }
-    };
-
-    socket.addEventListener("message", handleWebSocketMessage);
-
-    return () => {
-      socket.removeEventListener("message", handleWebSocketMessage);
-    };
-  }, [socket]);
-
-  // kick this out
-  const fetchChatById = async (chatId) => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const response = await fetch(`/api/chat/${chatId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the authorization token if needed
-        },
-      }); // Adjust the endpoint
-      if (!response.ok) {
-        throw new Error("Failed to fetch chat");
-      }
-
-      const fullChat = await response.json();
-
-      // Update the chat with the fetched data
-      setChats((prevChats) =>
-        prevChats.map((chat) =>
-          chat.chatId === chatId
-            ? { ...fullChat } // Replace the placeholder or existing chat with full data
-            : chat
-        )
-      );
-    } catch (error) {
-      console.error(`Error fetching chat ${chatId}:`, error);
-    }
-  };
-
-  const baseLinks = [
-    {
-      icon: faHome,
-      text: "Home",
-      id: "home",
-      path: "/",
-      action: () => navigate("/"),
-    },
-    {
-      icon: faQuestion,
-      text: "Help",
-      id: "help",
-      path: "/help",
-      action: () => navigate("/help"),
-    },
-    {
-      icon: faDumbbell,
-      text: "Exercises",
-      id: "exercises",
-      path: "/exercises",
-      action: () => navigate("/exercises"),
-    },
-    {
-      icon: faDumbbell,
-      text: "Workouts",
-      id: "workouts",
-      path: "/workouts",
-      action: () => navigate("/workouts"),
-    },
-  ];
-
-  const loggedInLinks = [
-    {
-      icon: faHome,
-      text: "Profile",
-      id: "profile",
-      path: `/profile/${loggedUserInfo?._id}`,
-      action: () => navigate(`/profile/${loggedUserInfo._id}`),
-    },
-    {
-      icon: faComment,
-      text: "Chat",
-      id: "chat",
-      path: `/chat`,
-      action: () => navigate(`/chat`),
-    },
-    {
-      icon: faSignOutAlt,
-      text: "Logout",
-      id: "logout",
-      action: handleLogout,
-    },
-  ];
-
-  const loggedOutLinks = [
-    {
-      icon: faSignInAlt,
-      text: "Login",
-      id: "login",
-      action: () => {
-        setVisibleModal("login");
-        toggleLogin();
-      },
-    },
-    {
-      icon: faUserPlus,
-      text: "Register",
-      id: "register",
-      path: "/register",
-      action: () => {
-        setVisibleModal("register");
-        toggleLogin();
-      },
-    },
-  ];
+  const baseLinks = getBaseLinks(navigate);
+  const loggedOutLinks = getLoggedOutLinks(setVisibleModal, toggleLogin);
+  const loggedInLinks = getLoggedInLinks(
+    navigate,
+    loggedUserInfo,
+    handleLogout,
+    hasNewMessage
+  );
 
   const links = [
     ...baseLinks,
@@ -297,6 +110,9 @@ export const Header = () => {
             }}
           >
             <FontAwesomeIcon icon={link.icon} />
+            {link?.notification && (
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+            )}
           </NavLink>
         ))}
       </nav>

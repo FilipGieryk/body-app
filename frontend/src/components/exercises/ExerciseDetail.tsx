@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import React from "react";
 import { useGetExercise } from "../../hooks/exercises/useGetExercise";
+
 const ExerciseDetail = () => {
   const [exercise, setExercise] = useState("");
   const { exerciseId } = useParams();

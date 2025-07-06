@@ -5,10 +5,6 @@ const WorkoutContext = createContext();
 export const WorkoutProvider = ({ children }) => {
   const [exercises, setExercises] = useState([]);
 
-  const setInitialExercises = (initialExercises) => {
-    setExercises(initialExercises);
-  };
-
   const handleAddExercise = (exercise) => {
     setExercises((prev) => {
       if (!prev.some((ex) => ex._id === exercise._id)) {
@@ -25,7 +21,7 @@ export const WorkoutProvider = ({ children }) => {
     <WorkoutContext.Provider
       value={{
         exercises,
-        setInitialExercises,
+        setExercises,
         handleAddExercise,
         handleDeleteExercise,
       }}

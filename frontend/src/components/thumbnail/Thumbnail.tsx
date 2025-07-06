@@ -8,12 +8,12 @@ const Thumbnail = ({ data, className, link, showButton }) => {
   return (
     <div className="relative">
       <Link to={link}>
-        <div className="h-fit w-100 relative">
+        <div className="h-fit w-100 relative bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(19,200,100,0.2)] rounded-3xl ">
           <img
             src={data?.media}
-            className="w-full h-[15rem] rounded-2xl overflow-visible bg-[url(./assets/bg-thumb.png)] bg-[length:100%_100%]"
+            className="w-full h-[15rem] rounded-3xl overflow-hidden bg-[rgba(19,200,100,0.1)] bg-[length:100%_100%]"
           />
-          <div className="grid grid-cols-2 grid-rows-2">
+          <div className="grid grid-cols-2 grid-rows-2 px-3 py-2">
             <h2 className="mg-0 text-3xl truncate text-start">{data?.name}</h2>
             <Rating averageRating={data.averageRating} itemId={undefined} />
           </div>

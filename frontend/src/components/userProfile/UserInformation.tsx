@@ -28,8 +28,7 @@ const UserInformation = ({ userInfo }) => {
   const requestStatus = getFriendshipStatus(userInfo._id, loggedUserInfo);
 
   return (
-    <div className="flex rounded-2xl flex-col justify-start items-center px-8 row-start-1 row-end-3">
-      <div className="bg-[url(./assets/brush-profile-vertical.png)]  w-[25%] h-[110%] -top-10 bg-[20%_10%] bg-[length:100%_110%] bg-no-repeat absolute"></div>
+    <div className="flex rounded-2xl flex-col justify-start items-center px-8 row-start-1 row-end-3 bg-amber-200 shadow-xl">
       {isEditing ? (
         <div className="flex relative text-4xl justify-start items-center flex-col">
           <div className="flex justify-center relative">

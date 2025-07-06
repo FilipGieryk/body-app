@@ -11,16 +11,14 @@ const Photos = ({ userInfo, userId }) => {
     deletePhotoStatus,
     selectedPhotos,
   } = useUserPhotos();
-  console.log(userInfo);
   return (
-    <div className="flex relative items-center w-[90%] h-full m-auto py-2 text-4xl  whitespace-nowrap">
-      <div className="bg-[url(./assets/brush-profile-horizontal.png)]  w-[110%] h-full bg-[20%_10%] bg-[length:100%_110%] absolute"></div>
+    <div className="flex relative items-center w-[90%] h-full m-auto py-2 text-4xl bg-amber-200 rounded-2xl whitespace-nowrap shadow-xl">
       {userInfo.photos?.length > 0 ? (
         userInfo.photos.map((photo) => (
           <div className="inline-block min-w-100 h-[95%] rounded-4xl relative">
             <img
-              className="w-full h-full overflow-hidden rounded-4xl"
-              src={photo}
+              className="w-60 h-80 overflow-hidden rounded-4xl"
+              src={`http://localhost:5173/uploads/${photo}`}
             ></img>
             <button
               className="absolute top-[10%] right-4 bg-transparent border-0 text-gray-400 translate-[50% -50%] transition-all"

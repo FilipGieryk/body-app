@@ -1,7 +1,9 @@
 import { useState, useMemo } from "react";
+import { useDebounce } from "use-debounce";
 
 export const useSearchBar = (content, selectedBodyParts) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQueryValue] = useDebounce(searchQuery, 300);
 
   const changeSearchQuery = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
@@ -10,7 +12,9 @@ export const useSearchBar = (content, selectedBodyParts) => {
   const filteredContent = useMemo(() => {
     return content?.filter((item) => {
       const isWorkout = item.exercises && Array.isArray(item.exercises);
-      const matchesSearchQuery = item.name.toLowerCase().includes(searchQuery);
+      const matchesSearchQuery = item.name
+        .toLowerCase()
+        .includes(debouncedSearchQueryValue);
 
       let matchesBodyPart = false;
 
@@ -37,7 +41,7 @@ export const useSearchBar = (content, selectedBodyParts) => {
 
       return matchesSearchQuery && matchesBodyPart;
     });
-  }, [content, searchQuery, selectedBodyParts]);
+  }, [content, debouncedSearchQueryValue, selectedBodyParts]);
 
-  return { searchQuery, changeSearchQuery, filteredContent };
+  return { debouncedSearchQueryValue, changeSearchQuery, filteredContent };
 };

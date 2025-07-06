@@ -3,8 +3,7 @@ import { useState } from "react";
 import React from "react";
 const WokroutsList = ({ userInfo }) => {
   return (
-    <div className="flex flex-row w-[90%] h-[90%] flex-wrap content-start gap-4">
-      <div className="bg-[url(./assets/brush-profile-horizontal.png)]  w-[55%] h-[60%] bg-[0%_-20%] bg-[length:110%_90%] absolute"></div>
+    <div className="flex flex-row w-[90%] h-full flex-wrap content-start gap-4 bg-amber-200 rounded-2xl shadow-xl">
       {userInfo.workouts.map((el) => (
         <Link
           className="h-20 rounded-4xl text-2xl relative mt-15"

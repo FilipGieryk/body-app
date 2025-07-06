@@ -18,6 +18,7 @@ import { UserProvider } from "./hooks/UserContext.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FriendRequestsProvider } from "./context/FriendRequestsContext.tsx";
 import { WorkoutProvider } from "./context/WorkoutContext.tsx";
+import { NotificationProvider } from "./context/NotificationContext.tsx";
 
 const user = { isAdmin: true };
 function App() {
@@ -25,45 +26,47 @@ function App() {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
-        <WebSocketProvider>
-          <WorkoutProvider>
-            <FriendRequestsProvider>
-              <UserProvider>
-                <Header />
-                <div
-                  className="absolute inset-4 w-23/25 h-24/25 z-10 "
-                  id="container"
-                >
-                  <Routes>
-                    <Route
-                      path="/admin"
-                      element={
-                        <ProtectedRoute isAdmin={user.isAdmin}>
-                          <AdminDashboard />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route path="/" Component={GLTFViewer} />
-                    <Route path="/profile/:id" Component={ProfilePage} />
-                    <Route path="/help" Component={Help} />
-                    <Route path="/exercises" Component={ExercisesList} />
-                    <Route path="/workout/create" Component={CreateWorkout} />
-                    <Route path="/workouts" Component={WorkoutsList} />
-                    <Route
-                      path="/workouts/:workoutId"
-                      Component={WorkoutDetailPage}
-                    />
-                    <Route path="/chat/*" Component={ChatPage} />
-                    <Route
-                      path="/exercises/:exerciseId"
-                      Component={ExerciseDetailPage}
-                    />
-                  </Routes>
-                </div>
-              </UserProvider>
-            </FriendRequestsProvider>
-          </WorkoutProvider>
-        </WebSocketProvider>
+        <NotificationProvider>
+          <WebSocketProvider>
+            <WorkoutProvider>
+              <FriendRequestsProvider>
+                <UserProvider>
+                  <Header />
+                  <div
+                    className="absolute inset-4 w-23/25 h-24/25 z-10 "
+                    id="container"
+                  >
+                    <Routes>
+                      <Route
+                        path="/admin"
+                        element={
+                          <ProtectedRoute isAdmin={user.isAdmin}>
+                            <AdminDashboard />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route path="/" Component={GLTFViewer} />
+                      <Route path="/profile/:id" Component={ProfilePage} />
+                      <Route path="/help" Component={Help} />
+                      <Route path="/exercises" Component={ExercisesList} />
+                      <Route path="/workout/create" Component={CreateWorkout} />
+                      <Route path="/workouts" Component={WorkoutsList} />
+                      <Route
+                        path="/workouts/:workoutId"
+                        Component={WorkoutDetailPage}
+                      />
+                      <Route path="/chat/*" Component={ChatPage} />
+                      <Route
+                        path="/exercises/:exerciseId"
+                        Component={ExerciseDetailPage}
+                      />
+                    </Routes>
+                  </div>
+                </UserProvider>
+              </FriendRequestsProvider>
+            </WorkoutProvider>
+          </WebSocketProvider>
+        </NotificationProvider>
       </QueryClientProvider>
     </Router>
   );

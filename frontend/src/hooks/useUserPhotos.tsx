@@ -7,8 +7,12 @@ export const useUserPhotos = () => {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
 
   const addPhotoMutation = useMutation({
-    mutationFn: async (updatedPhotos) => {
-      await addUserPhoto(updatedPhotos);
+    mutationFn: async (files) => {
+      const formData = new FormData();
+      files.forEach((file) => {
+        formData.append("photos", file);
+      });
+      await addUserPhoto(formData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["userPhotos"]);
@@ -31,10 +35,9 @@ export const useUserPhotos = () => {
   });
 
   const handleFileChangeAndAdd = (event) => {
-    const files = Array.from(event.target.files).map((file) =>
-      URL.createObjectURL(file)
-    );
-    setSelectedPhotos(files);
+    const files = Array.from(event.target.files);
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+    setSelectedPhotos(previewUrls);
     if (files.length > 0) {
       addPhotoMutation.mutate(files);
     }

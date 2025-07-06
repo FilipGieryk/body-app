@@ -7,6 +7,7 @@ export interface WorkoutSession {
 
 export const addWorkoutSessions = async (workoutSession: WorkoutSession) => {
   try {
+    console.log(workoutSession);
     await axios.post("/api/workout-sessions/add", workoutSession, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

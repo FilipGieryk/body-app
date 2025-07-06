@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNotification } from "../context/NotificationContext";
 
 const WebSocketContext = createContext<WebSocket | null>(null);
 
 export const WebSocketProvider = ({ children }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const token = localStorage.getItem("token");
+  const { setHasNewMessage } = useNotification();
 
   useEffect(() => {
     if (!token) {
@@ -30,6 +32,7 @@ export const WebSocketProvider = ({ children }) => {
 
     webSocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
+      setHasNewMessage(true);
       console.log("Received WebSocket message:", message);
     };
 

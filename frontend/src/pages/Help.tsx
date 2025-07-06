@@ -121,11 +121,6 @@ const Help = () => {
 
   const [animateCircles, setAnimateCircles] = useState(false);
 
-  // const {
-  //   data: workouts,
-  //   error,
-  //   isLoading,
-  // } = useHelpWorkouts(selectedSplit.example);
   const handleSectionClick = (split: React.SetStateAction<string>) => {
     setSelectSection(split);
     setSelectSplit(splitsInfo[selectCategory][split]);

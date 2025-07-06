@@ -1,11 +1,11 @@
 import FriendsSearch from "./FriendsSearch";
 import { useUser } from "../../hooks/UserContext";
-import React from "react";
+import React, { useState } from "react";
 import { FriendRequest } from "./FriendRequest";
 import { useActiveTab } from "../../hooks/useActiveTab";
 import { ChatComponent } from "./ChatComponent";
 const ManageChatComponent = () => {
-  const { activeTab, setActiveTab } = useActiveTab();
+  const [activeTab, setActiveTab] = useState("chats");
   // change useuser to userequests
   const { friendRequests, loggedUserInfo } = useUser();
 

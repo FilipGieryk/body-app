@@ -2,8 +2,9 @@ const workoutSessionService = require("../services/workoutSessionService");
 
 class WorkoutSessionController {
   async addWorkoutSession(req, res) {
-    const { workoutId, modifiedExercises } = req.body;
+    const { workoutId, exercises } = req.body;
     const userId = req.user._id;
+    const modifiedExercises = exercises;
 
     try {
       const workoutSession = await workoutSessionService.addWorkoutSession(

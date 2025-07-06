@@ -23,6 +23,18 @@ class UserService {
     return await user.save();
   }
 
+  async addUserPhoto(userId, files) {
+    const user = await User.findById(userId);
+    if (!user) throw new Error("User not found");
+
+    files.forEach((file) => {
+      user.photos.push(file.filename);
+    });
+
+    await user.save();
+    return user.photos;
+  }
+
   async deleteUserPhoto(userId, photoPath) {
     const user = await User.findById(userId);
     if (!user) {

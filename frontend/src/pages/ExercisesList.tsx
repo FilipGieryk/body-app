@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SearchList from "../components/search/SearchList";
 import SearchContainer from "../components/search/SearchContainer";
 
-const ExcercisesList = (onAddExercise) => {
+const ExercisesList = () => {
   const [filteredData, setFilteredData] = useState([]);
 
   const handleFilteredDataChange = (data) => {
@@ -14,12 +14,8 @@ const ExcercisesList = (onAddExercise) => {
         contentType={"exercises"}
         onFilteredDataChange={handleFilteredDataChange}
       />
-      <SearchList
-        data={filteredData}
-        contentType={"exercises"}
-        onAddExercise={onAddExercise}
-      />
+      <SearchList data={filteredData} contentType={"exercises"} />
     </div>
   );
 };
-export default ExcercisesList;
+export default ExercisesList;
