@@ -43,7 +43,7 @@ export const getLoggedInLinks = (
   navigate,
   loggedUserInfo,
   handleLogout,
-  hasNewMessage
+  hasUnread
 ) => [
   {
     icon: faHome,
@@ -58,7 +58,7 @@ export const getLoggedInLinks = (
     id: "chat",
     path: `/chat`,
     action: () => navigate(`/chat`),
-    notification: hasNewMessage,
+    notification: hasUnread,
   },
   {
     icon: faSignOutAlt,

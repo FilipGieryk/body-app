@@ -25,7 +25,6 @@ class UserController {
 
   async addUserPhoto(req, res) {
     try {
-      console.log(req.files);
       const userId = req.user._id;
       const files = req.files;
       if (!files || files.length === 0) {
@@ -43,11 +42,10 @@ class UserController {
   }
 
   async deleteUserPhoto(req, res) {
-    const { id } = req.params;
-    const { photoPath } = req.body;
-
+    const id = req.user._id;
+    const { photos } = req.body;
     try {
-      const user = await userService.deleteUserPhoto(id, photoPath);
+      const user = await userService.deleteUserPhoto(id, photos);
       res.json({
         message: "Photo deleted",
         photos: user.photos,

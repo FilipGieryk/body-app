@@ -36,7 +36,9 @@ class UserService {
   }
 
   async deleteUserPhoto(userId, photoPath) {
+    console.log(userId);
     const user = await User.findById(userId);
+
     if (!user) {
       throw new Error("User not found");
     }

@@ -1,6 +1,11 @@
 import axios from "axios";
 
-export const createOrGetChat = async (friend: { _id: any; }) => {
+const headers = {
+  Authorization: `Bearer ${localStorage.getItem("token")}`,
+  "Content-Type": "application/json",
+};
+
+export const createOrGetChat = async (friend: { _id: any }) => {
   try {
     const response = await axios.post(
       "/api/chat/create-or-get",
@@ -35,30 +40,37 @@ export const createOrGetChat = async (friend: { _id: any; }) => {
 //   }
 // };
 
-// export const markMessagesAsRead = async (chatId: any) => {
-//   try {
-//     const token = localStorage.getItem("token");
-//     await axios.post(
-//       `/api/chat/mark-read`,
-//       { chatId },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`, // Include the authorization token if needed
-//         },
-//       }
-//     );
-//     setChats((prevChats) =>
-//       prevChats.map((chat) =>
-//         chat.chatId === chatId
-//           ? {
-//               ...chat,
-//               hasUnread: false,
-//             }
-//           : chat
-//       )
-//     );
-//     console.log("Messages marked as read");
-//   } catch (error) {
-//     console.error("Error marking messages as read:", error);
-//   }
-// };
+export const markMessagesAsRead = async (chatId: any) => {
+  try {
+    console.log(chatId);
+    await axios.post(
+      `/api/message/unread/mark`,
+      { chatId },
+      {
+        headers,
+      }
+    );
+    // setChats((prevChats) =>
+    //   prevChats.map((chat) =>
+    //     chat.chatId === chatId
+    //       ? {
+    //           ...chat,
+    //           hasUnread: false,
+    //         }
+    //       : chat
+    //   )
+    // );
+    console.log("Messages marked as read");
+  } catch (error) {
+    console.error("Error marking messages as read:", error);
+  }
+};
+
+export const fetchChats = async () => {
+  try {
+    const response = await axios.get(`/api/chat`, { headers });
+    return response.data;
+  } catch (error) {
+    console.error("error fetching chats");
+  }
+};

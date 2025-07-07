@@ -6,6 +6,7 @@ export const useFriendSearch = (friends: User[]) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm] = useDebounce(searchTerm, 400);
   const [filteredFriends, setFilteredFriends] = useState<User[]>([]);
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     if (debouncedTerm.trim() === "") {
@@ -20,10 +21,12 @@ export const useFriendSearch = (friends: User[]) => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    setShowResults(true);
   };
 
   const handleInputClick = () => {
     setFilteredFriends(friends);
+    setShowResults(true);
   };
 
   return {
@@ -33,5 +36,7 @@ export const useFriendSearch = (friends: User[]) => {
     handleInputClick,
     setSearchTerm,
     setFilteredFriends,
+    showResults,
+    setShowResults,
   };
 };

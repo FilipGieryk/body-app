@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from "react";
 const NotificationContext = createContext(null);
 
 export const NotificationProvider = ({ children }) => {
-  const [hasNewMessage, setHasNewMessage] = useState(false);
+  const [hasNewMessage, setHasNewMessage] = useState<Set<string>>(new Set());
   const [hasNewFriendRequest, setHasNewFriendRequest] = useState(false);
 
   return (

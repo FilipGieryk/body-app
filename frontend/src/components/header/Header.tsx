@@ -15,6 +15,7 @@ import {
 } from "../../data/navLinks.ts";
 import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
 import { useNotification } from "../../context/NotificationContext.tsx";
+import { isAnyUnread } from "./HeaderHelper.ts";
 
 export const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
@@ -33,10 +34,11 @@ export const Header = () => {
     refreshUserInfo,
     setLoggedUserInfo,
     loggedUserInfo,
+    chats,
     setChats,
   } = useUser();
   const { hasNewMessage } = useNotification();
-
+  console.log(chats);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -63,13 +65,14 @@ export const Header = () => {
     setFriendRequests([]);
     navigate("/");
   };
+  console.log(loggedUserInfo);
   const baseLinks = getBaseLinks(navigate);
   const loggedOutLinks = getLoggedOutLinks(setVisibleModal, toggleLogin);
   const loggedInLinks = getLoggedInLinks(
     navigate,
     loggedUserInfo,
     handleLogout,
-    hasNewMessage
+    isAnyUnread(chats)
   );
 
   const links = [
@@ -96,7 +99,7 @@ export const Header = () => {
           <NavLink
             key={link.id}
             to={link.path}
-            className={`flex items-center justify-center rounded-2xl bg-white h-15 w-15 text-xl hover:shadow-inner first:mt-8 first:mb-auto last:mb-5 nth-4:mb-auto ${
+            className={`flex items-center justify-center rounded-2xl bg-white h-15 w-15 relative text-xl hover:shadow-inner first:mt-8 first:mb-auto last:mb-5 nth-4:mb-auto ${
               location.pathname === link.path ? "shadow-inner" : ""
             }`}
             onClick={(e) => {

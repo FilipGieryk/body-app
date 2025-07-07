@@ -11,6 +11,11 @@ router.put(
   upload.array("photos", 5),
   userController.addUserPhoto
 );
+router.post(
+  "/photos/delete",
+  authenticateToken,
+  userController.deleteUserPhoto
+);
 
 router.put(
   "/:id",
@@ -18,7 +23,6 @@ router.put(
   upload.single("photo"),
   userController.updateUser
 );
-router.delete("/:id/photos", authenticateToken, userController.deleteUserPhoto);
 
 router.get("/:id", userController.getUserById);
 

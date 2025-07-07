@@ -44,7 +44,7 @@ export const useUserPhotos = () => {
   };
 
   const handleDeletePhotos = (photo) => {
-    deletePhotoMutation.mutate([photo]);
+    deletePhotoMutation.mutate(photo);
   };
 
   return {

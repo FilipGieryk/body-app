@@ -20,7 +20,6 @@ const MessageComponent = () => {
   });
   const containerRef = useAutoScroll(data);
   // const socket = useWebSocket();
-
   const { loggedUserInfo, chats } = useUser();
 
   if (isLoading) {
@@ -29,7 +28,6 @@ const MessageComponent = () => {
   if (isError) {
     return <div>Error Loading Messages</div>;
   }
-  console.log(data);
 
   // const currentChat = chats.find(
   //   (chat: { chatId: string | undefined }) => chat?.chatId === chatId

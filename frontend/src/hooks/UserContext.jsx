@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
-
+import { useQuery } from "@tanstack/react-query";
+import { fetchChats } from "../api/chatService";
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [loggedUserInfo, setLoggedUserInfo] = useState(null);
   const [friendRequests, setFriendRequests] = useState([]);
-  const [chats, setChats] = useState([]);
+  // const [chats, setChats] = useState([]);
 
   const fetchUserInfo = async () => {
     try {
@@ -21,19 +22,24 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const fetchChats = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`/api/chat`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setChats(response.data);
-    } catch (error) {
-      console.error("crap");
-    }
-  };
+  // const fetchChats = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await axios.get(`/api/chat`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     setChats(response.data);
+  //   } catch (error) {
+  //     console.error("crap");
+  //   }
+  // };
+
+  const { data: chats, isLoading: chatsLoading } = useQuery({
+    queryKey: ["chats"],
+    queryFn: fetchChats,
+  });
 
   const fetchPendingRequests = async () => {
     try {
@@ -51,7 +57,7 @@ export const UserProvider = ({ children }) => {
   const refreshUserInfo = async () => {
     await fetchUserInfo();
     await fetchPendingRequests();
-    await fetchChats();
+    // await fetchChats();
   };
 
   //     if (userInfo.friends?.includes(userInfo._id)) {
@@ -122,8 +128,9 @@ export const UserProvider = ({ children }) => {
         refreshUserInfo,
         setLoggedUserInfo,
         setFriendRequests,
-        setChats,
+        // setChats,
         chats,
+        chatsLoading,
         fetchPendingRequests,
       }}
     >

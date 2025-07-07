@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../../hooks/UserContext";
+import { useMarkMessagesAsRead } from "../../hooks/chats/useMarkMessagesAsRead";
 
 export const ChatComponent = () => {
-  const { chats } = useUser();
+  const { chats, chatsLoading } = useUser();
+  const url = window.location.href;
+  const currChatId = url.substring(url.lastIndexOf("/") + 1);
+  const markAsRead = useMarkMessagesAsRead();
+  useEffect(() => {
+    if (!chats) return;
+    console.log(chats);
+    markAsRead.mutate(currChatId);
+  }, [url, chats]);
+  if (chatsLoading) return <div>Loading chats...</div>;
   return (
     <>
       {chats
-        .filter((el: { lastMessage: any }) => el?.lastMessage)
+        ?.filter((el: { lastMessage: any }) => el?.lastMessage)
         .sort(
           (
             a: { lastMessage: { timestamp: any | number } },

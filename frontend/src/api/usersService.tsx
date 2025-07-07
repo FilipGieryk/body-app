@@ -51,10 +51,11 @@ export const deleteUserPhoto = async (
   updatedPhotos: string[]
 ): Promise<void> => {
   try {
-    await axios.delete(`/api/users/photos`, {
-      data: { photos: updatedPhotos },
-      headers,
-    });
+    await axios.post(
+      `/api/users/photos/delete`,
+      { photos: updatedPhotos },
+      { headers }
+    );
   } catch (error: any) {
     console.error("Failed to delete photo", error);
     throw error;
