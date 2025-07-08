@@ -1,6 +1,5 @@
-import axios from "axios";
-
-const API_URL = "/api/rating";
+import api from "../api/axios";
+const API_URL = "/rating";
 
 export interface Rating {
   user: any;
@@ -10,11 +9,7 @@ export interface Rating {
 
 export const submitRating = async (itemId: string, rating: number) => {
   try {
-    const response = await axios.post(`${API_URL}/${itemId}`, rating, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = await api.post(`${API_URL}/${itemId}`, rating);
     return response.data;
   } catch (error: any) {
     console.error("Error adding rating:", error);

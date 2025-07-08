@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useUser } from "../../hooks/UserContext";
 import { useAutoScroll } from "../../hooks/useAutoScroll";
 import { useGetChatMessages } from "../../hooks/fetch/messages/useGetChatMessages";
 import { useHandleKeyDown } from "../../hooks/messages/useHandleKeyDown";
 import React from "react";
+import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo";
 const MessageComponent = () => {
   const [inputValue, setInputValue] = useState("");
   const { chatId } = useParams();
@@ -20,7 +20,8 @@ const MessageComponent = () => {
   });
   const containerRef = useAutoScroll(data);
   // const socket = useWebSocket();
-  const { loggedUserInfo, chats } = useUser();
+
+  const { data: loggedUserInfo } = useLoggedUserInfo();
 
   if (isLoading) {
     return <div>Loading Messages...</div>;

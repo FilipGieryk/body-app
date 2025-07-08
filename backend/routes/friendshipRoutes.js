@@ -4,7 +4,11 @@ const friendshipController = require("../controllers/friendshipController");
 
 const router = express.Router();
 
-router.post("/send-request", friendshipController.sendRequest);
+router.post(
+  "/send-request",
+  authenticateToken,
+  friendshipController.sendRequest
+);
 router.post(
   "/accept-request",
   authenticateToken,
@@ -15,7 +19,11 @@ router.post(
   authenticateToken,
   friendshipController.declineRequest
 );
-router.delete("/remove-friend", friendshipController.removeFriend);
+router.delete(
+  "/remove-friend",
+  authenticateToken,
+  friendshipController.removeFriend
+);
 router.get("/:userId/friends", friendshipController.getFriends);
 router.get(
   "/pending-requests",

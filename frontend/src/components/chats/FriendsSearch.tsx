@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useUser } from "../../hooks/UserContext";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 import { useFriendSearch } from "../../hooks/chats/useFriendSearch";
+import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo.ts";
 
 const FriendsSearch = () => {
-  const { loggedUserInfo } = useUser();
+  const { data: loggedUserInfo } = useLoggedUserInfo();
 
   if (!loggedUserInfo) {
     return <div>Loading...</div>;

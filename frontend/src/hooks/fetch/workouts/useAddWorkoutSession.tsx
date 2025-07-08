@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { addWorkoutSessions } from "../../api/workoutSessionsService";
+import { addWorkoutSessions } from "../../../api/workoutSessionsService";
 
 export const useAddWorkoutSession = () => {
   return useMutation({

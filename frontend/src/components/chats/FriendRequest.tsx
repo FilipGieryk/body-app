@@ -17,6 +17,7 @@ export const FriendRequest: React.FC = () => {
   if (isError) {
     return <div>Error loading friend requests: {error?.message}</div>;
   }
+  console.log(friendRequests);
 
   return (
     <div>

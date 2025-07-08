@@ -1,30 +1,28 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useUser } from "../../hooks/UserContext";
+
 import { useNavigate } from "react-router-dom";
-import React from "react";
 import { useFriendRequests } from "../../context/FriendRequestsContext";
-import { useUpdateUser } from "../../hooks/users/useUpdateUser";
+import { useUpdateUser } from "../../hooks/fetch/useUpdateUser";
+import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo.ts";
 const UserInformation = ({ userInfo }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { loggedUserInfo, handleAcceptRequest, handleDeclineRequest } =
-    useUser();
+  const { data: loggedUserInfo } = useLoggedUserInfo();
+
   const navigate = useNavigate();
-  const { sendRequest, removeFriend, friendRequests, getFriendshipStatus } =
-    useFriendRequests();
+  const {
+    sendRequest,
+    removeFriend,
+    friendRequests,
+    getFriendshipStatus,
+    acceptRequest,
+    declineRequest,
+  } = useFriendRequests();
   const { mutate: updateUser, isPending, isError, error } = useUpdateUser();
 
   const handleUpdate = (updatedFields) => {
     updateUser({ updatedFields });
   };
 
-  const handleSendRequest = (friendId: string) => {
-    sendRequest(friendId);
-  };
-
-  const handleRemoveFriend = (friendId: string) => {
-    removeFriend(friendId);
-  };
   const requestStatus = getFriendshipStatus(userInfo._id, loggedUserInfo);
 
   return (
@@ -78,20 +76,24 @@ const UserInformation = ({ userInfo }) => {
               {requestStatus === "friends" ? (
                 <>
                   <p>Friends</p>
-                  <button onClick={() => handleRemoveFriend(userInfo._id)}>
+                  <button onClick={() => removeFriend(userInfo._id)}>
                     Delete friend
                   </button>
                 </>
               ) : requestStatus === "received" ? (
                 <>
                   <p>Request Received</p>
-                  <button onClick={handleAcceptRequest}>Accept</button>
-                  <button onClick={handleDeclineRequest}>Decline</button>
+                  <button onClick={() => acceptRequest(userInfo._id)}>
+                    Accept
+                  </button>
+                  <button onClick={() => declineRequest(userInfo._id)}>
+                    Decline
+                  </button>
                 </>
               ) : requestStatus === "sent" ? (
                 <p>Request Sent</p>
               ) : (
-                <button onClick={() => handleSendRequest(userInfo?._id)}>
+                <button onClick={() => sendRequest(userInfo?._id)}>
                   Add Friend
                 </button>
               )}

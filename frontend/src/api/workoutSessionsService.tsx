@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 
 export interface WorkoutSession {
   workoutId: string;
@@ -8,11 +8,7 @@ export interface WorkoutSession {
 export const addWorkoutSessions = async (workoutSession: WorkoutSession) => {
   try {
     console.log(workoutSession);
-    await axios.post("/api/workout-sessions/add", workoutSession, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    await api.post("/workout-sessions/add", workoutSession);
   } catch (error) {
     console.error("error adding wokrout session", error);
     throw error;

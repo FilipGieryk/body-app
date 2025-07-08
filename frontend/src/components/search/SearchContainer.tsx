@@ -3,7 +3,7 @@ import Sorting from "./Sorting";
 import SearchBar from "./SearchBar";
 import React, { useEffect } from "react";
 import { useSearchBar } from "../../hooks/useSearchBar";
-import { useFetchData } from "../../hooks/exercises/useFetchData";
+import { useFetchData } from "../../hooks/fetch/useFetchData";
 import { useBodyPartSelection } from "../../hooks/useBodyPartSelection";
 import { useSorting } from "../../hooks/useSorting";
 

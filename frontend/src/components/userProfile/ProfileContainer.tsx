@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetUser } from "../../hooks/users/useGetUser";
+import { useGetUser } from "../../hooks/fetch/useGetUser";
 import UserInformation from "./UserInformation";
 import Photos from "./UserPhotos";
 import WokroutsList from "./WorkoutsList";

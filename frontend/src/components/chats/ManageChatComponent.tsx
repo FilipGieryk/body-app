@@ -1,13 +1,16 @@
 import FriendsSearch from "./FriendsSearch";
-import { useUser } from "../../hooks/UserContext";
+
 import React, { useState } from "react";
 import { FriendRequest } from "./FriendRequest";
-import { useActiveTab } from "../../hooks/useActiveTab";
+
 import { ChatComponent } from "./ChatComponent";
+import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo";
+import { useFriendRequests } from "../../context/FriendRequestsContext";
 const ManageChatComponent = () => {
   const [activeTab, setActiveTab] = useState("chats");
   // change useuser to userequests
-  const { friendRequests, loggedUserInfo } = useUser();
+  const { friendRequests } = useFriendRequests();
+  const { data: loggedUserInfo } = useLoggedUserInfo();
 
   return (
     <div className="rounded-xl">

@@ -1,6 +1,6 @@
-import axios from "axios";
+import api from "../api/axios";
 
-const API_URL = "/api/workouts";
+const API_URL = "/workouts";
 
 export interface NewWorkout {
   name: string;
@@ -21,7 +21,7 @@ export interface Workout extends NewWorkout {
 
 export const fetchWorkouts = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await api.get(API_URL);
     return response.data;
   } catch (error: any) {
     console.error("Error fetching workouts:", error);
@@ -32,11 +32,7 @@ export const createWorkout = async (
   newWorkout: NewWorkout
 ): Promise<Workout> => {
   try {
-    const response = await axios.post(API_URL, newWorkout, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = await api.post(API_URL, newWorkout);
     return response.data;
   } catch (error: any) {
     console.error("Error creating workout:", error);
@@ -46,7 +42,7 @@ export const createWorkout = async (
 
 export const fetchWorkoutById = async (workoutId) => {
   try {
-    const response = await axios.get(`/api/workouts/${workoutId}`);
+    const response = await api.get(`/workouts/${workoutId}`);
     return response.data;
   } catch (error) {
     console.error("couldnt get workout", error);

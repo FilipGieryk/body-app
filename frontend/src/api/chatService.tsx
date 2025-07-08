@@ -1,21 +1,10 @@
-import axios from "axios";
-
-const headers = {
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
-  "Content-Type": "application/json",
-};
+import api from "../api/axios";
 
 export const createOrGetChat = async (friend: { _id: any }) => {
   try {
-    const response = await axios.post(
-      "/api/chat/create-or-get",
-      {
-        recipientId: friend._id,
-      },
-      {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      }
-    );
+    const response = await api.post("/chat/create-or-get", {
+      recipientId: friend._id,
+    });
     return response.data;
   } catch (error) {
     console.error("error creating chat", error);
@@ -42,14 +31,7 @@ export const createOrGetChat = async (friend: { _id: any }) => {
 
 export const markMessagesAsRead = async (chatId: any) => {
   try {
-    console.log(chatId);
-    await axios.post(
-      `/api/message/unread/mark`,
-      { chatId },
-      {
-        headers,
-      }
-    );
+    await api.post(`/message/unread/mark`, { chatId });
     // setChats((prevChats) =>
     //   prevChats.map((chat) =>
     //     chat.chatId === chatId
@@ -68,7 +50,7 @@ export const markMessagesAsRead = async (chatId: any) => {
 
 export const fetchChats = async () => {
   try {
-    const response = await axios.get(`/api/chat`, { headers });
+    const response = await api.get(`/chat`);
     return response.data;
   } catch (error) {
     console.error("error fetching chats");

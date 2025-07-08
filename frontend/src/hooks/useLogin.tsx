@@ -10,10 +10,11 @@ const useLogin = (onLoginSuccess) => {
 
   const mutation = useMutation({
     mutationFn: () => login(username, password),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("isAdmin", data.isAdmin);
-      onLoginSuccess();
+
+      await onLoginSuccess();
     },
     onError: (error) => {
       console.error(error.response?.data?.message || "An error occurred");

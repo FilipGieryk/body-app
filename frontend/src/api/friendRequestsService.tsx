@@ -1,9 +1,6 @@
-import axios from "axios";
+import api from "../api/axios";
 
-const URL = "api/friendships";
-const headers = {
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
-};
+const URL = "/friendships";
 
 export interface FriendRequest {
   id: string;
@@ -15,9 +12,7 @@ export interface FriendRequest {
 
 export const fetchFriendRequests = async (): Promise<FriendRequest[]> => {
   try {
-    console.log("sd");
-    const response = await axios.get(`/${URL}/pending-requests`, { headers });
-    console.log(response.data);
+    const response = await api.get(`${URL}/pending-requests`);
     return response.data;
   } catch (error) {
     throw new Error(
@@ -28,7 +23,7 @@ export const fetchFriendRequests = async (): Promise<FriendRequest[]> => {
 
 export const acceptFriendRequest = async (friendId: string): Promise<void> => {
   try {
-    await axios.post(`${URL}/accept-request`, { friendId }, { headers });
+    await api.post(`${URL}/accept-request`, { friendId });
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Error accepting friend request"
@@ -38,7 +33,7 @@ export const acceptFriendRequest = async (friendId: string): Promise<void> => {
 
 export const declineFriendRequest = async (friendId: string): Promise<void> => {
   try {
-    await axios.post(`${URL}/decline-request`, { friendId }, { headers });
+    await api.post(`${URL}/decline-request`, { friendId });
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Error declining friend request"
@@ -48,7 +43,7 @@ export const declineFriendRequest = async (friendId: string): Promise<void> => {
 
 export const sendFriendRequest = async (friendId: string) => {
   try {
-    await axios.post(`${URL}/send-request`, { friendId }, { headers });
+    await api.post(`${URL}/send-request`, { friendId });
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Error sending friend request"
@@ -58,11 +53,9 @@ export const sendFriendRequest = async (friendId: string) => {
 
 export const deleteFriendship = async (friendId: string) => {
   try {
-    await axios.delete(
-      "/api/friendships/remove-friend",
-      { friendId },
-      { headers }
-    );
+    await api.delete("/friendships/remove-friend", {
+      data: { friendId },
+    });
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error deleting friend");
   }

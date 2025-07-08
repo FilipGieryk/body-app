@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 
 export interface Exercise {
   name: string;
@@ -10,7 +10,7 @@ export interface Exercise {
 
 export const fetchExercisesByBodyPart = async (bodyPart: any, limit = 2) => {
   try {
-    const response = await axios.get("/api/admin/exercises/body-part", {
+    const response = await api.get("/admin/exercises/body-part", {
       params: { bodyPart, limit },
     });
     return response.data;
@@ -27,7 +27,7 @@ export const fetchExercisesByBodyPart = async (bodyPart: any, limit = 2) => {
 
 export const fetchExercises = async () => {
   try {
-    const response = await axios.get("/api/admin/exercises");
+    const response = await api.get("/admin/exercises");
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -42,9 +42,7 @@ export const fetchExercises = async () => {
 
 export const fetchExerciseById = async (exerciseId: string) => {
   try {
-    const response = await axios.get(
-      `/api/admin/exercises/detail/${exerciseId}`
-    );
+    const response = await api.get(`/admin/exercises/detail/${exerciseId}`);
     return response.data;
   } catch (error) {
     console.error("failed to fetch exercise", error);

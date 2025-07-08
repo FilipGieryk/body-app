@@ -42,8 +42,18 @@ export const FriendRequestsProvider: React.FC<{
 
   const mutationAccept = useMutation({
     mutationFn: acceptFriendRequest,
+    onMutate: (friendId) => {
+      const previousLoggedUser = queryClient.getQueryData(["loggedUserInfo"]);
+
+      queryClient.setQueryData(["loggedUserInfo"], (old: any[]) => ({
+        ...old,
+        friends: [...old.friends, { _id: friendId }],
+      }));
+      return { previousLoggedUser };
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+      queryClient.invalidateQueries({ queryKey: ["loggedUserInfo"] });
     },
   });
 
@@ -63,6 +73,17 @@ export const FriendRequestsProvider: React.FC<{
 
   const mutationDeleteFriend = useMutation({
     mutationFn: deleteFriendship,
+    onMutate: (friendId) => {
+      const loggedUserInfo = queryClient.getQueryData(["loggedUserInfo"]);
+
+      queryClient.setQueryData(["loggedUserInfo"], (oldData: any) => {
+        return {
+          ...oldData,
+          friends: oldData.friends.filter((req) => req._id !== friendId),
+        };
+      });
+      return { loggedUserInfo };
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
     },

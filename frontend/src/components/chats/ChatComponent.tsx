@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useUser } from "../../hooks/UserContext";
-import { useMarkMessagesAsRead } from "../../hooks/chats/useMarkMessagesAsRead";
+
+import { useMarkMessagesAsRead } from "../../hooks/fetch/useMarkMessagesAsRead";
+import { useGetChats } from "../../hooks/fetch/chats/useGetChats";
 
 export const ChatComponent = () => {
-  const { chats, chatsLoading } = useUser();
+  const { data: chats, isLoading: chatsLoading } = useGetChats();
   const url = window.location.href;
   const currChatId = url.substring(url.lastIndexOf("/") + 1);
   const markAsRead = useMarkMessagesAsRead();

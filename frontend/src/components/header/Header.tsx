@@ -3,8 +3,6 @@ import Login from "./Login.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useUser } from "../../hooks/UserContext";
-import { useWebSocket } from "../../hooks/webSocketContext";
 import { NavLink } from "react-router-dom";
 import { useWorkout } from "../../context/WorkoutContext.tsx";
 import { ExerciseBasket } from "./ExerciseBasket.tsx";
@@ -16,6 +14,8 @@ import {
 import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
 import { useNotification } from "../../context/NotificationContext.tsx";
 import { isAnyUnread } from "./HeaderHelper.ts";
+import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo.ts";
+import { useGetChats } from "../../hooks/fetch/chats/useGetChats.ts";
 
 export const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
@@ -29,31 +29,23 @@ export const Header = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const {
-    setFriendRequests,
-    refreshUserInfo,
-    setLoggedUserInfo,
-    loggedUserInfo,
-    chats,
-    setChats,
-  } = useUser();
-  const { hasNewMessage } = useNotification();
-  console.log(chats);
+  const { data: chats } = useGetChats();
+  const { data: loggedUserInfo, refetch: refetchUser } = useLoggedUserInfo();
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      refreshUserInfo();
+    if (token && !loggedUserInfo) {
+      refetchUser(); // only if token exists and no user info loaded
       setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
     }
-  }, [isLoggedIn]);
+    // setIsLoggedIn(true);
+  }, []);
 
   const toggleLogin = () => {
     setIsLoginVisible((prev) => !prev);
   };
 
-  const handleLoginSuccess = (userId) => {
+  const handleLoginSuccess = async () => {
+    await refetchUser();
     setIsLoggedIn(true);
     setIsLoginVisible(false);
   };
@@ -61,19 +53,21 @@ export const Header = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("token");
-    setLoggedUserInfo(null); // Clear user info on logout
-    setFriendRequests([]);
+    // setLoggedUserInfo(null); // Clear user info on logout
+    // setFriendRequests([]);
     navigate("/");
   };
-  console.log(loggedUserInfo);
   const baseLinks = getBaseLinks(navigate);
   const loggedOutLinks = getLoggedOutLinks(setVisibleModal, toggleLogin);
-  const loggedInLinks = getLoggedInLinks(
-    navigate,
-    loggedUserInfo,
-    handleLogout,
-    isAnyUnread(chats)
-  );
+  const loggedInLinks = loggedUserInfo
+    ? getLoggedInLinks(
+        navigate,
+        loggedUserInfo,
+        handleLogout,
+        refetchUser,
+        isAnyUnread(chats)
+      )
+    : [];
 
   const links = [
     ...baseLinks,

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useGetWorkout } from "../../hooks/workouts/useGetWorkout";
+import { useGetWorkout } from "../../hooks/fetch/workouts/useGetWorkout";
 import ExercisesList from "../../pages/ExercisesList";
-import { useAddWorkoutSession } from "../../hooks/workouts/useAddWorkoutSession";
+import { useAddWorkoutSession } from "../../hooks/fetch/workouts/useAddWorkoutSession";
 import { useWorkout } from "../../context/WorkoutContext";
 
 const WorkoutDetail = () => {

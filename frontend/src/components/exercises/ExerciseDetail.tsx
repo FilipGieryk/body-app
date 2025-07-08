@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetExercise } from "../../hooks/exercises/useGetExercise";
+import { useGetExercise } from "../../hooks/fetch/useGetExercise";
 
 const ExerciseDetail = () => {
   const [exercise, setExercise] = useState("");

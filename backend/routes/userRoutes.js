@@ -24,6 +24,8 @@ router.put(
   userController.updateUser
 );
 
+router.get("/me", authenticateToken, userController.getCurrentUser);
+
 router.get("/:id", userController.getUserById);
 
 module.exports = router;

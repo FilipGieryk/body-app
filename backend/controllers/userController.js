@@ -74,6 +74,19 @@ class UserController {
       res.status(500).json({ error: err.message });
     }
   }
+
+  async getCurrentUser(req, res) {
+    const userId = req.user._id;
+    try {
+      const user = await userService.getUserById(userId);
+      res.json(user);
+    } catch (err) {
+      if (err.message === "User not found") {
+        return res.status(404).json({ error: err.message });
+      }
+      res.status(500).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = new UserController();

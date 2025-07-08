@@ -1,6 +1,6 @@
-import axios from "axios";
+import api from "../api/axios";
 
-const URL = "/api/message";
+const URL = "/message";
 const headers = {
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 };
@@ -13,11 +13,7 @@ export const sendMessageToServer = async ({
   chatId: string;
 }) => {
   try {
-    const response = await axios.post(
-      `${URL}/${chatId}/send`,
-      { content },
-      { headers }
-    );
+    const response = await api.post(`${URL}/${chatId}/send`, { content });
     return response.data;
   } catch (error) {
     console.error("Failed to send message:", error);
@@ -26,7 +22,7 @@ export const sendMessageToServer = async ({
 };
 export const getMessages = async (chatId: any) => {
   try {
-    const response = await axios.get(`/api/message/${chatId}`, { headers });
+    const response = await api.get(`/message/${chatId}`);
     return response.data;
   } catch (error) {
     console.error("error getting messages", error);
