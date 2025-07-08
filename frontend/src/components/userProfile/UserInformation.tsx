@@ -4,26 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useFriendRequests } from "../../context/FriendRequestsContext";
 import { useUpdateUser } from "../../hooks/fetch/useUpdateUser";
 import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo.ts";
-const UserInformation = ({ userInfo }) => {
+const UserInformation = ({ userInfo, isLoggedUser }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { data: loggedUserInfo } = useLoggedUserInfo();
 
-  const navigate = useNavigate();
-  const {
-    sendRequest,
-    removeFriend,
-    friendRequests,
-    getFriendshipStatus,
-    acceptRequest,
-    declineRequest,
-  } = useFriendRequests();
   const { mutate: updateUser, isPending, isError, error } = useUpdateUser();
 
   const handleUpdate = (updatedFields) => {
     updateUser({ updatedFields });
   };
 
-  const requestStatus = getFriendshipStatus(userInfo._id, loggedUserInfo);
+  // const requestStatus = getFriendshipStatus(userInfo._id, loggedUserInfo);
 
   return (
     <div className="flex rounded-2xl flex-col justify-start items-center px-8 row-start-1 row-end-3 bg-amber-200 shadow-xl">
@@ -73,7 +64,7 @@ const UserInformation = ({ userInfo }) => {
             ></button>
           ) : (
             <>
-              {requestStatus === "friends" ? (
+              {/* {requestStatus === "friends" ? (
                 <>
                   <p>Friends</p>
                   <button onClick={() => removeFriend(userInfo._id)}>
@@ -97,7 +88,7 @@ const UserInformation = ({ userInfo }) => {
                   Add Friend
                 </button>
               )}
-              <button>Message</button>
+              <button>Message</button> */}
             </>
           )}
         </div>

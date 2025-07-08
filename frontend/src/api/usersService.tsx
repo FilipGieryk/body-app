@@ -7,6 +7,7 @@ export interface NewUser {
 }
 
 export interface User extends NewUser {
+  photos: unknown;
   id: string;
 }
 

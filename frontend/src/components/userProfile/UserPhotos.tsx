@@ -1,9 +1,6 @@
-import axios from "axios";
-import React from "react";
-import { useState, useEffect } from "react";
 import { useUserPhotos } from "../../hooks/useUserPhotos";
 
-const Photos = ({ userInfo, userId }) => {
+const Photos = ({ userPhotos, isLoggedUser }) => {
   const {
     handleFileChangeAndAdd,
     handleDeletePhotos,
@@ -13,8 +10,8 @@ const Photos = ({ userInfo, userId }) => {
   } = useUserPhotos();
   return (
     <div className="flex relative items-center w-[90%] h-full m-auto py-2 text-4xl bg-amber-200 rounded-2xl whitespace-nowrap shadow-xl">
-      {userInfo.photos?.length > 0 ? (
-        userInfo.photos.map((photo) => (
+      {userPhotos?.length > 0 ? (
+        userPhotos.map((photo) => (
           <div className="inline-block min-w-100 h-[95%] rounded-4xl relative">
             <img
               className="w-60 h-80 overflow-hidden rounded-4xl"
@@ -33,7 +30,7 @@ const Photos = ({ userInfo, userId }) => {
         <></>
       )}
 
-      {userId === userInfo._id && (
+      {isLoggedUser && (
         <div className="inline-block min-w-100 h-[95%] rounded-4xl relative">
           <span className="absolute flex top-[50%] left-[50%] w-20 h-20 text-7xl rounded-4xl translate-[-50% -50%] text-center justify-center items-center transition-all">
             +
