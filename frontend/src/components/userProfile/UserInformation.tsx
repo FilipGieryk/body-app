@@ -5,7 +5,7 @@ import { useFriendRequests } from "../../context/FriendRequestsContext";
 import { useUpdateUser } from "../../hooks/fetch/useUpdateUser";
 import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo.ts";
 import { EditUserInfo } from "./EditUserInfo.tsx";
-const UserInformation = ({ userInfo, isLoggedUser }) => {
+const UserInformation = ({ userInfo, isLoggedUser = false }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (

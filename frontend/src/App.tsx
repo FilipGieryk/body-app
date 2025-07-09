@@ -54,7 +54,7 @@ function App() {
                         path="/workouts/:workoutId"
                         Component={WorkoutDetailPage}
                       />
-                      <Route path="/chat/*" Component={ChatPage} />
+                      <Route path="/chat/:chatId?" Component={ChatPage} />
                       <Route
                         path="/exercises/:exerciseId"
                         Component={ExerciseDetailPage}

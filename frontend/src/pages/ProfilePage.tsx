@@ -12,6 +12,7 @@ import { useUserPhotos } from "../hooks/useUserPhotos";
 const ProfilePage = () => {
   // get params of user id from url
   const { id } = useParams();
+  if (!id) return <p>User ID not found in URL</p>;
 
   // get user data from query and currently logged user info from context
   const { data: userData, isLoading, isError, error } = useGetUser(id);
@@ -31,7 +32,6 @@ const ProfilePage = () => {
   const { handleFileChangeAndAdd, handleDeletePhotos } = useUserPhotos();
 
   // error and loading
-  if (!id) return <p>User ID not found in URL</p>;
 
   if (isLoading || loading) return <p>Loading user profile...</p>;
 

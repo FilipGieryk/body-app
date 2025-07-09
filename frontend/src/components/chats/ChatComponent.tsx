@@ -4,19 +4,17 @@ import { Link } from "react-router-dom";
 import { useMarkMessagesAsRead } from "../../hooks/fetch/useMarkMessagesAsRead";
 import { useGetChats } from "../../hooks/fetch/chats/useGetChats";
 
-export const ChatComponent = () => {
-  const { data: chats, isLoading: chatsLoading } = useGetChats();
-  const url = window.location.href;
-  const currChatId = url.substring(url.lastIndexOf("/") + 1);
+export const ChatComponent = ({ chats, chatsLoading }) => {
+  // const { data: chats, isLoading: chatsLoading } = useGetChats();
   const markAsRead = useMarkMessagesAsRead();
-  useEffect(() => {
-    if (!chats) return;
-    console.log(chats);
-    markAsRead.mutate(currChatId);
-  }, [url, chats]);
+  // useEffect(() => {
+  //   if (!chats) return;
+  //   console.log(chats);
+  //   markAsRead.mutate(currChatId);
+  // }, [url, chats]);
   if (chatsLoading) return <div>Loading chats...</div>;
   return (
-    <>
+    <div>
       {chats
         ?.filter((el: { lastMessage: any }) => el?.lastMessage)
         .sort(
@@ -45,6 +43,6 @@ export const ChatComponent = () => {
             </div>
           </Link>
         ))}
-    </>
+    </div>
   );
 };

@@ -5,7 +5,7 @@ import { useGetChatMessages } from "../../hooks/fetch/messages/useGetChatMessage
 import { useHandleKeyDown } from "../../hooks/messages/useHandleKeyDown";
 import React from "react";
 import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo";
-const MessageComponent = () => {
+const MessageComponent = ({ messages }) => {
   const [inputValue, setInputValue] = useState("");
   const { chatId } = useParams();
   if (!chatId) {
@@ -62,7 +62,7 @@ const MessageComponent = () => {
         className="w-full rounded-2xl h-full flex flex-col self-center overflow-y-auto bg-[length:90%_100%]"
         ref={containerRef}
       >
-        {data.map((message, index) => (
+        {messages.map((message, index) => (
           <div
             key={index}
             className={`text-4xl w-max px-2 py-8 rounded-4xl ${
