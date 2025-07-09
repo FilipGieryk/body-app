@@ -1,33 +1,29 @@
-import { useFriendRequests } from "../../context/FriendRequestsContext";
-
-export const UserFriendInfo = () => {
-  const {
-    sendRequest,
-    removeFriend,
-    friendRequests,
-    getFriendshipStatus,
-    acceptRequest,
-    declineRequest,
-  } = useFriendRequests();
+export const UserFriendInfo = ({
+  sendRequest,
+  removeFriend,
+  friendRequests,
+  requestStatus,
+  acceptRequest,
+  declineRequest,
+  userId,
+}) => {
   return (
     <>
       {requestStatus === "friends" ? (
         <>
           <p>Friends</p>
-          <button onClick={() => removeFriend(userInfo._id)}>
-            Delete friend
-          </button>
+          <button onClick={() => removeFriend(userId)}>Delete friend</button>
         </>
       ) : requestStatus === "received" ? (
         <>
           <p>Request Received</p>
-          <button onClick={() => acceptRequest(userInfo._id)}>Accept</button>
-          <button onClick={() => declineRequest(userInfo._id)}>Decline</button>
+          <button onClick={() => acceptRequest(userId)}>Accept</button>
+          <button onClick={() => declineRequest(userId)}>Decline</button>
         </>
       ) : requestStatus === "sent" ? (
         <p>Request Sent</p>
       ) : (
-        <button onClick={() => sendRequest(userInfo?._id)}>Add Friend</button>
+        <button onClick={() => sendRequest(userId)}>Add Friend</button>
       )}
       <button>Message</button>
     </>

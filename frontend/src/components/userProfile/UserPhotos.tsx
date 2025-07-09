@@ -1,13 +1,9 @@
-import { useUserPhotos } from "../../hooks/useUserPhotos";
-
-const Photos = ({ userPhotos, isLoggedUser }) => {
-  const {
-    handleFileChangeAndAdd,
-    handleDeletePhotos,
-    addPhotoStatus,
-    deletePhotoStatus,
-    selectedPhotos,
-  } = useUserPhotos();
+const Photos = ({
+  userPhotos,
+  isLoggedUser,
+  handleFileChangeAndAdd,
+  handleDeletePhotos,
+}) => {
   return (
     <div className="flex relative items-center w-[90%] h-full m-auto py-2 text-4xl bg-amber-200 rounded-2xl whitespace-nowrap shadow-xl">
       {userPhotos?.length > 0 ? (
@@ -20,9 +16,9 @@ const Photos = ({ userPhotos, isLoggedUser }) => {
             <button
               className="absolute top-[10%] right-4 bg-transparent border-0 text-gray-400 translate-[50% -50%] transition-all"
               onClick={() => handleDeletePhotos(photo)}
-              disabled={deletePhotoStatus.isPending}
+              // disabled={deletePhotoStatus.isPending}
             >
-              {deletePhotoStatus.isPending ? "Deleting..." : "Delete"}X
+              {/* {deletePhotoStatus.isPending ? "Deleting..." : "Delete"}X */}
             </button>
           </div>
         ))

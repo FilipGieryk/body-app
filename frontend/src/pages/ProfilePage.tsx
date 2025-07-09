@@ -5,6 +5,9 @@ import UserInformation from "../components/userProfile/UserInformation";
 import UserPhotos from "../components/userProfile/UserPhotos";
 import UserWorkouts from "../components/userProfile/UserWorkouts";
 import { useUser } from "../context/UserContext";
+import { useFriendRequests } from "../context/FriendRequestsContext";
+import { UserFriendInfo } from "../components/userProfile/UserFriendInfo";
+import { useUserPhotos } from "../hooks/useUserPhotos";
 
 const ProfilePage = () => {
   // get params of user id from url
@@ -13,6 +16,19 @@ const ProfilePage = () => {
   // get user data from query and currently logged user info from context
   const { data: userData, isLoading, isError, error } = useGetUser(id);
   const { user, loading } = useUser();
+
+  // get friendship
+  const {
+    sendRequest,
+    removeFriend,
+    friendRequests,
+    getFriendshipStatus,
+    acceptRequest,
+    declineRequest,
+  } = useFriendRequests();
+
+  // photos
+  const { handleFileChangeAndAdd, handleDeletePhotos } = useUserPhotos();
 
   // error and loading
   if (!id) return <p>User ID not found in URL</p>;
@@ -26,10 +42,28 @@ const ProfilePage = () => {
   // check if user is currLoggedUser
   const isLoggedUser = userData._id === user._id;
 
+  const requestStatus = getFriendshipStatus(userData._id, user);
+
   return (
     <div className="grid grid-rows-[55%_35%] grid-cols-[30%_66%] w-full h-full gap-4 transition-all m-10">
-      <UserInformation userInfo={userData} isLoggedUser={isLoggedUser} />
-      <UserPhotos userPhotos={userData.photos} isLoggedUser={isLoggedUser} />
+      <div className="bg-amber-200 h-full row-start-1 row-end-3 shadow-2xl rounded-2xl">
+        <UserInformation userInfo={userData} isLoggedUser={isLoggedUser} />
+        <UserFriendInfo
+          userId={userData._id}
+          requestStatus={requestStatus}
+          sendRequest={sendRequest}
+          removeFriend={removeFriend}
+          friendRequests={friendRequests}
+          acceptRequest={acceptRequest}
+          declineRequest={declineRequest}
+        />
+      </div>
+      <UserPhotos
+        userPhotos={userData.photos}
+        isLoggedUser={isLoggedUser}
+        handleFileChangeAndAdd={handleFileChangeAndAdd}
+        handleDeletePhotos={handleDeletePhotos}
+      />
       <UserWorkouts
         userWorkouts={userData.workouts}
         isLoggedUser={isLoggedUser}
