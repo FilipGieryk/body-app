@@ -43,6 +43,7 @@ class ChatService {
       chatName,
       profilePhoto,
       hasUnread: unreadChatIds.has(chat._id.toString()),
+      participants: chat.participants,
       lastMessage: lastMessage || null, // Include lastMessage or null if no messages
     };
   }

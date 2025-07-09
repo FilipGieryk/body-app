@@ -111,6 +111,7 @@ class ChatController {
           },
         },
         { $unwind: { path: "$lastMessage", preserveNullAndEmptyArrays: true } },
+
         {
           $project: {
             chatId: "$_id",

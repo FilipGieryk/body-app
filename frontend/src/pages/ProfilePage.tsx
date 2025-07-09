@@ -47,7 +47,11 @@ const ProfilePage = () => {
   return (
     <div className="grid grid-rows-[55%_35%] grid-cols-[30%_66%] w-full h-full gap-4 transition-all m-10">
       <div className="bg-amber-200 h-full row-start-1 row-end-3 shadow-2xl rounded-2xl">
-        <UserInformation userInfo={userData} isLoggedUser={isLoggedUser} />
+        <UserInformation
+          username={userData.username}
+          profilePhoto={userData.profilePhoto}
+          isLoggedUser={isLoggedUser}
+        />
         <UserFriendInfo
           userId={userData._id}
           requestStatus={requestStatus}

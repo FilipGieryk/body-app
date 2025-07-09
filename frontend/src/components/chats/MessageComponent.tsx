@@ -3,61 +3,30 @@ import { useParams } from "react-router-dom";
 import { useAutoScroll } from "../../hooks/useAutoScroll";
 import { useGetChatMessages } from "../../hooks/fetch/messages/useGetChatMessages";
 import { useHandleKeyDown } from "../../hooks/messages/useHandleKeyDown";
-import React from "react";
 import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo";
-const MessageComponent = ({ messages }) => {
+const MessageComponent = ({ otherParticipants, messages, messagesLoading }) => {
   const [inputValue, setInputValue] = useState("");
   const { chatId } = useParams();
   if (!chatId) {
     return;
   }
 
-  const { data, isLoading, isError, error } = useGetChatMessages(chatId);
   const handleKeyDown = useHandleKeyDown({
     inputValue,
     setInputValue,
     chatId,
   });
-  const containerRef = useAutoScroll(data);
-  // const socket = useWebSocket();
+  const containerRef = useAutoScroll(messages);
 
-  const { data: loggedUserInfo } = useLoggedUserInfo();
-
-  if (isLoading) {
+  if (messagesLoading) {
     return <div>Loading Messages...</div>;
   }
-  if (isError) {
-    return <div>Error Loading Messages</div>;
-  }
-
-  // const currentChat = chats.find(
-  //   (chat: { chatId: string | undefined }) => chat?.chatId === chatId
-  // );
-
-  // useEffect(() => {
-  //   if (!socket) return;
-
-  //   const handleWebSocketMessage = (event: { data: string }) => {
-  //     const message = JSON.parse(event.data);
-
-  //     if (message.type === "chat-message") {
-  //       setMessages((prevMessages: any) => [...prevMessages, message]);
-  //     }
-  //   };
-  //   socket.addEventListener("message", handleWebSocketMessage);
-
-  //   return () => {
-  //     socket.removeEventListener("message", handleWebSocketMessage);
-  //   };
-  // }, [socket]);
-  // do this with sendmessage or separate api aclls and hooks
+  // if (isError) {
+  //   return <div>Error Loading Messages</div>;
+  // }
 
   return (
-    <div className="grid grid-rows-[10%_80%_10%] h-full min-h-full max-h-full rounded-4xl">
-      <div className="flex items-center gap-8 w-full">
-        {/* <img src={currentChat?.profilePhoto} className="h-28 rounded-4xl"></img>
-          <h1>{currentChat?.chatName}</h1> */}
-      </div>
+    <div className="grid grid-rows-[80%_10%] h-full min-h-full max-h-full rounded-4xl">
       <div
         className="w-full rounded-2xl h-full flex flex-col self-center overflow-y-auto bg-[length:90%_100%]"
         ref={containerRef}
@@ -66,7 +35,7 @@ const MessageComponent = ({ messages }) => {
           <div
             key={index}
             className={`text-4xl w-max px-2 py-8 rounded-4xl ${
-              message.senderId === loggedUserInfo._id || !message.senderId
+              message.senderId != otherParticipants || !message.senderId
                 ? "self-end"
                 : "self-start"
             }`}
