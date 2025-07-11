@@ -1,11 +1,3 @@
-import FriendsSearch from "./FriendsSearch";
-
-import React, { useState } from "react";
-import { FriendRequest } from "./FriendRequest";
-
-import { ChatComponent } from "./ChatComponent";
-import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo";
-import { useFriendRequests } from "../../context/FriendRequestsContext";
 const ManageChatComponent = ({
   setActiveTab,
   loggedUserId,
@@ -21,9 +13,7 @@ const ManageChatComponent = ({
           >
             Chats
           </h1>
-          {friendRequests?.some(
-            (el: { friend: { _id: any } }) => el.friend?._id === loggedUserId
-          ) && (
+          {friendRequests.length > 0 && (
             <h1 onClick={() => setActiveTab("friendRequest")}>
               Friend Requests
             </h1>

@@ -39,7 +39,7 @@ export const FriendRequestsProvider: React.FC<{
     queryFn: fetchFriendRequests,
   });
   const queryClient = useQueryClient();
-
+  console.log(friendRequests);
   const mutationAccept = useMutation({
     mutationFn: acceptFriendRequest,
     onMutate: (friendId) => {
@@ -106,7 +106,7 @@ export const FriendRequestsProvider: React.FC<{
 
   const getFriendshipStatus = (userId: string, loggedUserInfo: any) => {
     if (!loggedUserInfo) return "none";
-
+    console.log(userId);
     if (
       loggedUserInfo.friends?.some((el: { _id: string }) => el._id === userId)
     ) {

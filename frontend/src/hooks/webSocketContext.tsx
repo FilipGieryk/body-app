@@ -1,14 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNotification } from "../context/NotificationContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateMessagesAndChats } from "../utils/chatCacheUtils";
+import { useUser } from "../context/UserContext";
+import { updateFriendRequests } from "../utils/FriendRequestCacheUtils";
 
 const WebSocketContext = createContext<WebSocket | null>(null);
 
 export const WebSocketProvider = ({ children }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
+  const { isLoggedIn } = useUser();
+  console.log(socket);
   const token = localStorage.getItem("token");
-  const { setHasNewMessage } = useNotification();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -36,6 +38,9 @@ export const WebSocketProvider = ({ children }) => {
     webSocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       console.log(message);
+      if (message.type == "friend-request") {
+        updateFriendRequests(queryClient, message);
+      }
       // setHasNewMessage((prev) => {
       //   const next = new Set(prev);
       //   console.log("ewn");
@@ -62,7 +67,7 @@ export const WebSocketProvider = ({ children }) => {
     return () => {
       webSocket.close();
     };
-  }, [token]);
+  }, [isLoggedIn]);
 
   return (
     <WebSocketContext.Provider value={socket}>

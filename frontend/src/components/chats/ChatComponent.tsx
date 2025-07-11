@@ -1,8 +1,4 @@
-import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-
-import { useMarkMessagesAsRead } from "../../hooks/fetch/useMarkMessagesAsRead";
-import { useGetChats } from "../../hooks/fetch/chats/useGetChats";
 
 export const ChatComponent = ({ chats }) => {
   return (

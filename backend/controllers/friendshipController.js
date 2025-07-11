@@ -13,10 +13,14 @@ class FriendshipController {
       const user = await User.findById(userId);
       sendToUser(friendId, {
         type: "friend-request",
-        userId: userId,
-        friendId: friendId,
-        username: user.username,
-        profilePhoto: user.profilePhoto,
+        user: {
+          _id: userId,
+          username: user.username,
+          profilePhoto: user.profilePhoto,
+        },
+        friend: {
+          _id: friendId,
+        },
       });
       return res.status(201).json({ message: "Friend request sent", result });
     } catch (error) {

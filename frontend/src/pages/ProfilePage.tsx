@@ -38,7 +38,9 @@ const ProfilePage = () => {
           profilePhoto={userData.profilePhoto}
           isLoggedUser={isLoggedUser}
         />
-        <UserFriendInfo userId={userData._id} loggedUserId={user._id} />
+        {userData._id != user._id && (
+          <UserFriendInfo userId={userData._id} loggedUserInfo={user} />
+        )}
       </div>
       <UserPhotos
         userPhotos={userData.photos}

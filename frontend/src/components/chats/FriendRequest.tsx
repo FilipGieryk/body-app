@@ -1,11 +1,9 @@
-import React from "react";
-import { useFriendRequests } from "../../context/FriendRequestsContext";
-
 export const FriendRequest = ({
   friendRequests,
   acceptRequest,
   declineRequest,
 }) => {
+  console.log(friendRequests);
   return (
     <div>
       {friendRequests.map((request) => (

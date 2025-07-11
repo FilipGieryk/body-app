@@ -8,12 +8,21 @@ const initWebSocket = (server) => {
 
   wss.on("connection", (ws, req) => {
     console.log("New WebSocket connection");
+
     const userId = getUserIdFromRequest(req);
     if (!userId) {
+      console.log("no user");
       ws.close();
       return;
     }
     const userIdString = userId.toString();
+
+    if (clients.has(userIdString)) {
+      ws.close();
+      console.log(`WebSocket connection already exists for user ${userId}`);
+      return;
+    }
+
     clients.set(userIdString, ws);
 
     console.log(`WebSocket connected for user ${userId}`);

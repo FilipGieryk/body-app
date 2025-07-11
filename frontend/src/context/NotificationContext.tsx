@@ -1,23 +1,23 @@
-import { createContext, useContext, useState } from "react";
+// import { createContext, useContext, useState } from "react";
 
-const NotificationContext = createContext(null);
+// const NotificationContext = createContext(null);
 
-export const NotificationProvider = ({ children }) => {
-  const [hasNewMessage, setHasNewMessage] = useState<Set<string>>(new Set());
-  const [hasNewFriendRequest, setHasNewFriendRequest] = useState(false);
+// export const NotificationProvider = ({ children }) => {
+//   const [hasNewMessage, setHasNewMessage] = useState<Set<string>>(new Set());
+//   const [hasNewFriendRequest, setHasNewFriendRequest] = useState(false);
 
-  return (
-    <NotificationContext.Provider
-      value={{
-        hasNewMessage,
-        hasNewFriendRequest,
-        setHasNewMessage,
-        setHasNewFriendRequest,
-      }}
-    >
-      {children}
-    </NotificationContext.Provider>
-  );
-};
+//   return (
+//     <NotificationContext.Provider
+//       value={{
+//         hasNewMessage,
+//         hasNewFriendRequest,
+//         setHasNewMessage,
+//         setHasNewFriendRequest,
+//       }}
+//     >
+//       {children}
+//     </NotificationContext.Provider>
+//   );
+// };
 
-export const useNotification = () => useContext(NotificationContext);
+// export const useNotification = () => useContext(NotificationContext);
