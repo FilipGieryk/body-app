@@ -35,6 +35,7 @@ export const WebSocketProvider = ({ children }) => {
 
     webSocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
+      console.log(message);
       // setHasNewMessage((prev) => {
       //   const next = new Set(prev);
       //   console.log("ewn");

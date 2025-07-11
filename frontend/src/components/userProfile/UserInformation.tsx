@@ -1,19 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
-import { useFriendRequests } from "../../context/FriendRequestsContext";
-import { useUpdateUser } from "../../hooks/fetch/useUpdateUser";
-import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo.ts";
-import { EditUserInfo } from "./EditUserInfo.tsx";
-const UserInformation = ({ username, profilePhoto, isLoggedUser = false }) => {
+const UserInformation = ({
+  username,
+  profilePhoto,
+  isLoggedUser = false,
+  orientation = "column",
+}) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="flex rounded-2xl flex-col justify-start items-center px-8">
+    <div
+      className={`flex rounded-2xl justify-start items-center px-8 ${
+        orientation === "row" ? "flex-row" : "flex-col"
+      }`}
+    >
       {isEditing ? (
         <>{/* // <EditUserInfo initialUserInfo={userInfo} /> */}</>
       ) : (
-        <div className="flex relative text-4xl justify-start items-center flex-col">
+        <div
+          className={`flex relative text-4xl justify-start items-center ${
+            orientation === "row" ? "flex-row" : "flex-col"
+          }`}
+        >
           <img
             src={profilePhoto}
             className="mt-20 w-60 rounded-[50%] transition-all"

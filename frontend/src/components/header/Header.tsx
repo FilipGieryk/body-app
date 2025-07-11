@@ -12,61 +12,34 @@ import {
   getLoggedInLinks,
 } from "../../data/navLinks.ts";
 import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
-import { useNotification } from "../../context/NotificationContext.tsx";
 import { isAnyUnread } from "./HeaderHelper.ts";
-import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo.ts";
 import { useGetChats } from "../../hooks/fetch/chats/useGetChats.ts";
+import { useUser } from "../../context/UserContext.tsx";
 
 export const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [visibleModal, setVisibleModal] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { exercises, setInitialExercises, handleDeleteExercise } = useWorkout();
   const [isBasketVisible, setIsBasketVisible] = useState(false);
-
-  const [prevPos, setPrevPos] = useState();
-  const [currPos, setCurrPos] = useState();
 
   const navigate = useNavigate();
   const location = useLocation();
   const { data: chats } = useGetChats();
-  const { data: loggedUserInfo, refetch: refetchUser } = useLoggedUserInfo();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token && !loggedUserInfo) {
-      refetchUser(); // only if token exists and no user info loaded
-      setIsLoggedIn(true);
-    }
-    // setIsLoggedIn(true);
-  }, []);
+  const { user: loggedUserInfo, logout, isLoggedIn, login } = useUser();
 
   const toggleLogin = () => {
     setIsLoginVisible((prev) => !prev);
   };
 
   const handleLoginSuccess = async () => {
-    await refetchUser();
-    setIsLoggedIn(true);
+    login();
     setIsLoginVisible(false);
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem("token");
-    // setLoggedUserInfo(null); // Clear user info on logout
-    // setFriendRequests([]);
-    navigate("/");
-  };
   const baseLinks = getBaseLinks(navigate);
   const loggedOutLinks = getLoggedOutLinks(setVisibleModal, toggleLogin);
   const loggedInLinks = loggedUserInfo
-    ? getLoggedInLinks(
-        navigate,
-        loggedUserInfo,
-        handleLogout,
-        refetchUser,
-        isAnyUnread(chats)
-      )
+    ? getLoggedInLinks(navigate, loggedUserInfo, logout, isAnyUnread(chats))
     : [];
 
   const links = [
@@ -99,10 +72,6 @@ export const Header = () => {
             onClick={(e) => {
               e.preventDefault();
               const rect = e.target.getBoundingClientRect();
-              setPrevPos(currPos);
-              setCurrPos({
-                y: rect.top + rect.height / 2,
-              });
               link.action();
             }}
           >

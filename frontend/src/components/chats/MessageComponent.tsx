@@ -4,26 +4,22 @@ import { useAutoScroll } from "../../hooks/useAutoScroll";
 import { useGetChatMessages } from "../../hooks/fetch/messages/useGetChatMessages";
 import { useHandleKeyDown } from "../../hooks/messages/useHandleKeyDown";
 import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo";
-const MessageComponent = ({ otherParticipants, messages, messagesLoading }) => {
+const MessageComponent = ({ otherParticipants, chatId }) => {
   const [inputValue, setInputValue] = useState("");
-  const { chatId } = useParams();
-  if (!chatId) {
-    return;
-  }
 
   const handleKeyDown = useHandleKeyDown({
     inputValue,
     setInputValue,
     chatId,
   });
+
+  const { data: messages, isLoading } = useGetChatMessages(chatId, {
+    enabled: !!chatId,
+  });
+
   const containerRef = useAutoScroll(messages);
 
-  if (messagesLoading) {
-    return <div>Loading Messages...</div>;
-  }
-  // if (isError) {
-  //   return <div>Error Loading Messages</div>;
-  // }
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="grid grid-rows-[80%_10%] h-full min-h-full max-h-full rounded-4xl">

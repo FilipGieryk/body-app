@@ -15,6 +15,7 @@ export const updateMessagesAndChats = (
       chat.chatId == chatId
         ? {
             ...chat,
+            hasUnread: true,
             lastMessage: {
               ...chat.lastMessage,
               content: message.content,

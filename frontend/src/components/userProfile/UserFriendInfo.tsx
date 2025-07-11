@@ -1,12 +1,15 @@
-export const UserFriendInfo = ({
-  sendRequest,
-  removeFriend,
-  friendRequests,
-  requestStatus,
-  acceptRequest,
-  declineRequest,
-  userId,
-}) => {
+import { useFriendRequests } from "../../context/FriendRequestsContext";
+
+export const UserFriendInfo = ({ userId }) => {
+  const {
+    sendRequest,
+    removeFriend,
+    getFriendshipStatus,
+    acceptRequest,
+    declineRequest,
+  } = useFriendRequests();
+
+  const requestStatus = getFriendshipStatus(userData._id, user);
   return (
     <>
       {requestStatus === "friends" ? (

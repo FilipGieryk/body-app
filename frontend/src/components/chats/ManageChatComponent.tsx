@@ -6,12 +6,11 @@ import { FriendRequest } from "./FriendRequest";
 import { ChatComponent } from "./ChatComponent";
 import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo";
 import { useFriendRequests } from "../../context/FriendRequestsContext";
-const ManageChatComponent = () => {
-  const [activeTab, setActiveTab] = useState("chats");
-  // change useuser to userequests
-  const { friendRequests } = useFriendRequests();
-  const { data: loggedUserInfo } = useLoggedUserInfo();
-
+const ManageChatComponent = ({
+  setActiveTab,
+  loggedUserId,
+  friendRequests,
+}) => {
   return (
     <div className="rounded-xl">
       <div className="h-[10%]">
@@ -23,19 +22,13 @@ const ManageChatComponent = () => {
             Chats
           </h1>
           {friendRequests?.some(
-            (el: { friend: { _id: any } }) =>
-              el.friend?._id === loggedUserInfo?._id
+            (el: { friend: { _id: any } }) => el.friend?._id === loggedUserId
           ) && (
             <h1 onClick={() => setActiveTab("friendRequest")}>
               Friend Requests
             </h1>
           )}
         </div>
-        <FriendsSearch />
-      </div>
-
-      <div className="relative w-full">
-        {activeTab === "chats" ? <ChatComponent /> : <FriendRequest />}
       </div>
     </div>
   );

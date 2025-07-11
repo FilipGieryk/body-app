@@ -43,7 +43,6 @@ export const getLoggedInLinks = (
   navigate,
   loggedUserInfo,
   handleLogout,
-  refetchUser,
   hasUnread
 ) => [
   {
@@ -52,8 +51,6 @@ export const getLoggedInLinks = (
     id: "profile",
     path: `/profile/${loggedUserInfo?._id}`,
     action: () => {
-      console.log("getingdata");
-      refetchUser();
       navigate(`/profile/${loggedUserInfo._id}`);
     },
   },

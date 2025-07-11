@@ -5,31 +5,7 @@ import { axe, toHaveNoViolations } from "jest-axe";
 import { describe, test, expect, vi, beforeAll } from "vitest";
 import ChatPage from "../ChatPage";
 import { useNavigate } from "react-router-dom";
-// // beforeEach(() => {
-//   global.localStorage = {
-//     store: {},
 
-//     getItem(key) {
-//       return this.store[key] || null;
-//     },
-//     setItem(key, value) {
-//       this.store[key] = value.toString();
-//     },
-//     clear() {
-//       this.store = {};
-//     },
-//     removeItem(key) {
-//       delete this.store[key];
-//     },
-//   };
-// });
-
-// Object.defineProperty(globalThis, "localStorage", {
-//   value: localStorageMock,
-// });
-
-// expect.extend(toHaveNoViolations);
-// Mock components
 vi.mock("../../components/chats/ManageChatComponent", () => ({
   default: () => {
     const navigate = useNavigate();

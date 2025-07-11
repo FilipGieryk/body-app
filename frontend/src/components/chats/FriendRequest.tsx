@@ -1,24 +1,11 @@
 import React from "react";
 import { useFriendRequests } from "../../context/FriendRequestsContext";
 
-export const FriendRequest: React.FC = () => {
-  const {
-    friendRequests,
-    isLoading,
-    isError,
-    error,
-    acceptRequest,
-    declineRequest,
-  } = useFriendRequests();
-  if (isLoading) {
-    return <div>Loading friend requests...</div>;
-  }
-
-  if (isError) {
-    return <div>Error loading friend requests: {error?.message}</div>;
-  }
-  console.log(friendRequests);
-
+export const FriendRequest = ({
+  friendRequests,
+  acceptRequest,
+  declineRequest,
+}) => {
   return (
     <div>
       {friendRequests.map((request) => (
