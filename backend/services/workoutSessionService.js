@@ -36,7 +36,6 @@ class WorkoutSessionService {
     let newWorkoutId = workoutId;
 
     if (isStructureChanged) {
-      console.log("changed");
       const newWorkout = new Workout({
         name: `${workout.name} (Modified)`,
         exercises: modifiedExercises.map((mod) => ({

@@ -5,8 +5,6 @@ class FriendshipController {
   async sendRequest(req, res) {
     const userId = req.user._id;
     const { friendId } = req.body;
-    console.log(userId);
-    console.log(friendId);
     try {
       const result = await friendshipService.createFriendRequest(
         userId,
@@ -30,8 +28,6 @@ class FriendshipController {
   async acceptRequest(req, res) {
     const { friendId } = req.body;
     const userId = req.user._id;
-    console.log(userId);
-    console.log(friendId);
 
     try {
       await friendshipService.acceptFriendRequest(userId, friendId);
@@ -89,7 +85,6 @@ class FriendshipController {
       const pendingRequests = await friendshipService.getPendingRequests(
         userId
       );
-      console.log(pendingRequests);
       return res.status(200).json(pendingRequests);
     } catch (error) {
       console.error("Error retrieving pending requests:", error);
