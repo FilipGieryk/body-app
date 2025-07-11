@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useWorkout } from "../context/WorkoutContext";
+import { useWorkout } from "../../context/WorkoutContext";
 import { useParams } from "react-router-dom";
 
 export const WorkoutDetailPage = () => {

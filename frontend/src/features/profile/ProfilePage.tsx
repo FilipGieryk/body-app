@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useGetUser } from "../hooks/fetch/useGetUser";
+import { useGetUser } from "./hooks/useGetUser";
 
-import UserInformation from "../components/userProfile/UserInformation";
-import UserPhotos from "../components/userProfile/UserPhotos";
-import UserWorkouts from "../components/userProfile/UserWorkouts";
-import { useUser } from "../context/UserContext";
-import { UserFriendInfo } from "../components/userProfile/UserFriendInfo";
-import { useUserPhotos } from "../hooks/useUserPhotos";
+import UserInformation from "../../components/userProfile/UserInformation";
+import UserPhotos from "../../components/userProfile/UserPhotos";
+import UserWorkouts from "../../components/userProfile/UserWorkouts";
+import { useUser } from "../../context/UserContext";
+import { UserFriendInfo } from "../../components/userProfile/UserFriendInfo";
+import { useUserPhotos } from "../../hooks/useUserPhotos";
 
 const ProfilePage = () => {
   // get params of user id from url

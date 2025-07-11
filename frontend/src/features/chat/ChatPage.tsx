@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { useGetChats } from "../hooks/fetch/chats/useGetChats";
+import { useGetChats } from "./hooks/useGetChats";
 
-import { useUser } from "../context/UserContext";
+import { useUser } from "../../context/UserContext";
 
-import { ChatSidebar } from "../components/chats/ChatSidebar";
-import { ChatMainPanel } from "../components/chats/ChatMainPanel";
+import { ChatSidebar } from "./components/ChatSidebar";
+import { ChatMainPanel } from "./components/ChatMainPanel";
 
 const ChatPage = () => {
   const { chatId } = useParams();

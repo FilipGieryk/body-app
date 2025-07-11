@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchUserInfo } from "../../api/usersService";
+import { fetchUserInfo } from "../../features/profile/api/usersService";
 
 export const useLoggedUserInfo = (enabled = true) => {
   return useQuery({

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { getOtherParticipants } from "../../utils/chatUtils";
-import UserInformation from "../userProfile/UserInformation";
+import { getOtherParticipants } from "../utils/chatUtils";
+import UserInformation from "../../../components/userProfile/UserInformation";
 import MessageComponent from "./MessageComponent";
-import { useMarkMessagesAsRead } from "../../hooks/fetch/useMarkMessagesAsRead";
+import { useMarkMessagesAsRead } from "../hooks/useMarkMessagesAsRead";
 
 export const ChatMainPanel = ({ chatId, loggedUserId, chats }) => {
   const markAsRead = useMarkMessagesAsRead();

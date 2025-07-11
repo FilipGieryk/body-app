@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import SearchList from "../components/search/SearchList";
-import SearchContainer from "../components/search/SearchContainer";
-import { useFetchData } from "../hooks/fetch/useFetchData";
+import SearchList from "../../components/search/SearchList";
+import SearchContainer from "../../components/search/SearchContainer";
+import { useFetchData } from "../../hooks/fetch/useFetchData";
 
 const ExercisesList = () => {
   const [filteredData, setFilteredData] = useState([]);

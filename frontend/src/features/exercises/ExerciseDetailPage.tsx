@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetExercise } from "../hooks/fetch/useGetExercise";
+import { useGetExercise } from "./hooks/useGetExercise";
 
 export const ExerciseDetailPage = () => {
   const { exerciseId } = useParams();

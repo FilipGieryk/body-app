@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAutoScroll } from "../../hooks/useAutoScroll";
-import { useGetChatMessages } from "../../hooks/fetch/messages/useGetChatMessages";
-import { useHandleKeyDown } from "../../hooks/messages/useHandleKeyDown";
-import { useLoggedUserInfo } from "../../hooks/fetch/useLoggedUserInfo";
+import { useAutoScroll } from "../../../hooks/useAutoScroll";
+import { useGetChatMessages } from "../hooks/useGetChatMessages";
+import { useHandleKeyDown } from "../../../hooks/messages/useHandleKeyDown";
+import { useLoggedUserInfo } from "../../../hooks/fetch/useLoggedUserInfo";
 const MessageComponent = ({ otherParticipants, chatId }) => {
   const [inputValue, setInputValue] = useState("");
 

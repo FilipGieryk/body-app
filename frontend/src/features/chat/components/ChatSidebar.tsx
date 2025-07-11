@@ -2,9 +2,9 @@ import { useState } from "react";
 import { FriendRequest } from "./FriendRequest";
 import FriendsSearch from "./FriendsSearch";
 import ManageChatComponent from "./ManageChatComponent";
-import { useFriendRequests } from "../../context/FriendRequestsContext";
+import { useFriendRequests } from "../../../context/FriendRequestsContext";
 import { ChatComponent } from "./ChatComponent";
-import { getSortedChats } from "../../utils/chatUtils";
+import { getSortedChats } from "../utils/chatUtils";
 
 export const ChatSidebar = ({ loggedUserId, chats }) => {
   console.log(chats);
