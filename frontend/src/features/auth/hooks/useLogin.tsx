@@ -3,13 +3,12 @@ import axios from "axios";
 import { login } from "../api/authService";
 import { useMutation } from "@tanstack/react-query";
 
-const useLogin = (onLoginSuccess) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+const useLogin = (onLoginSuccess: () => Promise<void>) => {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const mutation = useMutation({
-    mutationFn: () => login(username, password),
+    mutationFn: () => login({ username, password }),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("isAdmin", data.isAdmin);
@@ -31,6 +30,7 @@ const useLogin = (onLoginSuccess) => {
     password,
     setPassword,
     handleLogin,
+    isLoading: mutation.isLoading,
   };
 };
 

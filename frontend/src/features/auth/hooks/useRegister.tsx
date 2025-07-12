@@ -3,13 +3,13 @@ import { useState } from "react";
 import { register } from "../api/authService";
 import { useMutation } from "@tanstack/react-query";
 
-const useRegister = (onLoginSuccess) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+const useRegister = (onLoginSuccess: () => Promise<void>) => {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   const mutation = useMutation({
-    mutationFn: () => register(username, password, email),
+    mutationFn: () => register({ username, password, email }),
     onSuccess: (data) => {
       localStorage.setItem("token", data.token); // Store the token
       onLoginSuccess();
@@ -31,6 +31,7 @@ const useRegister = (onLoginSuccess) => {
     email,
     setEmail,
     handleRegister,
+    isLoading: isRegisterLoading,
   };
 };
 

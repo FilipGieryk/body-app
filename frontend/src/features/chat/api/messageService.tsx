@@ -1,9 +1,6 @@
 import api from "../../../shared/api/axios";
 
 const URL = "/message";
-const headers = {
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
-};
 
 export const sendMessageToServer = async ({
   content,
@@ -20,7 +17,7 @@ export const sendMessageToServer = async ({
     throw error;
   }
 };
-export const getMessages = async (chatId: any) => {
+export const getMessages = async (chatId: string) => {
   try {
     const response = await api.get(`/message/${chatId}`);
     return response.data;

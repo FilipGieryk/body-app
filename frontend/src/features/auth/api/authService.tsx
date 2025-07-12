@@ -2,12 +2,27 @@ import api from "../../../shared/api/axios";
 
 const URL = "/auth";
 
-export const login = async (username, password) => {
+type LoginProps = {
+  username: string;
+  password: string;
+};
+
+type RegisterProps = {
+  username: string;
+  password: string;
+  email: string;
+};
+
+export const login = async ({ username, password }: LoginProps) => {
   const response = await api.post(`${URL}/login`, { username, password });
   return response.data;
 };
 
-export const register = async (username, password, email) => {
+export const register = async ({
+  username,
+  password,
+  email,
+}: RegisterProps) => {
   const response = await api.post(`${URL}/register`, {
     username,
     password,

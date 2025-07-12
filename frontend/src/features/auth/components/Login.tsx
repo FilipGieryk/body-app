@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import useLogin from "../hooks/useLogin";
 import useRegister from "../hooks/useRegister";
+import { OnLoginSuccess } from "../types";
 
-const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
-  const [activeTab, setActiveTab] = useState(loginStatus);
+type LoginProps = {
+  isVisible: boolean;
+  onLoginSuccess: OnLoginSuccess;
+  loginStatus: string;
+};
+
+const Login = ({ isVisible, onLoginSuccess, loginStatus }: LoginProps) => {
+  const [activeTab, setActiveTab] = useState<string>(loginStatus);
 
   const {
     username: loginUsername,

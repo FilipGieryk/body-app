@@ -1,13 +1,21 @@
+import { AxiosResponse } from "axios";
 import api from "../../../shared/api/axios";
+import { Chat } from "../types";
 
-export const createOrGetChat = async (friend: { _id: any }) => {
+export const createOrGetChat = async (friend: {
+  _id: string;
+}): Promise<Chat | undefined> => {
   try {
-    const response = await api.post("/chat/create-or-get", {
-      recipientId: friend._id,
-    });
+    const response: AxiosResponse<Chat> = await api.post(
+      "/chat/create-or-get",
+      {
+        recipientId: friend._id,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("error creating chat", error);
+    return undefined;
   }
 };
 
@@ -29,7 +37,7 @@ export const createOrGetChat = async (friend: { _id: any }) => {
 //   }
 // };
 
-export const markMessagesAsRead = async (chatId: any) => {
+export const markMessagesAsRead = async (chatId: string) => {
   try {
     await api.post(`/message/unread/mark`, { chatId });
     // setChats((prevChats) =>

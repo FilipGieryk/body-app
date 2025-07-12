@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Chat } from "../types";
 
 export const ChatComponent = ({ chats }: { chats: Chat[] }) => {
-  console.log(chats);
   return (
     <div>
       {chats?.map((chat: Chat) => (

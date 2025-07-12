@@ -37,8 +37,8 @@ export const ChatMainPanel = ({
     <div className="row-start-1 row-end-2 col-start-2">
       {chatId && (
         <UserInformation
-          username={currentChat.chatName ?? "unknown"}
-          profilePhoto={currentChat.profilePhoto ?? "default-avatar.png"}
+          username={currentChat?.chatName ?? "unknown"}
+          profilePhoto={currentChat?.profilePhoto ?? "default-avatar.png"}
           orientation="row"
         />
       )}
