@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useLoggedUserInfo } from "../hooks/fetch/useLoggedUserInfo";
+import { useLoggedUserInfo } from "../shared/hooks/useLoggedUserInfo";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const UserContext = createContext(undefined);

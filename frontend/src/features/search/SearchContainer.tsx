@@ -1,9 +1,9 @@
-import CheckboxList from "./CheckboxList";
-import Sorting from "./Sorting";
-import SearchBar from "./SearchBar";
+import CheckboxList from "./components/CheckboxList";
+import Sorting from "./components/Sorting";
+import SearchBar from "./components/SearchBar";
 import React, { useEffect } from "react";
 import { useSearchBar } from "../../hooks/useSearchBar";
-import { useBodyPartSelection } from "../../hooks/useBodyPartSelection";
+import { useBodyPartSelection } from "../exercise/hooks/useBodyPartSelection";
 import { useSorting } from "../../hooks/useSorting";
 
 const SearchContainer = ({ data, onFilteredDataChange }) => {

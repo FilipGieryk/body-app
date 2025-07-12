@@ -4,17 +4,17 @@ import Login from "./Login.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
-import { useWorkout } from "../../context/WorkoutContext.tsx";
-import { ExerciseBasket } from "./ExerciseBasket.tsx";
+import { useWorkout } from "../../../context/WorkoutContext.tsx";
+import { ExerciseBasket } from "../../../components/header/ExerciseBasket.tsx";
 import {
   getBaseLinks,
   getLoggedOutLinks,
   getLoggedInLinks,
-} from "../../data/navLinks.ts";
+} from "../data/navLinks.ts";
 import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
-import { isAnyUnread } from "./HeaderHelper.ts";
+import { isAnyUnread } from "../helpers/HeaderHelper.ts";
 import { useGetChats } from "../../hooks/fetch/chats/useGetChats.ts";
-import { useUser } from "../../context/UserContext.tsx";
+import { useUser } from "../../../context/UserContext.tsx";
 
 export const Header = () => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);

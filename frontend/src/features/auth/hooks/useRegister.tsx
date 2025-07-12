@@ -1,27 +1,25 @@
 import { useState } from "react";
 import axios from "axios";
-import { login } from "../api/authService";
+import { register } from "../../../api/authService";
 import { useMutation } from "@tanstack/react-query";
 
-const useLogin = (onLoginSuccess) => {
+const useRegister = (onLoginSuccess) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
 
   const mutation = useMutation({
-    mutationFn: () => login(username, password),
-    onSuccess: async (data) => {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("isAdmin", data.isAdmin);
-
-      await onLoginSuccess();
+    mutationFn: () => register(username, password, email),
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token); // Store the token
+      onLoginSuccess();
     },
     onError: (error) => {
       console.error(error.response?.data?.message || "An error occurred");
     },
   });
 
-  const handleLogin = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
     mutation.mutate();
   };
@@ -30,8 +28,10 @@ const useLogin = (onLoginSuccess) => {
     setUsername,
     password,
     setPassword,
-    handleLogin,
+    email,
+    setEmail,
+    handleRegister,
   };
 };
 
-export default useLogin;
+export default useRegister;
