@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 const WorkoutContext = createContext();
 
@@ -17,17 +17,17 @@ export const WorkoutProvider = ({ children }) => {
     setExercises((prev) => prev.filter((ex) => ex._id !== exerciseId));
   };
 
+  const value = useMemo(
+    () => ({
+      exercises,
+      setExercises,
+      handleAddExercise,
+      handleDeleteExercise,
+    }),
+    [exercises, setExercises, handleAddExercise, handleDeleteExercise]
+  );
   return (
-    <WorkoutContext.Provider
-      value={{
-        exercises,
-        setExercises,
-        handleAddExercise,
-        handleDeleteExercise,
-      }}
-    >
-      {children}
-    </WorkoutContext.Provider>
+    <WorkoutContext.Provider value={value}>{children}</WorkoutContext.Provider>
   );
 };
 

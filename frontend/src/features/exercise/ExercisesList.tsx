@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useDeferredValue, useState } from "react";
 import SearchList from "../search/components/SearchList";
 import SearchContainer from "../search/SearchContainer";
 import { useFetchData } from "../../shared/hooks/useFetchData";

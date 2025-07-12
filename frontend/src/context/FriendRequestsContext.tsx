@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -129,21 +129,33 @@ export const FriendRequestsProvider: React.FC<{
       return "none";
     }
   };
+  const value = useMemo(
+    () => ({
+      friendRequests,
+      isLoading,
+      isError,
+      error,
+      acceptRequest,
+      declineRequest,
+      sendRequest,
+      removeFriend,
+      getFriendshipStatus,
+    }),
+    [
+      friendRequests,
+      isLoading,
+      isError,
+      error,
+      acceptRequest,
+      declineRequest,
+      sendRequest,
+      removeFriend,
+      getFriendshipStatus,
+    ]
+  );
 
   return (
-    <FriendRequestsContext.Provider
-      value={{
-        friendRequests,
-        isLoading,
-        isError,
-        error,
-        acceptRequest,
-        declineRequest,
-        sendRequest,
-        removeFriend,
-        getFriendshipStatus,
-      }}
-    >
+    <FriendRequestsContext.Provider value={value}>
       {children}
     </FriendRequestsContext.Provider>
   );

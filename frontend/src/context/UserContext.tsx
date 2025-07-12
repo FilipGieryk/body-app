@@ -3,6 +3,7 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useLoggedUserInfo } from "../shared/hooks/useLoggedUserInfo";
@@ -64,13 +65,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     refetchUser();
   }, []);
 
-  return (
-    <UserContext.Provider
-      value={{ user, setUser, loading, refetchUser, logout, login, isLoggedIn }}
-    >
-      {children}
-    </UserContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      setUser,
+      loading,
+      refetchUser,
+      logout,
+      login,
+      isLoggedIn,
+    }),
+    [user, setUser, loading, refetchUser, logout, login, isLoggedIn]
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export const useUser = () => {
