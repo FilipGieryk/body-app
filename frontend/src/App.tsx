@@ -1,20 +1,31 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProfilePage from "./features/profile/ProfilePage.tsx";
-import ChatPage from "./features/chat/ChatPage.tsx";
-import Help from "./features/help/Help.tsx";
-import ExercisesList from "./features/exercise/ExercisesList.tsx";
-import WorkoutsList from "./features/workout/WorkoutsList.tsx";
-import { ExerciseDetailPage } from "./features/exercise/ExerciseDetailPage.tsx";
-import { WorkoutDetailPage } from "./features/workout/WorkoutDetailPage.tsx";
-import { Header } from "./features/navigation/components/Header.tsx";
-import { GLTFViewer } from "./features/home/GLTFViewer.tsx";
-import { CreateWorkout } from "./features/workout/components/CreateWorkout.tsx";
-import { WebSocketProvider } from "./context/webSocketContext.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { FriendRequestsProvider } from "./context/FriendRequestsContext.tsx";
-import { WorkoutProvider } from "./context/WorkoutContext.tsx";
+import { lazy } from "react";
 import { UserProvider } from "./context/UserContext.tsx";
+import { WorkoutProvider } from "./context/WorkoutContext.tsx";
+import { WebSocketProvider } from "./context/webSocketContext.tsx";
+import { FriendRequestsProvider } from "./context/FriendRequestsContext.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { Header } from "./features/navigation/components/Header.tsx";
+
+const ChatPage = lazy(() => import("./features/chat/ChatPage"));
+const ProfilePage = lazy(() => import("./features/profile/ProfilePage.tsx"));
+const Help = lazy(() => import("./features/help/Help.tsx"));
+const ExercisesList = lazy(
+  () => import("./features/exercise/ExercisesList.tsx")
+);
+const CreateWorkout = lazy(
+  () => import("./features/workout/components/CreateWorkout.tsx")
+);
+const WorkoutsList = lazy(() => import("./features/workout/WorkoutsList.tsx"));
+const WorkoutDetailPage = lazy(
+  () => import("./features/workout/WorkoutDetailPage.tsx")
+);
+const ExerciseDetailPage = lazy(
+  () => import("./features/exercise/ExerciseDetailPage.tsx")
+);
+const GLTFViewer = lazy(() => import("./features/home/GLTFViewer.tsx"));
 
 // import AdminDashboard from "./components/notusedfornow/adminDashboard/AdminDashboard.js";
 // import ProtectedRoute from "./components/notusedfornow/adminDashboard/ProtectedRoute.js";
