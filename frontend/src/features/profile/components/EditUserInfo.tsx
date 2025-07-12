@@ -1,4 +1,4 @@
-import { useUpdateUser } from "../../hooks/fetch/useUpdateUser";
+import { useUpdateUser } from "../hooks/useUpdateUser";
 
 export const EditUserInfo = (initialUserInfo) => {
   const { mutate: updateUser, isPending, isError, error } = useUpdateUser();

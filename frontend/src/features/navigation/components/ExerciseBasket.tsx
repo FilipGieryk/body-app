@@ -1,5 +1,5 @@
 import React from "react";
-import { useWorkout } from "../../context/WorkoutContext";
+import { useWorkout } from "../../../context/WorkoutContext";
 
 export const ExerciseBasket = () => {
   const { exercises, handleDeleteExercise } = useWorkout();

@@ -8,7 +8,7 @@ import {
   FriendRequest,
   sendFriendRequest,
   deleteFriendship,
-} from "../api/friendRequestsService.tsx";
+} from "../shared/api/friendRequestsService.tsx";
 
 interface FriendRequestsContextType {
   friendRequests: FriendRequest[];

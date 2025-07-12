@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { getOtherParticipants } from "../utils/chatUtils";
-import UserInformation from "../../../components/userProfile/UserInformation";
+import UserInformation from "../../../shared/components/UserInformation";
 import MessageComponent from "./MessageComponent";
 import { useMarkMessagesAsRead } from "../hooks/useMarkMessagesAsRead";
 

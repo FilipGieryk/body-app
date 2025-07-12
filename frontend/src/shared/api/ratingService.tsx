@@ -1,4 +1,4 @@
-import api from "../api/axios";
+import api from "./axios";
 const API_URL = "/rating";
 
 export interface Rating {

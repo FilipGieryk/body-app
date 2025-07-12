@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
-import { register } from "../../../api/authService";
+
+import { register } from "../api/authService";
 import { useMutation } from "@tanstack/react-query";
 
 const useRegister = (onLoginSuccess) => {

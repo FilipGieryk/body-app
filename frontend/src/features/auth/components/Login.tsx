@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import useLogin from "../../hooks/useLogin";
-import useRegister from "../../hooks/useRegister";
+import useLogin from "../hooks/useLogin";
+import useRegister from "../hooks/useRegister";
 
 const Login = ({ isVisible, onLoginSuccess, loginStatus }) => {
   const [activeTab, setActiveTab] = useState(loginStatus);

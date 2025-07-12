@@ -1,5 +1,3 @@
-import React from "react";
-
 const Sorting = ({ sortOrder, toggleSortOrder }) => {
   return (
     <div className="flex gap-3">

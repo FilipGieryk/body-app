@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useSendMessageToServer } from "../fetch/useSendMessageToServer";
+import { useSendMessageToServer } from "./useSendMessageToServer";
 
 interface UseHandleKeyDownProps {
   inputValue: string;

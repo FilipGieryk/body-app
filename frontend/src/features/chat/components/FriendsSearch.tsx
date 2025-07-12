@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useOnClickOutside } from "../../../hooks/useOnClickOutside.tsx";
-import { useFriendSearch } from "../../../hooks/chats/useFriendSearch.tsx";
-import { useLoggedUserInfo } from "../../../hooks/fetch/useLoggedUserInfo.ts";
+import React from "react";
+import { useOnClickOutside } from "../../../shared/hooks/useOnClickOutside.tsx";
+import { useFriendSearch } from "../hooks/useFriendSearch.tsx";
+
 import { useUser } from "../../../context/UserContext.tsx";
 
 const FriendsSearch = () => {

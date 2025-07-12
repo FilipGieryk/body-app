@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useRating } from "../../hooks/fetch/useRating";
+import { useRating } from "../hooks/useRating";
 import React from "react";
 
 const Rating = ({ itemId, averageRating }) => {

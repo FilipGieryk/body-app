@@ -1,11 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { User } from "../../../../shared/types/types";
+// import { User } from "../../../context/UserContext";
 import { useDebounce } from "use-debounce";
 
-export const useFriendSearch = (friends: User[]) => {
+export const useFriendSearch = (friends) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm] = useDebounce(searchTerm, 400);
-  const [filteredFriends, setFilteredFriends] = useState<User[]>([]);
+  const [filteredFriends, setFilteredFriends] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {

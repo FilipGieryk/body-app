@@ -1,4 +1,4 @@
-import Thumbnail from "../../../components/thumbnail/Thumbnail.js";
+import Thumbnail from "../../../shared/components/Thumbnail";
 
 const SearchList = ({ data, contentType }) => {
   return (

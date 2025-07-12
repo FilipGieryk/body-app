@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { login } from "../../../api/authService";
+import { login } from "../api/authService";
 import { useMutation } from "@tanstack/react-query";
 
 const useLogin = (onLoginSuccess) => {

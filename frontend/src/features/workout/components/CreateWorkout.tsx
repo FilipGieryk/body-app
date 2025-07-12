@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
 
-import { useCreateWorkout } from "../../../hooks/fetch/workouts/useCreateWorkout";
+import { useCreateWorkout } from "../hooks/useCreateWorkout";
 import React from "react";
-const CreateWorkout = () => {
+export const CreateWorkout = () => {
   const location = useLocation();
   const addedExercise = location.state?.addedExercise || null;
   const [name, setName] = useState("workout");
@@ -113,5 +112,3 @@ const CreateWorkout = () => {
     </form>
   );
 };
-
-export default CreateWorkout;

@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { updateMessagesAndChats } from "../utils/chatCacheUtils";
+import { updateMessagesAndChats } from "../features/chat/utils/chatCacheUtils";
 import { useUser } from "./UserContext";
-import { updateFriendRequests } from "../utils/FriendRequestCacheUtils";
+import { updateFriendRequests } from "../features/chat/utils/FriendRequestCacheUtils";
 
 const WebSocketContext = createContext<WebSocket | null>(null);
 

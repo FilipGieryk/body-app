@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchExercises } from "../../api/exerciseService.tsx";
-import { fetchWorkouts } from "../../api/workoutService.tsx";
+import { fetchExercises } from "../../features/exercise/api/exerciseService.tsx";
+import { fetchWorkouts } from "../../features/workout/api/workoutService.tsx";
 
 export const useFetchData = (contentType) => {
   const fetchData = async () => {

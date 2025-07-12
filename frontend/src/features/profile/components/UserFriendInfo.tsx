@@ -1,4 +1,4 @@
-import { useFriendRequests } from "../../context/FriendRequestsContext";
+import { useFriendRequests } from "../../../context/FriendRequestsContext";
 
 export const UserFriendInfo = ({ userId, loggedUserInfo }) => {
   const {

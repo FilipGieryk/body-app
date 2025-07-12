@@ -1,8 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  addUserPhoto,
-  deleteUserPhoto,
-} from "../features/profile/api/usersService";
+import { addUserPhoto, deleteUserPhoto } from "../api/usersService";
 import { useState } from "react";
 
 export const useUserPhotos = () => {

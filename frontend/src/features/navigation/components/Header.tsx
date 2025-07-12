@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import Login from "./Login.tsx";
+import Login from "../../auth/components/Login.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { useWorkout } from "../../../context/WorkoutContext.tsx";
-import { ExerciseBasket } from "../../../components/header/ExerciseBasket.tsx";
+import { ExerciseBasket } from "./ExerciseBasket.tsx";
 import {
   getBaseLinks,
   getLoggedOutLinks,
@@ -13,7 +13,7 @@ import {
 } from "../data/navLinks.ts";
 import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
 import { isAnyUnread } from "../helpers/HeaderHelper.ts";
-import { useGetChats } from "../../hooks/fetch/chats/useGetChats.ts";
+import { useGetChats } from "../../chat/hooks/useGetChats.ts";
 import { useUser } from "../../../context/UserContext.tsx";
 
 export const Header = () => {

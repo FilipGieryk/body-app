@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { submitRating } from "../../api/ratingService.tsx";
+import { submitRating } from "../api/ratingService";
 
 export const useRating = (itemId) => {
   const mutation = useMutation({

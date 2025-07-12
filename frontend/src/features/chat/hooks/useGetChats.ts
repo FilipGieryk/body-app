@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchChats } from "../../../api/chatService";
+import { fetchChats } from "../api/chatService";
 
 export const useGetChats = () =>
   useQuery({

@@ -1,31 +1,29 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProfilePage from "./pages/ProfilePage.tsx";
-import ChatPage from "./pages/ChatPage.tsx";
-import Help from "./pages/Help.tsx";
-import ExercisesList from "./pages/ExercisesList.tsx";
-import WorkoutsList from "./pages/WorkoutsList.tsx";
-import { ExerciseDetailPage } from "./pages/ExerciseDetailPage.js";
-import { WorkoutDetailPage } from "./pages/WorkoutDetailPage.js";
-import { Header } from "./components/header/Header.js";
-import GLTFViewer from "./components/gltfObject/GLTFViewer.tsx";
-import AdminDashboard from "./components/notusedfornow/adminDashboard/AdminDashboard.js";
-import ProtectedRoute from "./components/notusedfornow/adminDashboard/ProtectedRoute.js";
-import CreateWorkout from "./components/workouts/CreateWorkout.tsx";
-import { WebSocketProvider } from "./hooks/webSocketContext.jsx";
+import ProfilePage from "./features/profile/ProfilePage.tsx";
+import ChatPage from "./features/chat/ChatPage.tsx";
+import Help from "./features/help/Help.tsx";
+import ExercisesList from "./features/exercise/ExercisesList.tsx";
+import WorkoutsList from "./features/workout/WorkoutsList.tsx";
+import { ExerciseDetailPage } from "./features/exercise/ExerciseDetailPage.tsx";
+import { WorkoutDetailPage } from "./features/workout/WorkoutDetailPage.tsx";
+import { Header } from "./features/navigation/components/Header.tsx";
+import { GLTFViewer } from "./features/home/GLTFViewer.tsx";
+import { CreateWorkout } from "./features/workout/components/CreateWorkout.tsx";
+import { WebSocketProvider } from "./context/webSocketContext.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FriendRequestsProvider } from "./context/FriendRequestsContext.tsx";
 import { WorkoutProvider } from "./context/WorkoutContext.tsx";
-// import { NotificationProvider } from "./context/NotificationContext.tsx";
 import { UserProvider } from "./context/UserContext.tsx";
 
-const user = { isAdmin: true };
+// import AdminDashboard from "./components/notusedfornow/adminDashboard/AdminDashboard.js";
+// import ProtectedRoute from "./components/notusedfornow/adminDashboard/ProtectedRoute.js";
+// const user = { isAdmin: true };
 function App() {
   const queryClient = new QueryClient();
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
-        {/* <NotificationProvider> */}
         <UserProvider>
           <WorkoutProvider>
             <WebSocketProvider>
@@ -36,14 +34,14 @@ function App() {
                   id="container"
                 >
                   <Routes>
-                    <Route
+                    {/* <Route
                       path="/admin"
                       element={
                         <ProtectedRoute isAdmin={user.isAdmin}>
                           <AdminDashboard />
                         </ProtectedRoute>
                       }
-                    />
+                    /> */}
                     <Route path="/" Component={GLTFViewer} />
                     <Route path="/profile/:id" Component={ProfilePage} />
                     <Route path="/help" Component={Help} />
@@ -65,7 +63,6 @@ function App() {
             </WebSocketProvider>
           </WorkoutProvider>
         </UserProvider>
-        {/* </NotificationProvider> */}
       </QueryClientProvider>
     </Router>
   );

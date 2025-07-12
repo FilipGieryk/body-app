@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 const CheckboxList = ({ handleBodyPartChange, selectedBodyParts }) => {
   const [showBodyParts, setShowBodyParts] = useState(false);

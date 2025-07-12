@@ -1,23 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { ObjectLoader } from "./libs/ObjectLoader.jsx"; // Ensure the correct path
-import { Utils } from "./libs/Utils.jsx"; // Ensure the correct path
-import BodyPartInfo from "../thumbnail/BodyPartInfo.jsx";
-import { getBodyPartInfo } from "../../data/bodyPartsData.jsx";
-import { fetchExercises } from "../../api/exerciseService.tsx";
-import {
-  onClick,
-  onPointerMove,
-  onMouseDown,
-  onMouseUp,
-  checkHover,
-  // onMouseMove,
-} from "./helpers/threeHandlers.ts";
+// import { ObjectLoader } from "./libs/ObjectLoader.jsx"; // Ensure the correct path
+// import { Utils } from "./libs/Utils.jsx"; // Ensure the correct path
+// import BodyPartInfo from "../thumbnail/BodyPartInfo.jsx";
+// import { getBodyPartInfo } from "../../data/bodyPartsData.jsx";
+// import { fetchExercises } from "../../api/exerciseService.tsx";
+// import {
+//   onClick,
+//   onPointerMove,
+//   onMouseDown,
+//   onMouseUp,
+//   checkHover,
+//   // onMouseMove,
+// } from "./helpers/threeHandlers.ts";
 import { animateCamera } from "./helpers/animationUtils.ts";
 import { loadModel } from "./helpers/loadUtils.ts";
 import { centerObject } from "./helpers/transformUtils.ts";
 
-const GLTFViewer: React.FC = () => {
+export const GLTFViewer: React.FC = () => {
   // THREE refs
   // testing ths ref
 
@@ -221,5 +221,3 @@ const GLTFViewer: React.FC = () => {
     </div>
   );
 };
-
-export default GLTFViewer;

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { markMessagesAsRead } from "../../api/chatService";
+import { markMessagesAsRead } from "../api/chatService";
 
 export const useMarkMessagesAsRead = () => {
   const queryClient = useQueryClient();

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMessages } from "../../../api/messageService.tsx";
+import { getMessages } from "../api/messageService.tsx";
 
 export const useGetChatMessages = (
   chatId: string | undefined,
