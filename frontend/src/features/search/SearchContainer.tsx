@@ -6,7 +6,15 @@ import { useSearchBar } from "./hooks/useSearchBar";
 import { useBodyPartSelection } from "../exercise/hooks/useBodyPartSelection";
 import { useSorting } from "./hooks/useSorting";
 
-const SearchContainer = ({ data, onFilteredDataChange }) => {
+type SearchContainerProps = {
+  data: any;
+  onFilteredDataChange: any;
+};
+
+const SearchContainer = ({
+  data,
+  onFilteredDataChange,
+}: SearchContainerProps) => {
   const { selectedBodyParts, handleBodyPartChange } = useBodyPartSelection();
 
   const { searchQuery, changeSearchQuery, filteredContent } = useSearchBar(

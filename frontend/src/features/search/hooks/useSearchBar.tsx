@@ -1,6 +1,11 @@
 import { useState, useMemo } from "react";
 import { useDebounce } from "use-debounce";
 
+type useSearchBarProps = {
+  content: string;
+  selectedBodyParts: any;
+};
+
 export const useSearchBar = (content, selectedBodyParts) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQueryValue] = useDebounce(searchQuery, 300);

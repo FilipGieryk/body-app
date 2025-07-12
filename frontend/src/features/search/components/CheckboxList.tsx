@@ -1,5 +1,13 @@
 import { useState } from "react";
-const CheckboxList = ({ handleBodyPartChange, selectedBodyParts }) => {
+
+type CheckboxListProps = {
+  handleBodyPartChange: boolean;
+  selectedBodyParts: any;
+};
+const CheckboxList = ({
+  handleBodyPartChange,
+  selectedBodyParts,
+}: CheckboxListProps) => {
   const [showBodyParts, setShowBodyParts] = useState(false);
   const bodyParts = ["biceps", "triceps", "chest", "back", "legs", "shoulder"];
 

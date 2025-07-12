@@ -1,7 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-const SearchBar = ({ searchQuery, changeSearchQuery }) => {
+type SearchBarProps = {
+  searchQuery: any;
+  changeSearchQuery: any;
+};
+
+const SearchBar = ({ searchQuery, changeSearchQuery }: SearchBarProps) => {
   return (
     <div className="shadow-lg rounded-2xl flex items-center justify-center">
       <input

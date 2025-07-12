@@ -3,7 +3,15 @@ import { useAutoScroll } from "../../../shared/hooks/useAutoScroll";
 import { useGetChatMessages } from "../hooks/useGetChatMessages";
 import { useHandleKeyDown } from "../hooks/useHandleKeyDown";
 
-const MessageComponent = ({ otherParticipants, chatId }) => {
+type MessageComponentProps = {
+  otherParticipants: string[];
+  chatId: string;
+};
+
+const MessageComponent = ({
+  otherParticipants,
+  chatId,
+}: MessageComponentProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleKeyDown = useHandleKeyDown({

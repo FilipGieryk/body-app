@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 
-const UserWorkouts = ({ userWorkouts, isLoggedUser }) => {
+type UserWorkoutsProps = {
+  userWorkouts: any;
+  isLoggedUser: boolean;
+};
+
+const UserWorkouts = ({ userWorkouts, isLoggedUser }: UserWorkoutsProps) => {
   return (
     <div className="flex flex-row w-[90%] h-full flex-wrap content-start gap-4 bg-amber-200 rounded-2xl shadow-xl">
       {userWorkouts.map((el) => (

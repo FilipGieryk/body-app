@@ -3,8 +3,19 @@ import { getOtherParticipants } from "../utils/chatUtils";
 import UserInformation from "../../../shared/components/UserInformation";
 import MessageComponent from "./MessageComponent";
 import { useMarkMessagesAsRead } from "../hooks/useMarkMessagesAsRead";
+import { Chat } from "../types";
 
-export const ChatMainPanel = ({ chatId, loggedUserId, chats }) => {
+type ChatMainPanelProps = {
+  chatId: string;
+  loggedUserId: string;
+  chats: Chat[];
+};
+
+export const ChatMainPanel = ({
+  chatId,
+  loggedUserId,
+  chats,
+}: ChatMainPanelProps) => {
   const markAsRead = useMarkMessagesAsRead();
 
   const currentChat = React.useMemo(() => {

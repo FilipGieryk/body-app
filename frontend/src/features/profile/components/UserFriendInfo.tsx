@@ -1,6 +1,14 @@
 import { useFriendRequests } from "../../../context/FriendRequestsContext";
 
-export const UserFriendInfo = ({ userId, loggedUserInfo }) => {
+type UserFriendInfoProps = {
+  userId: string;
+  loggedUserInfo: string;
+};
+
+export const UserFriendInfo = ({
+  userId,
+  loggedUserInfo,
+}: UserFriendInfoProps) => {
   const {
     sendRequest,
     removeFriend,

@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import { Chat } from "../types";
 
-export const ChatComponent = ({ chats }) => {
+export const ChatComponent = ({ chats }: { chats: Chat[] }) => {
+  console.log(chats);
   return (
     <div>
-      {chats?.map((chat: any) => (
+      {chats?.map((chat: Chat) => (
         <Link
           className="decoration-0 flex items-center h-32 w-full gap-4 relative"
           to={`/chat/${chat.chatId}`}

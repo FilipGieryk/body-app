@@ -1,4 +1,9 @@
-const Sorting = ({ sortOrder, toggleSortOrder }) => {
+type SortingProps = {
+  sortOrder: any;
+  toggleSortOrder: any;
+};
+
+export const Sorting = ({ sortOrder, toggleSortOrder }: SortingProps) => {
   return (
     <div className="flex gap-3">
       <button

@@ -3,7 +3,6 @@ export const FriendRequest = ({
   acceptRequest,
   declineRequest,
 }) => {
-  console.log(friendRequests);
   return (
     <div>
       {friendRequests.map((request) => (

@@ -5,9 +5,14 @@ import ManageChatComponent from "./ManageChatComponent";
 import { useFriendRequests } from "../../../context/FriendRequestsContext";
 import { ChatComponent } from "./ChatComponent";
 import { getSortedChats } from "../utils/chatUtils";
+import { Chat } from "../types";
 
-export const ChatSidebar = ({ loggedUserId, chats }) => {
-  console.log(chats);
+type ChatSidebarProps = {
+  loggedUserId: string;
+  chats: Chat[];
+};
+
+export const ChatSidebar = ({ loggedUserId, chats }: ChatSidebarProps) => {
   const [activeTab, setActiveTab] = useState("chats");
 
   const { friendRequests, acceptRequest, declineRequest } = useFriendRequests();
