@@ -17,7 +17,7 @@ import { animateCamera } from "./helpers/animationUtils.ts";
 import { loadModel } from "./helpers/loadUtils.ts";
 import { centerObject } from "./helpers/transformUtils.ts";
 
-export const GLTFViewer: React.FC = () => {
+const GLTFViewer: React.FC = () => {
   // THREE refs
   // testing ths ref
 
@@ -221,3 +221,5 @@ export const GLTFViewer: React.FC = () => {
     </div>
   );
 };
+
+export default GLTFViewer;

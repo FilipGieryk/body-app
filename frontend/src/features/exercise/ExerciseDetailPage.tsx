@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetExercise } from "./hooks/useGetExercise";
 
-export const ExerciseDetailPage = () => {
+const ExerciseDetailPage = () => {
   const { exerciseId } = useParams();
   if (!exerciseId) return;
   const { data, isLoading, isError, error } = useGetExercise(exerciseId);
@@ -46,3 +46,5 @@ export const ExerciseDetailPage = () => {
     </div>
   );
 };
+
+export default ExerciseDetailPage;

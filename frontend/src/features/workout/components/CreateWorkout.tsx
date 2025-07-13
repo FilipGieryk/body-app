@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { useCreateWorkout } from "../hooks/useCreateWorkout";
 import React from "react";
-export const CreateWorkout = () => {
+const CreateWorkout = () => {
   const location = useLocation();
   const addedExercise = location.state?.addedExercise || null;
   const [name, setName] = useState("workout");
@@ -112,3 +112,5 @@ export const CreateWorkout = () => {
     </form>
   );
 };
+
+export default CreateWorkout;

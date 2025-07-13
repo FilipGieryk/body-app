@@ -3,7 +3,7 @@ import SearchList from "../search/components/SearchList";
 import SearchContainer from "../search/SearchContainer";
 import { useFetchData } from "../../shared/hooks/useFetchData";
 
-const ExcercisesList = () => {
+const WorkoutsList = () => {
   const [filteredData, setFilteredData] = useState([]);
   const { data, isLoading, error } = useFetchData("workouts");
 
@@ -22,4 +22,5 @@ const ExcercisesList = () => {
     </div>
   );
 };
-export default ExcercisesList;
+
+export default WorkoutsList;

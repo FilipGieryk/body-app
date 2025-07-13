@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useWorkout } from "../../context/WorkoutContext";
 import { useParams } from "react-router-dom";
 
-export const WorkoutDetailPage = () => {
+const WorkoutDetailPage = () => {
   const { workoutId } = useParams();
   if (!workoutId) return null;
 
@@ -157,3 +157,5 @@ export const WorkoutDetailPage = () => {
     </div>
   );
 };
+
+export default WorkoutDetailPage;
