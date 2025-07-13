@@ -5,12 +5,12 @@ const Photos = ({
   handleDeletePhotos,
 }) => {
   return (
-    <div className="flex relative items-center w-[90%] h-full m-auto py-2 text-4xl bg-amber-200 rounded-2xl whitespace-nowrap shadow-xl">
+    <div className="flex relative items-center w-full h-full m-auto py-2 text-4xl bg-amber-200 rounded-2xl whitespace-nowrap shadow-xl">
       {userPhotos?.length > 0 ? (
         userPhotos.map((photo) => (
           <div className="inline-block min-w-100 h-[95%] rounded-4xl relative">
             <img
-              className="w-60 h-80 overflow-hidden rounded-4xl"
+              className="w-[50%] rounded-4xl"
               src={`http://localhost:5173/uploads/${photo}`}
             ></img>
             <button

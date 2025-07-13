@@ -31,8 +31,8 @@ const ProfilePage = () => {
   const isLoggedUser = userData._id === user._id;
 
   return (
-    <div className="grid grid-rows-[55%_35%] grid-cols-[30%_66%] w-full h-full gap-4 transition-all m-10">
-      <div className="bg-amber-200 h-full row-start-1 row-end-3 shadow-2xl rounded-2xl">
+    <div className="grid lg:grid-rows-[50%_45%] grid-cols-1 grid-rows-[80%_40%_30%] lg:grid-cols-[33%_60%] w-3/4 lg:w-full h-[95%] gap-4 transition-all m-auto">
+      <div className="bg-amber-200 h-full row-start-1 row-end-1 lg:row-end-3 shadow-2xl rounded-2xl">
         <UserInformation
           username={userData.username}
           profilePhoto={userData.profilePhoto}

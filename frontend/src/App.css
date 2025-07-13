@@ -6,11 +6,11 @@
   font-size: 62.5%;
   box-sizing: border-box;
   text-align: center;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 body {
   width: 100vw;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .logo {

@@ -47,7 +47,11 @@ export const Header = () => {
       ? [
           {
             icon: (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 640 512"
+                className="w-6 h-6"
+              >
                 <path d="M96 64c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32l0 160 0 64 0 160c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-64-32 0c-17.7 0-32-14.3-32-32l0-64c-17.7 0-32-14.3-32-32s14.3-32 32-32l0-64c0-17.7 14.3-32 32-32l32 0 0-64zm448 0l0 64 32 0c17.7 0 32 14.3 32 32l0 64c17.7 0 32 14.3 32 32s-14.3 32-32 32l0 64c0 17.7-14.3 32-32 32l-32 0 0 64c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-160 0-64 0-160c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32zM416 224l0 64-192 0 0-64 192 0z" />
               </svg>
             ),
@@ -63,37 +67,38 @@ export const Header = () => {
   ];
 
   return (
-    <header className="flex justify-end h-screen top-0 absolute right-0 z-200 w-0">
-      <nav className="flex flex-col justify-center pr-7">
-        {links.map((link) => (
-          <NavLink
-            key={link.id}
-            to={link.path}
-            className={`flex items-center justify-center rounded-2xl bg-white h-15 w-15 relative text-xl hover:shadow-inner first:mt-8 first:mb-auto last:mb-5 nth-4:mb-auto ${
-              location.pathname === link.path ? "shadow-inner" : ""
-            }`}
-            onClick={(e) => {
-              e.preventDefault();
-              const rect = e.target.getBoundingClientRect();
-              link.action();
-            }}
-          >
-            {link.icon}
-            {link?.notification && (
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-            )}
-          </NavLink>
-        ))}
-      </nav>
-      {isBasketVisible && isLoggedIn && <ExerciseBasket />}
-      <div
-        id="line"
-        className="absolute l-55 h-2 bg-black"
-        style={{
-          transition: "all 0.3s ease",
-        }}
-      />
-
+    <>
+      <header className="flex justify-end h-screen top-0 absolute right-0 z-200 w-0">
+        <nav className="flex flex-col justify-center pr-7">
+          {links.map((link) => (
+            <NavLink
+              key={link.id}
+              to={link.path}
+              className={`flex items-center justify-center rounded-2xl bg-white h-15 w-15 relative text-xl hover:shadow-inner first:mt-8 first:mb-auto last:mb-5 nth-4:mb-auto ${
+                location.pathname === link.path ? "shadow-inner" : ""
+              }`}
+              onClick={(e) => {
+                e.preventDefault();
+                const rect = e.target.getBoundingClientRect();
+                link.action();
+              }}
+            >
+              {link.icon}
+              {link?.notification && (
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+              )}
+            </NavLink>
+          ))}
+        </nav>
+        {isBasketVisible && isLoggedIn && <ExerciseBasket />}
+        <div
+          id="line"
+          className="absolute l-55 h-2 bg-black"
+          style={{
+            transition: "all 0.3s ease",
+          }}
+        />
+      </header>
       {isLoginVisible && !isLoggedIn && (
         <Login
           isVisible={true}
@@ -101,6 +106,6 @@ export const Header = () => {
           onLoginSuccess={handleLoginSuccess}
         />
       )}
-    </header>
+    </>
   );
 };

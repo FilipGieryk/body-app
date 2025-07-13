@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useLogin from "../hooks/useLogin";
 import useRegister from "../hooks/useRegister";
 import { OnLoginSuccess } from "../types";
+import { useOnClickOutside } from "../../../shared/hooks/useOnClickOutside";
 
 type LoginProps = {
   isVisible: boolean;
@@ -11,7 +12,7 @@ type LoginProps = {
 
 const Login = ({ isVisible, onLoginSuccess, loginStatus }: LoginProps) => {
   const [activeTab, setActiveTab] = useState<string>(loginStatus);
-
+  const loginRef = useRef<HTMLDivElement>(null);
   const {
     username: loginUsername,
     setUsername: setLoginUsername,
@@ -32,12 +33,15 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }: LoginProps) => {
     isLoading: isRegisterLoading,
   } = useRegister(onLoginSuccess);
 
+  useOnClickOutside(loginRef, onLoginSuccess);
+
   return (
     <div
-      className={`animate-login duration-200 flex absolute flex-col justify-center items-center h-90 bottom-50 right-200 blur-s z-200 w-120 my-auto p-8 border-2 rounded-2xl shadow ${
+      className={`animate-login duration-200 flex absolute flex-col justify-center bg-[#c7c7c775] backdrop-blur-sm items-center h-90 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 blur-s z-200 w-120 my-auto p-8 border-2 rounded-2xl shadow ${
         !isVisible ? "login-hide" : ""
       }`}
       id="login-container"
+      ref={loginRef}
     >
       <div className="absolute left-20 top-0 text-base w-56 rounded-2xl px-2 py-4">
         <h1

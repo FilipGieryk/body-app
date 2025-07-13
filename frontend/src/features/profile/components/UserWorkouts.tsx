@@ -7,7 +7,7 @@ type UserWorkoutsProps = {
 
 const UserWorkouts = ({ userWorkouts, isLoggedUser }: UserWorkoutsProps) => {
   return (
-    <div className="flex flex-row w-[90%] h-full flex-wrap content-start gap-4 bg-amber-200 rounded-2xl shadow-xl">
+    <div className="flex flex-row w-full h-full flex-wrap content-start gap-4 bg-amber-200 rounded-2xl shadow-xl overflow-y-scroll">
       {userWorkouts.map((el) => (
         <Link
           className="h-20 rounded-4xl text-2xl relative mt-15"
