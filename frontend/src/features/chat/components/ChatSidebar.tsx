@@ -14,7 +14,7 @@ type ChatSidebarProps = {
 
 export const ChatSidebar = ({ loggedUserId, chats }: ChatSidebarProps) => {
   const [activeTab, setActiveTab] = useState<string>("chats");
-
+  console.log(chats);
   const { friendRequests, acceptRequest, declineRequest } = useFriendRequests();
   const sortedChats = getSortedChats(chats);
 

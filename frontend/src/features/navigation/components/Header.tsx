@@ -24,7 +24,7 @@ export const Header = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: chats } = useGetChats();
+  // const { data: chats } = useGetChats();
   const { user: loggedUserInfo, logout, isLoggedIn, login } = useUser();
 
   const toggleLogin = () => {
@@ -38,8 +38,9 @@ export const Header = () => {
 
   const baseLinks = getBaseLinks(navigate);
   const loggedOutLinks = getLoggedOutLinks(setVisibleModal, toggleLogin);
+  //add unread chats
   const loggedInLinks = loggedUserInfo
-    ? getLoggedInLinks(navigate, loggedUserInfo, logout, isAnyUnread(chats))
+    ? getLoggedInLinks(navigate, loggedUserInfo, logout)
     : [];
 
   const links = [
