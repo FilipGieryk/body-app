@@ -101,7 +101,7 @@ class ChatController {
         )
       );
 
-      res.status(200).json({ data: chatsWithDetails, page, limit });
+      res.status(200).json(chatsWithDetails);
     } catch (err) {
       console.error("Error fetching chats", err);
       res.status(500).json({ message: "Error fetching chats" });

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Chat } from "../types";
 import { useInView } from "react-intersection-observer";
+import React from "react";
 
 export const ChatComponent = ({
   chats,

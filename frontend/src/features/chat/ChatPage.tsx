@@ -21,7 +21,6 @@ const ChatPage = () => {
   } = useGetChats();
 
   const chats = data?.pages.flatMap((page) => page.chats) ?? [];
-
   const currentChat = React.useMemo(() => {
     return chats?.find((chat) => chat.chatId === chatId) ?? null;
   }, [chatId, chats]);
