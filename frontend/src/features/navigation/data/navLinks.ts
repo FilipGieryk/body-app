@@ -39,12 +39,7 @@ export const getBaseLinks = (navigate) => [
   },
 ];
 
-export const getLoggedInLinks = (
-  navigate,
-  loggedUserInfo,
-  handleLogout,
-  hasUnread
-) => [
+export const getLoggedInLinks = (navigate, loggedUserInfo, handleLogout) => [
   {
     icon: faHome,
     text: "Profile",
@@ -60,7 +55,6 @@ export const getLoggedInLinks = (
     id: "chat",
     path: `/chat`,
     action: () => navigate(`/chat`),
-    notification: hasUnread,
   },
   {
     icon: faSignOutAlt,

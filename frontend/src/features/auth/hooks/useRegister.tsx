@@ -31,7 +31,7 @@ const useRegister = (onLoginSuccess: () => Promise<void>) => {
     email,
     setEmail,
     handleRegister,
-    isLoading: isRegisterLoading,
+    // isLoading: isRegisterLoading,
   };
 };
 
