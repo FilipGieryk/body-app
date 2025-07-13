@@ -18,8 +18,12 @@ const ChatPage = () => {
   if (loading || chatsLoading) return <p>Loading...</p>;
   return (
     <div className="grid w-[95%] h-full gap-x-8 rounded-xl grid-cols-[30%_70%] grid-rows-[10%_90%] ">
-      <ChatSidebar loggedUserId={user._id} chats={chats} />
-      <ChatMainPanel chatId={chatId} loggedUserId={user._id} chats={chats} />
+      <ChatSidebar loggedUserId={user._id} chats={chats.data} />
+      <ChatMainPanel
+        chatId={chatId}
+        loggedUserId={user._id}
+        chats={chats.data}
+      />
     </div>
   );
 };
