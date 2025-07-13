@@ -5,7 +5,9 @@ import { useGetChats } from "./hooks/useGetChats";
 import { useUser } from "../../context/UserContext";
 
 import { ChatSidebar } from "./components/ChatSidebar";
-import { ChatMainPanel } from "./components/ChatMainPanel";
+import { lazy } from "react";
+
+const ChatMainPanel = lazy(() => import("./components/ChatMainPanel"));
 
 const ChatPage = () => {
   const { chatId } = useParams();

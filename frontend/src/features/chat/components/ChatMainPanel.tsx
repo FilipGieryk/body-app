@@ -11,11 +11,7 @@ type ChatMainPanelProps = {
   chats: Chat[];
 };
 
-export const ChatMainPanel = ({
-  chatId,
-  loggedUserId,
-  chats,
-}: ChatMainPanelProps) => {
+const ChatMainPanel = ({ chatId, loggedUserId, chats }: ChatMainPanelProps) => {
   const markAsRead = useMarkMessagesAsRead();
 
   const currentChat = React.useMemo(() => {
@@ -48,3 +44,5 @@ export const ChatMainPanel = ({
     </div>
   );
 };
+
+export default ChatMainPanel;
