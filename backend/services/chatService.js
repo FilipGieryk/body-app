@@ -13,16 +13,7 @@ class ChatService {
     return await chat.save();
   }
 
-  async getChatDetails(chat, userId) {
-    const lastMessage = await Message.findOne({ chatId: chat._id })
-      .sort({ timestamp: -1 })
-      .lean();
-
-    const unreadMessages = await UnreadMessage.find({ userId });
-    const unreadChatIds = new Set(
-      unreadMessages.map((um) => um.chatId.toString())
-    );
-
+  async getChatDetails(chat, userId, unreadChatIdsSet) {
     let chatName;
     let profilePhoto;
 
@@ -42,9 +33,9 @@ class ChatService {
       chatId: chat._id,
       chatName,
       profilePhoto,
-      hasUnread: unreadChatIds.has(chat._id.toString()),
+      hasUnread: unreadChatIdsSet.has(chat._id.toString()),
       participants: chat.participants,
-      lastMessage: lastMessage || null, // Include lastMessage or null if no messages
+      lastMessage: chat.lastMessage || null, // Include lastMessage or null if no messages
     };
   }
 

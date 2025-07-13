@@ -1,8 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { fetchChats } from "../api/chatService";
 
 export const useGetChats = () =>
-  useQuery({
+  useInfiniteQuery({
     queryKey: ["chats"],
     queryFn: fetchChats,
+    getNextPageParam: (lastPage) => lastPage?.nextPage,
+    initialPageParam: 1,
   });

@@ -8,19 +8,15 @@ import { Chat } from "../types";
 type ChatMainPanelProps = {
   chatId: string;
   loggedUserId: string;
-  chats: Chat[];
+  currentChat: Chat;
 };
 
 export const ChatMainPanel = ({
   chatId,
   loggedUserId,
-  chats,
+  currentChat,
 }: ChatMainPanelProps) => {
   const markAsRead = useMarkMessagesAsRead();
-
-  const currentChat = React.useMemo(() => {
-    return chats?.find((chat) => chat.chatId === chatId) ?? null;
-  }, [chatId, chats]);
 
   const participants = React.useMemo(() => {
     if (!currentChat || !loggedUserId) return null;

@@ -1,10 +1,24 @@
 import { Link } from "react-router-dom";
 import { Chat } from "../types";
+import { useInView } from "react-intersection-observer";
 
-export const ChatComponent = ({ chats }: { chats: Chat[] }) => {
+export const ChatComponent = ({
+  chats,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+}) => {
+  const { ref, inView } = useInView();
+
+  React.useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   return (
     <div>
-      {chats?.map((chat: Chat) => (
+      {chats?.map((chat) => (
         <Link
           className="decoration-0 flex items-center h-32 w-full gap-4 relative"
           to={`/chat/${chat.chatId}`}
@@ -24,6 +38,11 @@ export const ChatComponent = ({ chats }: { chats: Chat[] }) => {
           )}
         </Link>
       ))}
+      {hasNextPage && (
+        <div ref={ref} className="h-10 text-center text-gray-500">
+          {isFetchingNextPage ? "Loading more chats..." : "Scroll to load more"}
+        </div>
+      )}
     </div>
   );
 };
