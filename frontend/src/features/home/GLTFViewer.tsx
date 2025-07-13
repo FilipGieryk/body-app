@@ -209,7 +209,7 @@ export const GLTFViewer: React.FC = () => {
 
   return (
     <div ref={mountRef} className="w-full h-full z-10">
-      <div className="absolute inset-0 -left-30 -right-5 -bottom-15 -top-10 rotate-3 bg-[url(./assets/bg-brush.png)] bg-center bg-[length:104%_105%] z-[-10] " />
+      <div className="absolute inset-0 -left-30 -right-5 -bottom-15 -top-10 rotate-3  z-[-10] " />
       {/* {bodyPartInfo && (
         <BodyPartInfo
           staticInfo={bodyPartInfo}

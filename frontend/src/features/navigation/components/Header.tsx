@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Login from "../../auth/components/Login.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { NavLink } from "react-router-dom";
 import { useWorkout } from "../../../context/WorkoutContext.tsx";
 import { ExerciseBasket } from "./ExerciseBasket.tsx";
@@ -10,10 +10,8 @@ import {
   getBaseLinks,
   getLoggedOutLinks,
   getLoggedInLinks,
-} from "../data/navLinks.ts";
-import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
-import { isAnyUnread } from "../helpers/HeaderHelper.ts";
-import { useGetChats } from "../../chat/hooks/useGetChats.ts";
+} from "../data/navLinks.tsx";
+
 import { useUser } from "../../../context/UserContext.tsx";
 
 export const Header = () => {
@@ -48,7 +46,11 @@ export const Header = () => {
     ...(exercises?.length > 0
       ? [
           {
-            icon: faDumbbell,
+            icon: (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                <path d="M96 64c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32l0 160 0 64 0 160c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-64-32 0c-17.7 0-32-14.3-32-32l0-64c-17.7 0-32-14.3-32-32s14.3-32 32-32l0-64c0-17.7 14.3-32 32-32l32 0 0-64zm448 0l0 64 32 0c17.7 0 32 14.3 32 32l0 64c17.7 0 32 14.3 32 32s-14.3 32-32 32l0 64c0 17.7-14.3 32-32 32l-32 0 0 64c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-160 0-64 0-160c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32zM416 224l0 64-192 0 0-64 192 0z" />
+              </svg>
+            ),
             text: "Basket",
             id: "basket",
             action: () => {
@@ -76,7 +78,7 @@ export const Header = () => {
               link.action();
             }}
           >
-            <FontAwesomeIcon icon={link.icon} />
+            {link.icon}
             {link?.notification && (
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             )}
