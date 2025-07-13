@@ -30,17 +30,21 @@ export const ChatMainPanel = ({
   }, [currentChat, markAsRead]);
 
   return (
-    <div className="row-start-1 row-end-2 col-start-2">
-      {chatId && (
-        <UserInformation
-          username={currentChat?.chatName ?? "unknown"}
-          profilePhoto={currentChat?.profilePhoto ?? "default-avatar.png"}
-          orientation="row"
-        />
-      )}
-      {chatId && (
-        <MessageComponent chatId={chatId} otherParticipants={participants} />
-      )}
-    </div>
+    <>
+      <div className="row-start-1 row-end-1 col-start-2 max-h-10">
+        {chatId && (
+          <UserInformation
+            username={currentChat?.chatName ?? "unknown"}
+            profilePhoto={currentChat?.profilePhoto ?? "default-avatar.png"}
+            orientation="row"
+          />
+        )}
+      </div>
+      <div className="row-start-2 col-start-2">
+        {chatId && (
+          <MessageComponent chatId={chatId} otherParticipants={participants} />
+        )}
+      </div>
+    </>
   );
 };
