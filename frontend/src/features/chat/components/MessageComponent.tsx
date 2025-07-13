@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAutoScroll } from "../../../shared/hooks/useAutoScroll";
 import { useGetChatMessages } from "../hooks/useGetChatMessages";
 import { useHandleKeyDown } from "../hooks/useHandleKeyDown";
+import { useInView } from "react-intersection-observer";
 
 type MessageComponentProps = {
   otherParticipants: string[];
@@ -12,6 +13,7 @@ const MessageComponent = ({
   otherParticipants,
   chatId,
 }: MessageComponentProps) => {
+  // add to hook
   const [inputValue, setInputValue] = useState("");
 
   const handleKeyDown = useHandleKeyDown({
@@ -20,18 +22,31 @@ const MessageComponent = ({
     chatId,
   });
 
-  const { data: messages, isLoading } = useGetChatMessages(chatId, {
-    enabled: !!chatId,
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetChatMessages(chatId);
+
+  const messages = data?.pages.flatMap((page) => page.messages) ?? [];
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // const containerRef = useAutoScroll(messages);
+
+  const { ref: loadMoreRef, inView } = useInView({
+    root: containerRef.current,
+    threshold: 0,
   });
 
-  const containerRef = useAutoScroll(messages);
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage]);
 
   if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="grid grid-rows-[80%_10%] h-full min-h-full max-h-full rounded-4xl">
       <div
-        className="w-full rounded-2xl h-full flex flex-col self-center overflow-y-auto bg-[length:90%_100%]"
+        className="w-full rounded-2xl h-full flex flex-col-reverse self-center overflow-y-auto bg-[length:90%_100%]"
         ref={containerRef}
       >
         {messages.map((message, index) => (
@@ -46,6 +61,7 @@ const MessageComponent = ({
             {message.content}
           </div>
         ))}
+        <div ref={loadMoreRef} />
       </div>
       <div className=" flex-row items-center justify-center rounded-[0 0 0 2rem]">
         <input

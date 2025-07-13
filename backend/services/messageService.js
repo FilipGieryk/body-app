@@ -3,7 +3,7 @@ const UnreadMessage = require("../models/UnreadMessage");
 const Chat = require("../models/Chat");
 
 class MessageService {
-  async getMessagesByChatId(chatId, userId) {
+  async getMessagesByChatId(chatId, userId, limit, page) {
     const chat = await Chat.findOne({ _id: chatId });
 
     if (!chat) {
@@ -14,7 +14,16 @@ class MessageService {
     if (!isMember) {
       throw new Error("User is not a member of this chat");
     }
-    return await Message.find({ chatId }).sort({ timestamp: 1 });
+    const skip = (page - 1) * limit;
+    const messages = await Message.find({ chatId })
+      .sort({ timestamp: 1 })
+      .skip(skip)
+      .limit(limit);
+
+    return {
+      messages,
+      nextPage: messages.length < limit ? null : page + 1,
+    };
   }
 
   async createMessage(chatId, senderId, content) {

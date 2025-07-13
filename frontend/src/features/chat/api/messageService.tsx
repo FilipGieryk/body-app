@@ -17,9 +17,13 @@ export const sendMessageToServer = async ({
     throw error;
   }
 };
-export const getMessages = async (chatId: string) => {
+export const getMessages = async ({ queryKey, pageParam = 1 }) => {
+  const [, chatId] = queryKey;
+  const limit = 10;
   try {
-    const response = await api.get(`/message/${chatId}`);
+    const response = await api.get(`/message/${chatId}`, {
+      params: { page: pageParam, limit },
+    });
     return response.data;
   } catch (error) {
     console.error("error getting messages", error);

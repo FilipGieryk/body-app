@@ -6,15 +6,15 @@ class MessageController {
   async getMessages(req, res) {
     const { chatId } = req.params;
     const userId = req.user._id;
-    // const limit = parseInt(req.params.limit) || 10;
-    // const page = parseInt(req.params.page) || 1;
+    const limit = parseInt(req.params.limit) || 10;
+    const page = parseInt(req.params.page) || 1;
 
     try {
       const messages = await MessageService.getMessagesByChatId(
         chatId,
-        userId
-        // limit,
-        // page
+        userId,
+        limit,
+        page
       );
       res.status(200).json(messages);
     } catch (error) {
