@@ -48,6 +48,7 @@ const FriendsSearch = () => {
                 src={friend.profilePhoto}
                 alt={friend.username}
                 className="h-28 rounded-4xl"
+                loading="lazy"
               />
               <span>{friend.username}</span>
             </li>

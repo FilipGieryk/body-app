@@ -13,7 +13,8 @@ export const EditUserInfo = (initialUserInfo) => {
         <img
           src={initialUserInfo.profilePhoto}
           className="mt-20 w-60 rounded-[50%] transition-all profile-edit-photo"
-        ></img>
+          loading="lazy"
+        />
         <p className="absolute top-0 translate-y-[50%] invisible text-4xl transition-all opacity-0">
           +
         </p>

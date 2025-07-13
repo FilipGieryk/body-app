@@ -12,6 +12,7 @@ const Thumbnail = ({ data, className, link, showButton }) => {
           <img
             src={data?.media}
             className="w-full h-[15rem] rounded-3xl overflow-hidden bg-[rgba(19,200,100,0.1)] bg-[length:100%_100%]"
+            loading="lazy"
           />
           <div className="grid grid-cols-2 grid-rows-2 px-3 py-2">
             <h2 className="mg-0 text-3xl truncate text-start">{data?.name}</h2>

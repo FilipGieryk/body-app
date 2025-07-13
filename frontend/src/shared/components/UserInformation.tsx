@@ -25,7 +25,8 @@ const UserInformation = ({
           <img
             src={profilePhoto}
             className="mt-20 w-60 rounded-[50%] transition-all"
-          ></img>
+            loading="lazy"
+          />
           <p>{username}</p>
           {isLoggedUser && (
             <button

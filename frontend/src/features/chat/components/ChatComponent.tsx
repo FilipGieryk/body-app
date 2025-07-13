@@ -13,6 +13,7 @@ export const ChatComponent = ({ chats }: { chats: Chat[] }) => {
             className="h-28 rounded-4xl"
             src={chat.profilePhoto}
             alt="friend-profile-picture"
+            loading="lazy"
           ></img>
           <div className="text-xl">
             <h2>{chat.chatName}</h2>
