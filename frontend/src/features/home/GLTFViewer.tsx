@@ -1,5 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
+
+import { Raycaster } from "three/src/core/Raycaster.js";
+import { AnimationAction } from "three/src/animation/AnimationAction.js";
+import { AnimationMixer } from "three/src/animation/AnimationMixer.js";
+import { Object3D } from "three/src/core/Object3D.js";
+import { PerspectiveCamera } from "three/src/cameras/PerspectiveCamera.js";
+import { WebGLRenderer } from "three/src/renderers/WebGLRenderer.js";
+import { Clock } from "three/src/core/Clock.js";
+import { Vector2 } from "three/src/math/Vector2.js";
+import { Scene } from "three/src/scenes/Scene.js";
+import { DirectionalLight } from "three/src/lights/DirectionalLight.js";
+
 // import { ObjectLoader } from "./libs/ObjectLoader.jsx"; // Ensure the correct path
 // import { Utils } from "./libs/Utils.jsx"; // Ensure the correct path
 // import BodyPartInfo from "../thumbnail/BodyPartInfo.jsx";
@@ -21,17 +32,17 @@ const GLTFViewer: React.FC = () => {
   // THREE refs
   // testing ths ref
 
-  const raycasterRef = useRef(new THREE.Raycaster());
+  const raycasterRef = useRef(new Raycaster());
 
-  const animationActionRef = useRef<THREE.AnimationAction | null>(null);
-  const mixerRef = useRef<THREE.AnimationMixer | null>(null);
-  const clickedObjectRef = useRef<THREE.Object3D | null>();
-  const cameraRef = useRef<THREE.PerspectiveCamera>();
-  const allObjectsRef = useRef<THREE.Object3D[]>([]);
-  const rendererRef = useRef<THREE.WebGLRenderer>();
-  const clockRef = useRef(new THREE.Clock());
-  const mouse = useRef(new THREE.Vector2());
-  const sceneRef = useRef<THREE.Scene>();
+  const animationActionRef = useRef<AnimationAction | null>(null);
+  const mixerRef = useRef<AnimationMixer | null>(null);
+  const clickedObjectRef = useRef<Object3D | null>();
+  const cameraRef = useRef<PerspectiveCamera>();
+  const allObjectsRef = useRef<Object3D[]>([]);
+  const rendererRef = useRef<WebGLRenderer>();
+  const clockRef = useRef(new Clock());
+  const mouse = useRef(new Vector2());
+  const sceneRef = useRef<Scene>();
 
   // other Refs
 
@@ -78,15 +89,15 @@ const GLTFViewer: React.FC = () => {
     const container = document.getElementById("container");
     if (!container) return; // Ensure the container exists
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
+    const scene = new Scene();
+    const camera = new PerspectiveCamera(
       75,
       container.clientWidth / container.clientHeight,
       0.1,
       1000
     );
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    const renderer = new WebGLRenderer({ alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     mountRef.current?.appendChild(renderer.domElement);
 
@@ -94,7 +105,7 @@ const GLTFViewer: React.FC = () => {
     cameraRef.current = camera;
     rendererRef.current = renderer;
 
-    const light = new THREE.DirectionalLight(0xffffff, 1);
+    const light = new DirectionalLight(0xffffff, 1);
     light.position.set(0.3, 1, 0.3).normalize();
     scene.add(light);
 
@@ -110,7 +121,7 @@ const GLTFViewer: React.FC = () => {
       try {
         const { object, animations } = await loadModel("/models/check9.gltf");
         allObjectsRef.current.push(object);
-        mixerRef.current = new THREE.AnimationMixer(object);
+        mixerRef.current = new AnimationMixer(object);
         const clip = animations[0];
         animationActionRef.current = mixerRef.current.clipAction(clip);
         animationActionRef.current.play();

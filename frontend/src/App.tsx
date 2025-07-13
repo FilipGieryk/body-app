@@ -31,56 +31,6 @@ const GLTFViewer = lazy(() => import("./features/home/GLTFViewer.tsx"));
 // import ProtectedRoute from "./components/notusedfornow/adminDashboard/ProtectedRoute.js";
 // const user = { isAdmin: true };
 
-export const SkeletonLoader = () => {
-  return (
-    <div style={{ padding: 20 }}>
-      <div
-        style={{
-          backgroundColor: "#eee",
-          height: 20,
-          marginBottom: 10,
-          borderRadius: 4,
-          width: "80%",
-          animation: "pulse 1.5s infinite",
-        }}
-      />
-      <div
-        style={{
-          backgroundColor: "#eee",
-          height: 20,
-          marginBottom: 10,
-          borderRadius: 4,
-          width: "60%",
-          animation: "pulse 1.5s infinite",
-        }}
-      />
-      <div
-        style={{
-          backgroundColor: "#eee",
-          height: 20,
-          borderRadius: 4,
-          width: "90%",
-          animation: "pulse 1.5s infinite",
-        }}
-      />
-
-      <style>{`
-        @keyframes pulse {
-          0% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.4;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-      `}</style>
-    </div>
-  );
-};
-
 function App() {
   const queryClient = new QueryClient();
   return (
