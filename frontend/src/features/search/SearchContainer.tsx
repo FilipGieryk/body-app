@@ -47,25 +47,24 @@ const SearchContainer = ({
       </div>
 
       {/* Mobile layout: Toggle Button */}
-      <div className="md:hidden mt-4 w-full flex justify-center">
+      <div className="md:hidden mt-4 w-full flex justify-center relative">
         <button
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           className="px-4 py-2 bg-black text-white rounded-md"
         >
           {mobileMenuOpen ? "Hide Filters" : "Show Filters"}
         </button>
+        {/* Mobile dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden mt-4 absolute w-full top-10 flex flex-col items-center gap-4">
+            <Sorting sortOrder={sortOrder} toggleSortOrder={toggleSortOrder} />
+            <CheckboxList
+              handleBodyPartChange={handleBodyPartChange}
+              selectedBodyParts={selectedBodyParts}
+            />
+          </div>
+        )}
       </div>
-
-      {/* Mobile dropdown */}
-      {mobileMenuOpen && (
-        <div className="md:hidden mt-4 w-full flex flex-col items-center gap-4">
-          <Sorting sortOrder={sortOrder} toggleSortOrder={toggleSortOrder} />
-          <CheckboxList
-            handleBodyPartChange={handleBodyPartChange}
-            selectedBodyParts={selectedBodyParts}
-          />
-        </div>
-      )}
     </div>
   );
 };
