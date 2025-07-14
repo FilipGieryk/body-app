@@ -11,7 +11,10 @@ const useRegister = (onLoginSuccess: () => Promise<void>) => {
   const mutation = useMutation({
     mutationFn: () => register({ username, password, email }),
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token); // Store the token
+      document.cookie = `token=${data.token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }`;
+
       onLoginSuccess();
     },
     onError: (error) => {
