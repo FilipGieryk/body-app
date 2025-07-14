@@ -20,7 +20,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { data, refetch, isLoading, isError } = useLoggedUserInfo(false);
 
   const refetchUser = async () => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
+    const token = Object.fromEntries(
+      document.cookie.split("; ").map((c) => c.split("="))
+    ).token;
     if (!token) {
       setLoading(false);
       setIsLoggedIn(false);
@@ -48,7 +51,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const login = async () => {
-    const token = localStorage.getItem("token");
+    const token = Object.fromEntries(
+      document.cookie.split("; ").map((c) => c.split("="))
+    ).token;
     if (token) {
       await refetchUser();
     }

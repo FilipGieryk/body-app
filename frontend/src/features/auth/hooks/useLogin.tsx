@@ -11,6 +11,9 @@ const useLogin = (onLoginSuccess: () => Promise<void>) => {
     mutationFn: () => login({ username, password }),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.token);
+      document.cookie = `token=${data.token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }`;
       localStorage.setItem("isAdmin", data.isAdmin);
 
       await onLoginSuccess();

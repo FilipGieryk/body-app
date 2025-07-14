@@ -31,7 +31,9 @@ const AdminDashboard = () => {
       videoLink: formData.videoLink,
     });
     try {
-      const token = localStorage.getItem("token");
+      const token = Object.fromEntries(
+        document.cookie.split("; ").map((c) => c.split("="))
+      ).token;
       const response = await axios.post(
         "/api/admin/exercises",
         formDataToSend,

@@ -14,8 +14,6 @@ const CreateWorkout = () => {
       : []
   );
 
-  const token = localStorage.getItem("token");
-
   const { mutate, isError, isSuccess, error } = useCreateWorkout();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

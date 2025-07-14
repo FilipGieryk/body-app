@@ -10,7 +10,10 @@ export const WebSocketProvider = ({ children }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const { isLoggedIn } = useUser();
   console.log(socket);
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const token = Object.fromEntries(
+    document.cookie.split("; ").map((c) => c.split("="))
+  ).token;
   const queryClient = useQueryClient();
 
   useEffect(() => {
