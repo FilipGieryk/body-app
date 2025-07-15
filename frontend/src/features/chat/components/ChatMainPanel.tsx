@@ -8,15 +8,11 @@ import { Chat } from "../types";
 type ChatMainPanelProps = {
   chatId: string;
   loggedUserId: string;
-  chats: Chat[];
+  currentChat: Chat;
 };
 
 const ChatMainPanel = ({ chatId, loggedUserId, chats }: ChatMainPanelProps) => {
   const markAsRead = useMarkMessagesAsRead();
-
-  const currentChat = React.useMemo(() => {
-    return chats?.find((chat) => chat.chatId === chatId) ?? null;
-  }, [chatId, chats]);
 
   const participants = React.useMemo(() => {
     if (!currentChat || !loggedUserId) return null;
@@ -30,18 +26,22 @@ const ChatMainPanel = ({ chatId, loggedUserId, chats }: ChatMainPanelProps) => {
   }, [currentChat, markAsRead]);
 
   return (
-    <div className="row-start-1 row-end-2 col-start-2">
-      {chatId && (
-        <UserInformation
-          username={currentChat?.chatName ?? "unknown"}
-          profilePhoto={currentChat?.profilePhoto ?? "default-avatar.png"}
-          orientation="row"
-        />
-      )}
-      {chatId && (
-        <MessageComponent chatId={chatId} otherParticipants={participants} />
-      )}
-    </div>
+    <>
+      <div className="row-start-1 row-end-1 col-start-2 max-h-10">
+        {chatId && (
+          <UserInformation
+            username={currentChat?.chatName ?? "unknown"}
+            profilePhoto={currentChat?.profilePhoto ?? "default-avatar.png"}
+            orientation="row"
+          />
+        )}
+      </div>
+      <div className="row-start-2 col-start-2">
+        {chatId && (
+          <MessageComponent chatId={chatId} otherParticipants={participants} />
+        )}
+      </div>
+    </>
   );
 };
 

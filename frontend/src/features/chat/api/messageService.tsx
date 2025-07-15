@@ -4,22 +4,31 @@ const URL = "/message";
 
 export const sendMessageToServer = async ({
   content,
+  clientId,
   chatId,
 }: {
   content: string;
   chatId: string;
+  clientId: string;
 }) => {
   try {
-    const response = await api.post(`${URL}/${chatId}/send`, { content });
+    const response = await api.post(`${URL}/${chatId}/send`, {
+      content,
+      clientId,
+    });
     return response.data;
   } catch (error) {
     console.error("Failed to send message:", error);
     throw error;
   }
 };
-export const getMessages = async (chatId: string) => {
+export const getMessages = async ({ queryKey, pageParam = 1 }) => {
+  const [, chatId] = queryKey;
+  const limit = 10;
   try {
-    const response = await api.get(`/message/${chatId}`);
+    const response = await api.get(`/message/${chatId}`, {
+      params: { page: pageParam, limit },
+    });
     return response.data;
   } catch (error) {
     console.error("error getting messages", error);

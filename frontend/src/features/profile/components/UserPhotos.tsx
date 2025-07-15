@@ -12,6 +12,7 @@ const Photos = ({
             <img
               className="w-[50%] rounded-4xl"
               src={`http://localhost:5173/uploads/${photo}`}
+              loading="lazy"
             ></img>
             <button
               className="absolute top-[10%] right-4 bg-transparent border-0 text-gray-400 translate-[50% -50%] transition-all"

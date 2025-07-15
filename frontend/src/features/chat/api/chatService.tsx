@@ -56,10 +56,16 @@ export const markMessagesAsRead = async (chatId: string) => {
   }
 };
 
-export const fetchChats = async () => {
+export const fetchChats = async ({ pageParam = 1 }) => {
+  const limit = 10;
   try {
-    const response = await api.get(`/chat`);
-    return response.data;
+    const res = await api.get(`/chat`, {
+      params: { page: pageParam, limit },
+    });
+    return {
+      chats: res.data,
+      nextPage: res.data.length < limit ? null : pageParam + 1,
+    };
   } catch (error) {
     console.error("error fetching chats");
   }

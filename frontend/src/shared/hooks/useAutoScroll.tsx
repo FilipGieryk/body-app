@@ -5,9 +5,9 @@ export const useAutoScroll = <T,>(
 ): React.RefObject<HTMLDivElement> => {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
+    const container = containerRef.current;
+    if (!container) return;
+    containerRef.current.scrollTop = containerRef.current.scrollHeight;
   }, [dependencies]);
 
   return containerRef;

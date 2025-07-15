@@ -51,6 +51,14 @@ class ChatController {
 
   async getChats(req, res) {
     const userId = req.user._id;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const unreadMessages = await UnreadMessage.find({ userId });
+    const unreadChatIdsSet = new Set(
+      unreadMessages.map((um) => um.chatId.toString())
+    );
 
     try {
       const chats = await Chat.aggregate([
@@ -68,6 +76,13 @@ class ChatController {
           },
         },
         { $unwind: { path: "$lastMessage", preserveNullAndEmptyArrays: true } },
+
+        {
+          $sort: { "lastMessage.timestamp": -1 }, // Sort chats by last message
+        },
+
+        { $skip: skip },
+        { $limit: limit },
         {
           $project: {
             chatId: "$_id",
@@ -81,7 +96,9 @@ class ChatController {
       ]);
 
       const chatsWithDetails = await Promise.all(
-        chats.map(async (chat) => chatService.getChatDetails(chat, userId))
+        chats.map((chat) =>
+          chatService.getChatDetails(chat, userId, unreadChatIdsSet)
+        )
       );
 
       res.status(200).json(chatsWithDetails);

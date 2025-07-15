@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useSendMessageToServer } from "./useSendMessageToServer";
+import { v4 as uuidv4 } from "uuid";
 
 interface UseHandleKeyDownProps {
   inputValue: string;
@@ -17,8 +18,9 @@ export const useHandleKeyDown = ({
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && inputValue.trim()) {
+        const clientId = uuidv4();
         mutate(
-          { content: inputValue.trim(), chatId },
+          { content: inputValue.trim(), chatId, clientId },
           {
             onSuccess: () => {
               setInputValue(""); // Clear input after successful mutation

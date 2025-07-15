@@ -7,14 +7,19 @@ import { ChatComponent } from "./ChatComponent";
 import { getSortedChats } from "../utils/chatUtils";
 import { Chat } from "../types";
 
-type ChatSidebarProps = {
-  loggedUserId: string;
-  chats: Chat[];
-};
+// type ChatSidebarProps = {
+//   loggedUserId: string;
+//   chats: Chat[];
+// };
 
-export const ChatSidebar = ({ loggedUserId, chats }: ChatSidebarProps) => {
+export const ChatSidebar = ({
+  loggedUserId,
+  chats,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+}) => {
   const [activeTab, setActiveTab] = useState<string>("chats");
-  console.log(chats);
   const { friendRequests, acceptRequest, declineRequest } = useFriendRequests();
   const sortedChats = getSortedChats(chats);
 
@@ -30,7 +35,14 @@ export const ChatSidebar = ({ loggedUserId, chats }: ChatSidebarProps) => {
         loggedUserId={loggedUserId}
       />
       <FriendsSearch />
-      {activeTab === "chats" && <ChatComponent chats={sortedChats} />}
+      {activeTab === "chats" && (
+        <ChatComponent
+          chats={sortedChats}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
+      )}
       {activeTab === "requests" && (
         <FriendRequest
           friendRequests={filteredRequests}

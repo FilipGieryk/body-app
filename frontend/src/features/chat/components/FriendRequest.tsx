@@ -10,6 +10,8 @@ export const FriendRequest = ({
           <img
             className="h-28 rounded-4xl"
             src={request.user.profilePhoto}
+            alt="user profile poto"
+            loading="lazy"
           ></img>
           <div className="text-xl">
             <h2 className="m-0">{request.user.username}</h2>
