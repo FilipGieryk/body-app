@@ -6,7 +6,8 @@ import { useUser } from "../../context/UserContext";
 
 import { ChatSidebar } from "./components/ChatSidebar";
 import { ChatMainPanel } from "./components/ChatMainPanel";
-import React from "react";
+import React, { useEffect } from "react";
+import { useMarkMessagesAsRead } from "./hooks/useMarkMessagesAsRead";
 
 const ChatPage = () => {
   const { chatId } = useParams();

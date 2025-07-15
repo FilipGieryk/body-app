@@ -15,7 +15,6 @@ const MessageComponent = ({
 }: MessageComponentProps) => {
   // add to hook
   const [inputValue, setInputValue] = useState("");
-
   const handleKeyDown = useHandleKeyDown({
     inputValue,
     setInputValue,
@@ -25,7 +24,7 @@ const MessageComponent = ({
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetChatMessages(chatId);
 
-  const messages = data?.pages.flatMap((page) => page.messages) ?? [];
+  const messages = data?.pages.flatMap((page) => page.messages).reverse() ?? [];
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // const containerRef = useAutoScroll(messages);
@@ -42,13 +41,15 @@ const MessageComponent = ({
   }, [inView, hasNextPage, isFetchingNextPage]);
 
   if (isLoading) return <p>Loading...</p>;
+  console.log(messages);
 
   return (
     <div className="grid grid-rows-[80%_10%] h-full min-h-full max-h-full rounded-4xl">
       <div
-        className="w-full rounded-2xl h-full flex flex-col-reverse self-center overflow-y-auto bg-[length:90%_100%]"
+        className="w-full rounded-2xl h-full flex flex-col self-center overflow-y-auto bg-[length:90%_100%]"
         ref={containerRef}
       >
+        <div ref={loadMoreRef} />
         {messages.map((message, index) => (
           <div
             key={index}
@@ -61,7 +62,6 @@ const MessageComponent = ({
             {message.content}
           </div>
         ))}
-        <div ref={loadMoreRef} />
       </div>
       <div className=" flex-row items-center justify-center rounded-[0 0 0 2rem]">
         <input

@@ -16,7 +16,7 @@ class MessageService {
     }
     const skip = (page - 1) * limit;
     const messages = await Message.find({ chatId })
-      .sort({ timestamp: 1 })
+      .sort({ timestamp: -1 })
       .skip(skip)
       .limit(limit);
 

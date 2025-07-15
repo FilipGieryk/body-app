@@ -7,11 +7,29 @@ export const useMarkMessagesAsRead = () => {
     mutationFn: markMessagesAsRead,
     onMutate: (chatId) => {
       const previousChats = queryClient.getQueryData(["chats"]);
-      queryClient.setQueryData(["chats"], (oldChats) =>
-        oldChats.map((chat) =>
-          chat.chatId === chatId ? { ...chat, hasUnread: false } : chat
-        )
-      );
+      queryClient.setQueryData(["chats"], (oldData) => {
+        if (!oldData || !oldData.pages) return oldData;
+
+        let didChange = false;
+
+        const newPages = oldData.pages.map((page) => {
+          const updatedChats = page.chats.map((chat) => {
+            if (chat.chatId !== chatId) return chat;
+            if (!chat.hasUnread) return chat; // Only update if needed
+
+            didChange = true;
+            return { ...chat, hasUnread: false };
+          });
+
+          // Only return a new page object if chats changed
+          return page.chats === updatedChats
+            ? page
+            : { ...page, chats: updatedChats };
+        });
+
+        // Only return new data if something changed
+        return didChange ? { ...oldData, pages: newPages } : oldData;
+      });
 
       return { previousChats };
     },
@@ -21,7 +39,7 @@ export const useMarkMessagesAsRead = () => {
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["chats"]);
+      // queryClient.invalidateQueries(["chats"]);
     },
   });
 };

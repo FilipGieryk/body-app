@@ -4,13 +4,18 @@ const URL = "/message";
 
 export const sendMessageToServer = async ({
   content,
+  clientId,
   chatId,
 }: {
   content: string;
   chatId: string;
+  clientId: string;
 }) => {
   try {
-    const response = await api.post(`${URL}/${chatId}/send`, { content });
+    const response = await api.post(`${URL}/${chatId}/send`, {
+      content,
+      clientId,
+    });
     return response.data;
   } catch (error) {
     console.error("Failed to send message:", error);

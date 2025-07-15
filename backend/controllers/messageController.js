@@ -6,8 +6,8 @@ class MessageController {
   async getMessages(req, res) {
     const { chatId } = req.params;
     const userId = req.user._id;
-    const limit = parseInt(req.params.limit) || 10;
-    const page = parseInt(req.params.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
 
     try {
       const messages = await MessageService.getMessagesByChatId(
@@ -33,7 +33,7 @@ class MessageController {
 
   async sendMessage(req, res) {
     const { chatId } = req.params;
-    const { content } = req.body;
+    const { content, clientId } = req.body;
     const senderId = req.user._id;
 
     try {
@@ -54,6 +54,7 @@ class MessageController {
         chatId,
         senderId,
         content,
+        clientId,
       });
 
       res.status(201).json({ message: "Message sent", message });
