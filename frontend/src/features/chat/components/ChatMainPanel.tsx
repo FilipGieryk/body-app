@@ -11,7 +11,11 @@ type ChatMainPanelProps = {
   currentChat: Chat;
 };
 
-const ChatMainPanel = ({ chatId, loggedUserId, chats }: ChatMainPanelProps) => {
+const ChatMainPanel = ({
+  chatId,
+  loggedUserId,
+  currentChat,
+}: ChatMainPanelProps) => {
   const markAsRead = useMarkMessagesAsRead();
 
   const participants = React.useMemo(() => {

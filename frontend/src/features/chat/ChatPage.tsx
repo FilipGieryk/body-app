@@ -6,6 +6,7 @@ import { useUser } from "../../context/UserContext";
 
 import { ChatSidebar } from "./components/ChatSidebar";
 import { lazy } from "react";
+import React from "react";
 
 const ChatMainPanel = lazy(() => import("./components/ChatMainPanel"));
 
