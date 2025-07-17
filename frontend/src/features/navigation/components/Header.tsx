@@ -71,7 +71,7 @@ export const Header = () => {
     <>
       <header className="flex justify-end h-screen top-0 absolute right-0 z-200 w-0">
         <div
-          className="relative z-10 md:hidden"
+          className="relative z-10 lg:hidden"
           onClick={() => setIsMenuOpen((prev) => !prev)}
         >
           <svg

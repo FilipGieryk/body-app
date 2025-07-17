@@ -3,6 +3,7 @@ import useLogin from "../hooks/useLogin";
 import useRegister from "../hooks/useRegister";
 import { OnLoginSuccess } from "../types";
 import { useOnClickOutside } from "../../../shared/hooks/useOnClickOutside";
+import GoogleAuth from "./GoogleAuth";
 
 type LoginProps = {
   isVisible: boolean;
@@ -103,6 +104,7 @@ const Login = ({ isVisible, onLoginSuccess, loginStatus }: LoginProps) => {
             id="login-form-submit"
             disabled={isLoginLoading}
           />
+          <GoogleAuth onLoginSuccess={onLoginSuccess} />
         </form>
       )}
 

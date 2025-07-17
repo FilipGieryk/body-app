@@ -18,6 +18,13 @@ export const login = async ({ username, password }: LoginProps) => {
   return response.data;
 };
 
+export const googleLogin = async (googleToken) => {
+  const res = await api.post(`${URL}/google-login`, {
+    credential: googleToken,
+  });
+  return res.data;
+};
+
 export const register = async ({
   username,
   password,

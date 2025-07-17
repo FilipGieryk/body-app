@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useLoggedUserInfo } from "../shared/hooks/useLoggedUserInfo";
 import { Navigate, useNavigate } from "react-router-dom";
-
+import Cookies from "js-cookie";
 const UserContext = createContext(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -20,17 +20,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { data, refetch, isLoading, isError } = useLoggedUserInfo(false);
 
   const refetchUser = async () => {
-    // const token = localStorage.getItem("token");
-    const token = Object.fromEntries(
-      document.cookie.split("; ").map((c) => c.split("="))
-    ).token;
-    if (!token) {
-      setLoading(false);
-      setIsLoggedIn(false);
-      navigate("/");
-      return;
-    }
-
     setLoading(true);
     try {
       const result = await refetch();
@@ -43,25 +32,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (err) {
       setUser(null);
-      localStorage.removeItem("token");
       setIsLoggedIn(false);
+      navigate("/");
     } finally {
       setLoading(false);
     }
   };
 
   const login = async () => {
-    const token = Object.fromEntries(
-      document.cookie.split("; ").map((c) => c.split("="))
-    ).token;
-    if (token) {
-      await refetchUser();
-    }
+    await refetchUser();
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigate("/");
   };

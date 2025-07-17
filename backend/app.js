@@ -14,12 +14,14 @@ const cors = require("cors");
 const path = require("path");
 const { initWebSocket } = require("./websocket");
 const http = require("http");
+const cookieParser = require("cookie-parser");
 // Define a basic route
 connectDB();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/users", userRoutes);
 app.use("/api/admin/exercises", exerciseRoutes);
